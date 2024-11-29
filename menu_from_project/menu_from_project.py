@@ -48,12 +48,7 @@ from menu_from_project.logic.qgs_manager import (
     read_from_http,
 )
 from menu_from_project.logic.tools import icon_per_layer_type
-from menu_from_project.toolbelt.preferences import (
-    SOURCE_MD_LAYER,
-    SOURCE_MD_NOTE,
-    SOURCE_MD_OGC,
-    PlgOptionsManager,
-)
+from menu_from_project.toolbelt.preferences import PlgOptionsManager
 from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
 
 # ############################################################################
@@ -246,7 +241,9 @@ class MenuFromProject:
                 self.menubarActions.append(project_action)
         return project_menu
 
-    def add_group_childs(self, group: MenuGroupConfig, grp_menu: QMenu) -> bool:
+    def add_group_childs(
+        self, group: MenuGroupConfig, grp_menu: QMenu
+    ) -> List[MenuLayerConfig]:
         """Add all childs of a group config
 
         :param uri: initial uri of project (can be from local file / http / postgres)
@@ -255,16 +252,16 @@ class MenuFromProject:
         :type group: MenuGroupConfig
         :param grp_menu: menu for group
         :type grp_menu: QMenu
-        :return: True if a layer was inserted, False otherwise
-        :rtype: bool
+        :return: list of inserted layer configuration
+        :rtype: List[MenuLayerConfig]
         """
-        layer_inserted = False
+        layer_inserted = []
         for child in group.childs:
             if isinstance(child, MenuGroupConfig):
                 self.add_group(child, grp_menu)
             elif isinstance(child, MenuLayerConfig):
-                layer_inserted = True
-                self.add_layer(child, grp_menu)
+                layer_inserted.append(child)
+                self.add_layer(child, grp_menu, group.name, child.name)
         return layer_inserted
 
     def add_group(self, group: MenuGroupConfig, menu: QMenu) -> None:
@@ -300,69 +297,42 @@ class MenuFromProject:
 
             layer_inserted = self.add_group_childs(group=group, grp_menu=grp_menu)
 
-            if layer_inserted and settings.optionLoadAll:
+            if len(layer_inserted) and settings.optionLoadAll:
                 action = QAction(self.tr("Load all"), self.iface.mainWindow())
                 font = QFont()
                 font.setBold(True)
                 action.setFont(font)
                 grp_menu.addAction(action)
                 action.triggered.connect(
-                    lambda checked, f=None, w=None, m=grp_menu: LayerLoad().loadLayer(
-                        None, f, w, m
-                    )
+                    lambda checked: LayerLoad().load_layer_list(layer_inserted, name)
                 )
 
-    def add_layer(self, layer: MenuLayerConfig, menu: QMenu) -> None:
+    def add_layer(
+        self, layer: MenuLayerConfig, menu: QMenu, group_name: str, action_text: str
+    ) -> None:
         """Add layer menu configuration to a menu
 
         :param uri: initial uri of project (can be from local file / http / postgres)
         :type uri: str
         :param layer: layer menu configuration
         :type layer: MenuLayerConfig
+        :param group_name: group name in case of create group option
+        :type group_name: str
         :param menu: input menu
         :type menu: QMenu
         """
         settings = self.plg_settings.get_plg_settings()
-        action = QAction(layer.name, self.iface.mainWindow())
+        action = QAction(action_text, self.iface.mainWindow())
 
         # add menu item
         action.triggered.connect(
-            lambda checked, uri=layer.filename, f=layer.filename, lid=layer.layer_id, m=menu, v=layer.visible, x=layer.expanded: LayerLoad().loadLayer(
-                uri, f, lid, m, v, x
-            )
+            lambda checked: LayerLoad().load_layer(layer, group_name)
         )
         action.setIcon(
             icon_per_layer_type(layer.is_spatial, layer.layer_type, layer.geometry_type)
         )
         if settings.optionTooltip:
-            if settings.optionSourceMD == SOURCE_MD_OGC:
-                abstract = layer.abstract or layer.metadata_abstract
-                title = layer.title or layer.metadata_title
-            else:
-                abstract = layer.metadata_abstract or layer.abstract
-                title = layer.metadata_title or layer.title
-
-            abstract = ""
-            title = ""
-            for oSource in settings.optionSourceMD:
-                if oSource == SOURCE_MD_OGC:
-                    abstract = layer.metadata_abstract if abstract == "" else abstract
-                    title = title or layer.metadata_title
-
-                if oSource == SOURCE_MD_LAYER:
-                    abstract = layer.abstract if abstract == "" else abstract
-                    title = title or layer.title
-
-                if oSource == SOURCE_MD_NOTE:
-                    abstract = layer.layer_notes if abstract == "" else abstract
-
-            if (abstract != "") and (title == ""):
-                action.setToolTip("<p>{}</p>".format(abstract))
-            else:
-                if abstract != "" or title != "":
-                    action.setToolTip("<b>{}</b><br/>{}".format(title, abstract))
-                else:
-                    action.setToolTip("")
+            action.setToolTip(settings.tooltip_for_layer(layer))
 
         menu.addAction(action)
 

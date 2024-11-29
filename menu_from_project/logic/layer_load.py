@@ -17,11 +17,11 @@ from qgis.core import (
 )
 from qgis.PyQt import QtXml
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, Qt, QUuid
-from qgis.PyQt.QtWidgets import QMenu, QWidget
 from qgis.utils import iface, plugins
 
 # project
 from menu_from_project.__about__ import __title__
+from menu_from_project.datamodel.project_config import MenuLayerConfig
 from menu_from_project.logic.qgs_manager import (
     QgsDomManager,
     is_absolute,
@@ -435,29 +435,26 @@ class LayerLoad:
 
         return targetRelations + relationsToBuild
 
-    def loadLayer(
-        self,
-        uri: Optional[str],
-        fileName: Optional[str],
-        layerId: Optional[str],
-        menu: Optional[QMenu] = None,
-        visible: Optional[bool] = None,
-        expanded: Optional[bool] = None,
-    ):
+    def load_layer_list(
+        self, layer_config_list: List[MenuLayerConfig], group_name: str
+    ) -> None:
+        """Load a list of layer to current QgsProject
+
+        :param layer_config_list: menu layer configuration list
+        :type layer_config_list: List[MenuLayerConfig]
+        :param group_name: group name in case of create group option
+        :type group_name: str
+        """
+        for layer_config in layer_config_list:
+            self.load_layer(layer_config=layer_config, group_name=group_name)
+
+    def load_layer(self, layer_config: MenuLayerConfig, group_name: str) -> None:
         """Load layer to current QgsProject
 
-        :param uri: The layer URI (file path or PG URI)
-        :type uri: Optional[str]
-        :param fileName: path to QgsProject file, None for Load all option
-        :type fileName: Optional[str]
-        :param layerId: id of layer to load (from QgsProject file), None for Load all option
-        :type layerId: Optional[str]
-        :param menu: QMenu where the action is located, defaults to None
-        :type menu: Optional[QMenu], optional
-        :param visible: define layer visibility in layer tree, defaults to None
-        :type visible: Optional[bool], optional
-        :param expanded: define if layer is expanded in layer tree, defaults to None
-        :type expanded: Optional[bool], optional
+        :param layer_config: configuration of layer to load
+        :type layer_config: MenuLayerConfig
+        :param group_name: group name in case of create group option
+        :type group_name: str
         """
         self.canvas.freeze(True)
         self.canvas.setRenderFlag(False)
@@ -468,60 +465,45 @@ class LayerLoad:
         settings = self.plg_settings.get_plg_settings()
 
         try:
-            if (
-                menu
-                and isinstance(menu.parentWidget(), (QMenu, QWidget))
-                and settings.optionCreateGroup
-            ):
-                groupName = menu.title().replace("&", "")
-                group = QgsProject.instance().layerTreeRoot().findGroup(groupName)
+            if settings.optionCreateGroup:
+                group = QgsProject.instance().layerTreeRoot().findGroup(group_name)
                 if group is None:
                     group = (
-                        QgsProject.instance().layerTreeRoot().insertGroup(0, groupName)
+                        QgsProject.instance().layerTreeRoot().insertGroup(0, group_name)
                     )
+            doc, _ = self.qgs_dom_manager.getQgsDoc(layer_config.filename)
 
-            # load all layers
-            if fileName is None and layerId is None and settings.optionLoadAll:
-                for action in menu.actions()[::-1]:
-                    if (
-                        action.text() != self.tr("Load all")
-                        and action.text() != "Load all"
-                    ):
-                        action.trigger()
-            else:
-                doc, _ = self.qgs_dom_manager.getQgsDoc(fileName)
+            # Loading layer
+            layer, relationsToBuild = self.addLayer(
+                layer_config.filename,
+                doc,
+                layer_config.layer_id,
+                group,
+                layer_config.visible,
+                layer_config.expanded,
+                {},
+                0,
+            )
+            for relDict in relationsToBuild:
+                self.buildProjectRelation(doc, relDict)
 
-                # Loading layer
-                layer, relationsToBuild = self.addLayer(
-                    uri, doc, layerId, group, visible, expanded, {}, 0
-                )
-                for relDict in relationsToBuild:
-                    self.buildProjectRelation(doc, relDict)
+            # is joined layers exists ?
+            if settings.optionOpenLinks and layer and isinstance(layer, QgsVectorLayer):
+                for j in layer.vectorJoins():
+                    try:
+                        joinLayer, joinRelations = self.addLayer(
+                            layer_config.filename, doc, j.joinLayerId(), group
+                        )
+                        for relDict in joinRelations:
+                            self.buildProjectRelation(doc, relDict)
 
-                # is joined layers exists ?
-                if (
-                    settings.optionOpenLinks
-                    and layer
-                    and isinstance(layer, QgsVectorLayer)
-                ):
-                    for j in layer.vectorJoins():
-                        try:
-                            joinLayer, joinRelations = self.addLayer(
-                                uri, doc, j.joinLayerId(), group
-                            )
-                            for relDict in joinRelations:
-                                self.buildProjectRelation(doc, relDict)
-
-                            if joinLayer:
-                                j.setJoinLayerId(joinLayer.id())
-                                j.setJoinLayer(joinLayer)
-                                layer.addJoin(j)
-                        except Exception:
-                            self.log(
-                                "Joined layer {} not added.".format(j.joinLayerId())
-                            )
-                            pass
-
+                        if joinLayer:
+                            j.setJoinLayerId(joinLayer.id())
+                            j.setJoinLayer(joinLayer)
+                            layer.addJoin(j)
+                    except Exception:
+                        self.log("Joined layer {} not added.".format(j.joinLayerId()))
+                        pass
         except Exception as e:
             # fixme fileName is not defined
             # self.log(
