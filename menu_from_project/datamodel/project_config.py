@@ -24,6 +24,8 @@ class MenuLayerConfig:
     abstract: str
     title: str
     geometry_type: Optional[QgsWkbTypes.GeometryType] = None
+    version: str = ""
+    format: str = ""
 
 
 @dataclass

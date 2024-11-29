@@ -1,4 +1,5 @@
 # standard
+import re
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
@@ -212,8 +213,24 @@ def get_layer_menu_config(
         geometry_type_str
     )
 
+    name = element.attribute("name")
+
+    # Expression régulière pour capturer la partie avant le $ et le champ de version
+    pattern = r"^(.*?)\s*\$(.+)$"
+
+    # Recherche de la version
+    match = re.search(pattern, name)
+    if match:
+        name = match.group(1)  # Tout ce qui est avant le $
+        version = match.group(2)  # Le champ de version après le $
+    else:
+        version = ""
+
+    providerNode = ml.namedItem("provider")
+    provider = providerNode.firstChild().toText().data()
+
     return MenuLayerConfig(
-        name=element.attribute("name"),
+        name=name,
         layer_id=layer_id,
         filename=filename,
         visible=element.attribute("checked", "") == "Qt::Checked",
@@ -227,6 +244,8 @@ def get_layer_menu_config(
         title=title,
         geometry_type=geometry_type,
         layer_notes=layer_notes,
+        version=version,
+        format=provider,
     )
 
 

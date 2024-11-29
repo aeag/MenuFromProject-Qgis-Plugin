@@ -22,7 +22,7 @@ email                : xavier.culos@eau-adour-garonne.fr
 import os
 from functools import partial
 from pathlib import Path
-from typing import Any, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from qgis.core import QgsApplication, QgsMessageLog, QgsSettings, QgsTask
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QLocale, Qt, QTranslator, QUrl
@@ -270,12 +270,40 @@ class MenuFromProject:
         :rtype: List[MenuLayerConfig]
         """
         layer_inserted = []
+        layer_name_inserted = []
         for child in group.childs:
             if isinstance(child, MenuGroupConfig):
                 self.add_group(child, grp_menu)
             elif isinstance(child, MenuLayerConfig):
-                layer_inserted.append(child)
-                self.add_layer(child, grp_menu, group.name, child.name)
+                if child.name not in layer_name_inserted:
+                    layer_name_list = [
+                        layer
+                        for layer in group.childs
+                        if isinstance(layer, MenuLayerConfig)
+                        and layer.name == child.name
+                    ]
+                    if len(layer_name_list) > 1:
+                        layer_dict = {}
+                        for layer in layer_name_list:
+                            if layer.version in layer_dict:
+                                layer_dict[layer.version][layer.format] = layer
+                            else:
+                                layer_dict[layer.version] = {layer.format: layer}
+                        layer_inserted.append(
+                            self.add_layer_dict(
+                                layer.name, layer_dict, grp_menu, group.name
+                            )
+                        )
+                    else:
+                        action_text = f"{child.name}"
+                        if child.version:
+                            action_text += f" - {child.version}"
+                        if child.format:
+                            action_text += f"- {child.format}"
+                        self.add_layer(child, grp_menu, group.name, action_text)
+                        layer_inserted.append(child)
+
+                    layer_name_inserted.append(child.name)
         return layer_inserted
 
     def add_group(self, group: MenuGroupConfig, menu: QMenu) -> None:
@@ -320,6 +348,56 @@ class MenuFromProject:
                 action.triggered.connect(
                     lambda checked: LayerLoad().load_layer_list(layer_inserted, name)
                 )
+
+    def add_layer_dict(
+        self,
+        layer_name: str,
+        layer_dict: Dict[str, Dict[str, MenuLayerConfig]],
+        menu: QMenu,
+        group_name: str,
+    ) -> MenuLayerConfig:
+        """Add a layer dict containing all versions and format of a layer
+
+        If several format are availables for a version, a specific menu is created for the version
+
+        Displayed text is adapted depending on the available versions and format.
+
+        :param layer_name: layer name
+        :type layer_name: str
+        :param layer_dict: _description_
+        :type layer_dict: Dict[str, Dict[str, MenuLayerConfig]]
+        :param menu: _description_
+        :type menu: QMenu
+        :param group_name: _description_
+        :type group_name: str
+        :return: _description_
+        :rtype: MenuLayerConfig
+        """
+        layer_menu = menu.addMenu(layer_name)
+
+        first_layer = list(list(layer_dict.values())[0].values())[0]
+        self.add_layer(first_layer, layer_menu, group_name, self.tr("Load layer"))
+
+        # Create action or menu for each version
+        for version, format_dict in layer_dict.items():
+            if len(format_dict) > 1:
+                # Multiple format for this version : create a specific menu in layer menu
+                version_menu = layer_menu.addMenu(version)
+            else:
+                # Only one format for this version : directly create action in layer menu
+                version_menu = layer_menu
+
+            # Create action for each format
+            for format_, layer in format_dict.items():
+                if len(format_dict) > 1:
+                    # Multiple format for this version : we only display format
+                    action_text = format_
+                else:
+                    # Only one format for this version : no specific menu, we display version and format
+                    action_text = f"{layer.version} - {layer.format}"
+                self.add_layer(layer, version_menu, group_name, action_text)
+
+        return first_layer
 
     def add_layer(
         self, layer: MenuLayerConfig, menu: QMenu, group_name: str, action_text: str
