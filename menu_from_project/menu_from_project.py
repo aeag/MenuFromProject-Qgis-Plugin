@@ -49,6 +49,7 @@ from menu_from_project.logic.qgs_manager import (
 )
 from menu_from_project.logic.tools import icon_per_layer_type
 from menu_from_project.toolbelt.preferences import PlgOptionsManager
+from menu_from_project.ui.browser import MenuLayerProvider
 from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
 
 # ############################################################################
@@ -92,6 +93,9 @@ class MenuFromProject:
 
         self.action_project_configuration = None
         self.action_menu_help = None
+
+        self.registry = QgsApplication.instance().dataItemProviderRegistry()
+        self.provider = None
 
     @staticmethod
     def tr(message):
@@ -173,9 +177,15 @@ class MenuFromProject:
         """
         QgsApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         previous = None
+        project_config_list = []
         for project, project_config in project_configs:
             # Add to QGIS instance
+            project_config_list.append(project_config)
             previous = self.add_project_config(project, project_config, previous)
+        if self.provider:
+            self.registry.removeProvider(self.provider)
+        self.provider = MenuLayerProvider(project_config_list)
+        self.registry.addProvider(self.provider)
 
         QgsApplication.restoreOverrideCursor()
 
@@ -394,6 +404,9 @@ class MenuFromProject:
             self.iface.removePluginMenu(__title__, self.action_menu_help)
 
         self.iface.initializationCompleted.disconnect(self.on_initializationCompleted)
+
+        if self.provider:
+            self.registry.removeProvider(self.provider)
 
     def open_projects_config(self):
         dlg = MenuConfDialog(self.iface.mainWindow())
