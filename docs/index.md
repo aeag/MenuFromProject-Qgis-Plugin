@@ -33,7 +33,7 @@ maxdepth: 1
 caption: Contributing
 ---
 development/contribute
-development/environment
+development/setup
 development/documentation
 development/translation
 development/packaging
