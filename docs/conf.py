@@ -91,6 +91,7 @@ mermaid_params = [
     "--backgroundColor",
     "transparent",
 ]
+# TODO: remove next line when the mermaid version shipped with sphinxcontrib-mermaid is 11.4+
 mermaid_version = "11.4.1"
 
 # MyST Parser
