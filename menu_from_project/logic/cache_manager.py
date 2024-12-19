@@ -113,7 +113,7 @@ class CacheManager:
             project_download.downloadExited.connect(loop.quit)
             project_download.downloadError.connect(self.downloadError)
             project_download.startDownload()
-            loop.exec_()
+            loop.exec()
 
             if Path(temp_file_path).exists():
                 data = self._try_load_cache_validation_file(

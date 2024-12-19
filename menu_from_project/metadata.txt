@@ -23,6 +23,9 @@ experimental=False
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
 
+# Qt6 flag
+supportsQt6=True
+
 # Author contact information
 author=Xavier Culos (Agence de l'eau Adour Garonne), Etienne Trimaille, Julien M. (Oslandia)
 email=xavier.culos@eau-adour-garonne.fr

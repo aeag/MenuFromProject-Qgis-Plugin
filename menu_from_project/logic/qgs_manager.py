@@ -138,7 +138,7 @@ def read_from_file(uri: str) -> QtXml.QDomDocument:
     file = QFile(uri)
     if (
         file.exists()
-        and file.open(QIODevice.ReadOnly | QIODevice.Text)
+        and file.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text)
         and QFileInfo(file).suffix() == "qgs"
     ):
         doc.setContent(file)
@@ -152,7 +152,7 @@ def read_from_file(uri: str) -> QtXml.QDomDocument:
         project_filename = QDir(temporary_unzip.path()).entryList(["*.qgs"])[0]
         project_path = os.path.join(temporary_unzip.path(), project_filename)
         xml = QFile(project_path)
-        if xml.open(QIODevice.ReadOnly | QIODevice.Text):
+        if xml.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text):
             doc.setContent(xml)
 
     return doc
@@ -175,7 +175,7 @@ def read_from_database(
 
     project_file = download_folder / f"{metadata.name}.qgz"
     temporary_zip = QFile(str(project_file))
-    temporary_zip.open(QIODevice.WriteOnly)
+    temporary_zip.open(QIODevice.OpenModeFlag.WriteOnly)
 
     project_storage.readProject(uri, temporary_zip, QgsReadWriteContext())
     temporary_zip.close()
@@ -219,7 +219,7 @@ def read_from_http(uri: str, download_folder: Path):
     project_download.downloadExited.connect(loop.quit)
     project_download.downloadError.connect(downloadError)
     project_download.startDownload()
-    loop.exec_()
+    loop.exec()
 
     return read_from_file(str(cached_filepath)), str(cached_filepath)
 

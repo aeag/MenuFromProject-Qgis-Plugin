@@ -327,8 +327,8 @@ class LayerLoad:
 
         try:
             REL_STRENGTH = {
-                "Association": QgsRelation.Association,
-                "Composition": QgsRelation.Composition,
+                "Association": QgsRelation.RelationStrength.Association,
+                "Composition": QgsRelation.RelationStrength.Composition,
             }
             relMan = QgsProject.instance().relationManager()
 
@@ -462,7 +462,7 @@ class LayerLoad:
         self.canvas.freeze(True)
         self.canvas.setRenderFlag(False)
         group = None
-        QgsApplication.setOverrideCursor(Qt.WaitCursor)
+        QgsApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.mapLayerIds = {}
 
         settings = self.plg_settings.get_plg_settings()

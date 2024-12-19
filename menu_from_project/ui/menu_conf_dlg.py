@@ -109,9 +109,11 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # -- Configured projects (table and related buttons)
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeToContents
+            QHeaderView.ResizeMode.ResizeToContents
         )
-        self.tableWidget.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
+        self.tableWidget.horizontalHeader().setDefaultAlignment(
+            Qt.AlignmentFlag.AlignLeft
+        )
         self.tableWidget.setRowCount(len(settings.projects))
         self.buttonBox.accepted.connect(self.onAccepted)
         self.btnDelete.clicked.connect(self.onDelete)
@@ -159,13 +161,13 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.cbxLoadAll.setChecked(settings.optionLoadAll)
         self.cbxLoadAll.setTristate(False)
 
-        self.cbxCreateGroup.setCheckState(settings.optionCreateGroup)
+        self.cbxCreateGroup.setChecked(settings.optionCreateGroup)
         self.cbxCreateGroup.setTristate(False)
 
-        self.cbxShowTooltip.setCheckState(settings.optionTooltip)
+        self.cbxShowTooltip.setChecked(settings.optionTooltip)
         self.cbxShowTooltip.setTristate(False)
 
-        self.cbxOpenLinks.setCheckState(settings.optionOpenLinks)
+        self.cbxOpenLinks.setChecked(settings.optionOpenLinks)
         self.cbxOpenLinks.setTristate(False)
 
         self.sourcesMdText = {
@@ -369,7 +371,9 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             ).filePath(),
         )
 
-        type_storage = self.tableWidget.item(row, self.cols.uri).data(Qt.UserRole)
+        type_storage = self.tableWidget.item(row, self.cols.uri).data(
+            Qt.ItemDataRole.UserRole
+        )
 
         return Project(
             file=filename,
@@ -414,7 +418,7 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # project name
         itemName = QTableWidgetItem()
-        itemName.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        itemName.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
         self.tableWidget.setItem(row, self.cols.name, itemName)
         name_lineedit = QLineEdit()
         name_lineedit.setPlaceholderText(self.tr("Use project title"))
@@ -440,8 +444,8 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # project file path
         itemFile = QTableWidgetItem()
-        itemFile.setData(Qt.UserRole, qgs_type_storage)
-        itemFile.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        itemFile.setData(Qt.ItemDataRole.UserRole, qgs_type_storage)
+        itemFile.setFlags(Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled)
         self.tableWidget.setItem(row, self.cols.uri, itemFile)
         filepath_lineedit = QLineEdit()
         filepath_lineedit.textChanged.connect(self.onTextChanged)
@@ -449,7 +453,9 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # refresh day
         refresh_day_item = QTableWidgetItem()
-        refresh_day_item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        refresh_day_item.setFlags(
+            Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+        )
         self.tableWidget.setItem(row, self.cols.refresh_days, refresh_day_item)
         spinbox = QgsSpinBox()
         spinbox.setClearValue(-1, self.tr("None"))
@@ -458,7 +464,9 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # Cache enable
         enable_cache_item = QTableWidgetItem()
-        enable_cache_item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        enable_cache_item.setFlags(
+            Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+        )
         self.tableWidget.setItem(row, self.cols.enable_cache, enable_cache_item)
         checkbox = QCheckBox()
         checkbox.setChecked(True)
@@ -466,7 +474,9 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         # Cache validation file
         cache_validation_file_item = QTableWidgetItem()
-        cache_validation_file_item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
+        cache_validation_file_item.setFlags(
+            Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+        )
         self.tableWidget.setItem(
             row, self.cols.cache_validation_file, cache_validation_file_item
         )
@@ -590,29 +600,29 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         """Prettify table aspect"""
         # edit button
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            self.cols.edit, QHeaderView.Fixed
+            self.cols.edit, QHeaderView.ResizeMode.Fixed
         )
         self.tableWidget.horizontalHeader().resizeSection(self.cols.edit, 20)
 
         # project name
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            self.cols.name, QHeaderView.Interactive
+            self.cols.name, QHeaderView.ResizeMode.Interactive
         )
 
         # project type
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            self.cols.type_storage, QHeaderView.Fixed
+            self.cols.type_storage, QHeaderView.ResizeMode.Fixed
         )
         self.tableWidget.horizontalHeader().resizeSection(self.cols.type_storage, 10)
 
         # project menu location
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            self.cols.type_menu_location, QHeaderView.Interactive
+            self.cols.type_menu_location, QHeaderView.ResizeMode.Interactive
         )
 
         # project path
         self.tableWidget.horizontalHeader().setSectionResizeMode(
-            self.cols.uri, QHeaderView.Interactive
+            self.cols.uri, QHeaderView.ResizeMode.Interactive
         )
 
         # fit to content
@@ -649,8 +659,10 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         lbl_location_type.setPixmap(QPixmap(icon_per_storage_type(qgs_type_storage)))
         lbl_location_type.setScaledContents(True)
         lbl_location_type.setMaximumSize(20, 20)
-        lbl_location_type.setAlignment(Qt.AlignCenter)
-        lbl_location_type.setTextInteractionFlags(Qt.NoTextInteraction)
+        lbl_location_type.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        lbl_location_type.setTextInteractionFlags(
+            Qt.TextInteractionFlag.NoTextInteraction
+        )
         lbl_location_type.setToolTip(self.tr(qgs_type_storage))
 
         return lbl_location_type

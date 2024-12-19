@@ -176,7 +176,7 @@ class MenuFromProject:
         :param project_configs: list of tuple of project dict and project menu config
         :type project_configs: List[Tuple[Any, MenuProjectConfig]]
         """
-        QgsApplication.setOverrideCursor(Qt.WaitCursor)
+        QgsApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         previous = None
         for project, project_config in project_configs:
             # Add to QGIS instance
@@ -430,7 +430,7 @@ class MenuFromProject:
         dlg.setModal(True)
 
         dlg.show()
-        result = dlg.exec_()
+        result = dlg.exec()
         del dlg
 
         if result != 0:
