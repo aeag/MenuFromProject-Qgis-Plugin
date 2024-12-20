@@ -2,7 +2,7 @@
 name=Layers menu from project
 qgisMinimumVersion=3.34
 qgisMaximumVersion=3.98
-description=Build layers shortcuts menus based on QGIS projects
+description=Build layers shortcuts menus based on QGIS remote projects stored in PostgreSQL, local network or HTTP(S).
 about=Allow easy opening of layers maintaining their style.
 
 version=2.3.0-DEV
@@ -10,7 +10,7 @@ version=2.3.0-DEV
 changelog=
 
 # tags are comma separated with spaces allowed
-tags=menu layer project
+tags=menu,layers,project,deployment,shared resource,centralized,remote,shortcut
 
 homepage=https://aeag.github.io/MenuFromProject-Qgis-Plugin/
 tracker=https://github.com/aeag/MenuFromProject-Qgis-Plugin/issues
