@@ -165,6 +165,9 @@ class GroupItem(QgsDataCollectionItem):
         self.setIcon(QIcon(QgsApplication.iconPath("mIconFolder.svg")))
 
         self.layer_inserted = []
+        for child in self.group_config.childs:
+            if isinstance(child, MenuLayerConfig):
+                self.layer_inserted.append(child)
 
     def createChildren(self) -> List[QgsDataItem]:
         """Create children for all group and layer available in a group
@@ -173,7 +176,6 @@ class GroupItem(QgsDataCollectionItem):
         :rtype: List[QgsDataItem]
         """
         children = []
-        self.layer_inserted = []
         for child in self.group_config.childs:
             if isinstance(child, MenuGroupConfig):
                 name = child.name
@@ -182,7 +184,6 @@ class GroupItem(QgsDataCollectionItem):
                 if name != "-" and not name.startswith("-"):
                     children.insert(0, GroupItem(parent=self, group_config=child))
             elif isinstance(child, MenuLayerConfig):
-                self.layer_inserted.append(child)
                 children.insert(
                     0,
                     LayerItem(
