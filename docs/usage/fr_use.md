@@ -13,7 +13,7 @@ Lorsque le plugin est configuré (choix des projets et attribution d'un nom asso
 Sauver vos projets sur un espace partagé (réseau, web, postgres) avec leurs styles, leurs étiquettes... une arborescence de groupes à l'image du futur menu.
 
 ```{tip}
-Créer un groupe vide nommé "-" pour placer un séparateur à cet endroit dans le futur menu.
+Créer un groupe vide nommé "-" pour placer un séparateur à cet endroit dans le futur menu. Ceci n'est pas supporté pour l'explorateur QGIS.
 ```
 
 Les projets peuvent être sauvés au format qgz, dans une base PostgreSQL [(cf. feature-saving-and-loading-projects-in-postgresql-database)](https://qgis.org/en/site/forusers/visualchangelog32/index.html#feature-saving-and-loading-projects-in-postgresql-database) ou déposée en tant que ressource web.

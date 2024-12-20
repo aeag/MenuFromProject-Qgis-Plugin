@@ -176,7 +176,11 @@ class GroupItem(QgsDataCollectionItem):
         self.layer_inserted = []
         for child in self.group_config.childs:
             if isinstance(child, MenuGroupConfig):
-                children.insert(0, GroupItem(parent=self, group_config=child))
+                name = child.name
+                # If group name is - it should be a separator but it's not supported in browser
+                # If group name start with - it should be a title but it's not supported in browser
+                if name != "-" and not name.startswith("-"):
+                    children.insert(0, GroupItem(parent=self, group_config=child))
             elif isinstance(child, MenuLayerConfig):
                 self.layer_inserted.append(child)
                 children.insert(
