@@ -10,6 +10,13 @@ Unreleased
 
 -->
 
+## 2.3.0-beta2 - 2024-12-20
+
+* fix(browser): don't add group that start with - by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/154
+* fix(browser): show load all action if children not created by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/155
+* update(i18n): complete French translation by @Guts in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/153
+* feat(doc): add browser support by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/152
+
 ## 2.3.0-beta1 - 2024-12-20
 
 * Bring Qt6 compatibility by @nicogodet in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/146>
