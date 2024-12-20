@@ -413,7 +413,7 @@
      <item>
       <widget class="QPushButton" name="mdSource1">
        <property name="text">
-        <string>OGC QGis Server metadata</string>
+        <string>OGC QGIS Server metadata</string>
        </property>
        <property name="checkable">
         <bool>false</bool>

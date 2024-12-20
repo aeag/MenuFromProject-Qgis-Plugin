@@ -177,7 +177,7 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.cbxOpenLinks.setTristate(False)
 
         self.sourcesMdText = {
-            SOURCE_MD_OGC: self.tr("QGis Server metadata"),
+            SOURCE_MD_OGC: self.tr("QGIS Server metadata"),
             SOURCE_MD_LAYER: self.tr("Layer Metadata"),
             SOURCE_MD_NOTE: self.tr("Layer Notes"),
         }
