@@ -63,10 +63,6 @@ from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
 
 class MenuFromProject:
 
-    def on_initializationCompleted(self):
-        # build menu
-        self.initMenus()
-
     def __init__(self, iface):
         self.task = None
         self.path = QFileInfo(os.path.realpath(__file__)).path()
@@ -395,8 +391,7 @@ class MenuFromProject:
             self.action_menu_help.triggered.connect(
                 partial(QDesktopServices.openUrl, QUrl(__uri_homepage__))
             )
-
-        self.iface.initializationCompleted.connect(self.on_initializationCompleted)
+        self.initMenus()
 
     def unload(self):
         menuBar = self.iface.editMenu().parentWidget()
@@ -422,8 +417,6 @@ class MenuFromProject:
                 self.open_projects_config
             )
             self.iface.removePluginMenu(__title__, self.action_menu_help)
-
-        self.iface.initializationCompleted.disconnect(self.on_initializationCompleted)
 
     def open_projects_config(self):
         dlg = MenuConfDialog(self.iface.mainWindow())
