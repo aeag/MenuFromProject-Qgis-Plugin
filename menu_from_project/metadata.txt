@@ -1,6 +1,6 @@
 [general]
 name=Layers menu from project
-qgisMinimumVersion=3.28
+qgisMinimumVersion=3.34
 qgisMaximumVersion=3.98
 description=Build layers shortcuts menus based on QGIS projects
 about=Allow easy opening of layers maintaining their style.
