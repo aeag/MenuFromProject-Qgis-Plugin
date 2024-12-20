@@ -19,7 +19,7 @@ The project might be stored in a PostgreSQL database, or on a web server, which 
 If you want some hierarchical menu, just use groups and sub groups in layer's panel, they will be reused to build the same hierarchical menu.
 
 ```{tip}
-Create an empty group named "-" to build a separator line in dropdown menu
+Create an empty group named "-" to build a separator line in dropdown menu. This is not supported for QGIS browser.
 ```
 
 ```{note}
