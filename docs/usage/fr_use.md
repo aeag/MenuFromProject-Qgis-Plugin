@@ -41,7 +41,9 @@ Le projet placé dans un espace partagé du réseau, sous postgres ou un serveur
 
 Le nom (modifiable), deviendra le titre du menu.
 
-Le menu pourra être placé soit dans la barre de menu principale, soit dans le sous-menu "couche / ajouter une couche", ou encore (depuis la version 1.1) d'être fusionné avec le projet précédent dans un même menu.
+Le menu pourra être placé soit dans la barre de menu principale, soit dans le sous-menu "couche / ajouter une couche", soit dans l'explorateur QGIS. Depuis la version 1.1 il peut être fusionné avec le projet précédent dans un même menu/explorateur.
+
+Pour l'explorateur QGIS, les couches et les groupes ne peuvent être qu'affichés par ordre alphabétique. L'ordre indiqué dans le projet ne sera pas préservé en cas de fusion et les couches et groupes seront mélangés.
 
 ### Options
 

@@ -45,7 +45,9 @@ If you want users to access that project, save it to a shared network place, bet
 
 The name will become the title of the menu.
 
-The menu can be placed either in the main menu bar, or in the "layer / add layer" sub-menu, or (since version 1.1) to be merged with the previous project in the same menu.
+The menu can be placed either in the main menu bar, or in the "layer / add layer" sub-menu, or in QGIS browser (since version 2.3.0). Since version 1.1 it can also be merged with the previous project in the same menu/browser.
+
+For QGIS browser, layers and group can only be displayed alphabetically. Order from project won't be kept and in case of merge, the layers and group will be mixed.
 
 ### Options
 
