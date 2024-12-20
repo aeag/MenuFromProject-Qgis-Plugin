@@ -49,8 +49,8 @@ from menu_from_project.logic.qgs_manager import (
 )
 from menu_from_project.logic.tools import icon_per_layer_type
 from menu_from_project.toolbelt.preferences import PlgOptionsManager
-from menu_from_project.ui.browser import MenuLayerProvider
 from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
+from menu_from_project.ui.menu_layer_data_item_provider import MenuLayerProvider
 
 # ############################################################################
 # ########## Classes ###############
