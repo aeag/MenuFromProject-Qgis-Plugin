@@ -25,6 +25,7 @@ caption: Usage
 ---
 usage/en_use
 usage/fr_use
+how_does_it_works
 ```
 
 ```{toctree}
@@ -33,7 +34,7 @@ maxdepth: 1
 caption: Contributing
 ---
 development/contribute
-development/environment
+development/setup
 development/documentation
 development/translation
 development/packaging

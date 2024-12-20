@@ -5,3 +5,4 @@ furo>=2024
 myst-parser[linkify]>=2
 sphinx-autobuild>=2024
 sphinx-copybutton>=0.5
+sphinxcontrib-mermaid>=1,<2
