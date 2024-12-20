@@ -1,6 +1,6 @@
 # Standard library
 import os.path
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 # PyQGIS
 from qgis.core import (
@@ -14,6 +14,7 @@ from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu, QWidget
 
 # project
+from menu_from_project.datamodel.project import Project
 from menu_from_project.logic.layer_load import LayerLoad
 from menu_from_project.logic.project_read import (
     MenuGroupConfig,
@@ -27,7 +28,7 @@ from menu_from_project.toolbelt.preferences import PlgOptionsManager
 class MenuLayerProvider(QgsDataItemProvider):
     """Provider for plugin data item"""
 
-    def __init__(self, project_configs: List[MenuProjectConfig]):
+    def __init__(self, project_configs: List[Tuple[Project, MenuProjectConfig]]):
         """Constructor for provider
 
         :param project_configs: list of project configuration
@@ -68,13 +69,17 @@ class MenuLayerProvider(QgsDataItemProvider):
 class RootCollection(QgsDataCollectionItem):
     """QgsDataCollectionItem to add available project as children"""
 
-    def __init__(self, parent: QgsDataItem, project_configs: List[MenuProjectConfig]):
+    def __init__(
+        self,
+        parent: QgsDataItem,
+        project_configs: List[Tuple[Project, MenuProjectConfig]],
+    ):
         """_summary_
 
         :param parent: parent
         :type parent: QgsDataItem
         :param project_configs: list of project configuration
-        :type project_configs: List[MenuProjectConfig]
+        :type project_configs: List[Tuple[Project, MenuProjectConfig]]
         """
         QgsDataCollectionItem.__init__(self, parent, "MenuLayer", "/MenuLayer")
         # TODO : define icon
@@ -87,11 +92,20 @@ class RootCollection(QgsDataCollectionItem):
         :rtype: List[QgsDataItem]
         """
         children = []
-        for pfc in [
-            ProjectCollection(parent=self, project_menu_config=project_config)
-            for project_config in self.project_configs
-        ]:
-            children.append(pfc)
+        previous = None
+        for project, project_config in self.project_configs:
+            if project.location == "merge" and previous:
+                pfc = ProjectCollection(
+                    parent=previous, project_menu_config=project_config
+                )
+                previous.merged_project.append(pfc)
+            elif project.location == "browser":
+                previous = ProjectCollection(
+                    parent=self, project_menu_config=project_config
+                )
+                children.append(previous)
+            else:
+                previous = None
         return children
 
 
@@ -115,6 +129,8 @@ class ProjectCollection(QgsDataCollectionItem):
         self.setName(project_menu_config.project_name)
         self.setIcon(QIcon(QgsApplication.iconPath("mIconFolderProject.svg")))
 
+        self.merged_project = []
+
     def createChildren(self) -> List[QgsDataItem]:
         """Create children for all group and layer available in project
 
@@ -124,7 +140,12 @@ class ProjectCollection(QgsDataCollectionItem):
         root_group = GroupItem(
             parent=self, group_config=self.project_menu_config.root_group
         )
-        return root_group.createChildren()
+        children = root_group.createChildren()
+
+        for project in self.merged_project:
+            children.extend(project.createChildren())
+
+        return children
 
 
 class GroupItem(QgsDataCollectionItem):

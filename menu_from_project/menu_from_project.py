@@ -166,7 +166,7 @@ class MenuFromProject:
         return result
 
     def project_config_loaded(
-        self, exception: Any, project_configs: List[Tuple[Any, MenuProjectConfig]]
+        self, exception: Any, project_configs: List[Tuple[Project, MenuProjectConfig]]
     ) -> None:
         """Add menu after project configuration load
 
@@ -176,17 +176,17 @@ class MenuFromProject:
         :type project_configs: List[Tuple[Any, MenuProjectConfig]]
         """
         QgsApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-        previous = None
-        project_config_list = []
-        for project, project_config in project_configs:
-            # Add to QGIS instance
-            project_config_list.append(project_config)
-            previous = self.add_project_config(project, project_config, previous)
+
         if self.provider:
             self.registry.removeProvider(self.provider)
-        self.provider = MenuLayerProvider(project_config_list)
-        self.registry.addProvider(self.provider)
+        self.provider = MenuLayerProvider(project_configs)
 
+        previous = None
+        for project, project_config in project_configs:
+            # Add to QGIS instance
+            previous = self.add_project_config(project, project_config, previous)
+
+        self.registry.addProvider(self.provider)
         QgsApplication.restoreOverrideCursor()
 
     def add_project_config(
@@ -194,7 +194,7 @@ class MenuFromProject:
         project: Project,
         project_config: MenuProjectConfig,
         previous: Optional[QMenu],
-    ) -> QMenu:
+    ) -> Optional[QMenu]:
         """Add a project menu configuration to current QGIS instance
 
         :param menu_name: Name of the menu to create
@@ -211,13 +211,14 @@ class MenuFromProject:
         project_menu = self.create_project_menu(
             menu_name=project_config.project_name, project=project, previous=previous
         )
-        self.add_group_childs(project_config.root_group, project_menu)
+        if project_menu:
+            self.add_group_childs(project_config.root_group, project_menu)
 
         return project_menu
 
     def create_project_menu(
         self, menu_name: str, project: Project, previous: Optional[QMenu]
-    ) -> QMenu:
+    ) -> Optional[QMenu]:
         """Create project menu and add it to QGIS instance
 
         :param menu_name: Name of the menu to create
@@ -227,13 +228,14 @@ class MenuFromProject:
         :param previous: previous created menu
         :type previous: Optional[QMenu]
         :return: created menu
-        :rtype: QMenu
+        :rtype: Optional[QMenu]
         """
+        project_menu = None
         location = project.location
         if location == "merge" and previous:
             project_menu = previous
             project_menu.addSeparator()
-        else:
+        elif location in ["layer", "new"]:
             if location == "layer":
                 menu_bar = self.iface.addLayerMenu()
             if location == "new":
@@ -249,6 +251,8 @@ class MenuFromProject:
                 self.layerMenubarActions.append(project_action)
             if location == "new":
                 self.menubarActions.append(project_action)
+        else:
+            project_menu = None
         return project_menu
 
     def add_group_childs(

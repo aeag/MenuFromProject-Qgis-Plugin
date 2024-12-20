@@ -97,8 +97,14 @@ class MenuConfDialog(QDialog, FORM_CLASS):
                 "index": 1,
                 "label": QgsApplication.translate("ConfDialog", "Add layer menu", None),
             },
-            "merge": {
+            "browser": {
                 "index": 2,
+                "label": QgsApplication.translate(
+                    "ConfDialog", "Add browser menu", None
+                ),
+            },
+            "merge": {
+                "index": 3,
                 "label": QgsApplication.translate(
                     "ConfDialog", "Merge with previous", None
                 ),
