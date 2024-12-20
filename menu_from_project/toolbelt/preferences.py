@@ -16,6 +16,7 @@ from qgis.core import QgsSettings
 # package
 from menu_from_project.__about__ import __version__
 from menu_from_project.datamodel.project import Project, ProjectCacheConfig
+from menu_from_project.datamodel.project_config import MenuLayerConfig
 from menu_from_project.logic.tools import guess_type_from_uri
 
 # ############################################################################
@@ -49,6 +50,46 @@ class PlgSettingsStructure:
 
     # Internal option
     is_setup_visible: bool = True
+
+    def tooltip_for_layer(self, layer_config: MenuLayerConfig) -> str:
+        """Define tooltip from layer configuration and current settings
+
+        :param layer_config: layer configuration
+        :type layer_config: MenuLayerConfig
+        :return: tooltip
+        :rtype: str
+        """
+        if self.optionSourceMD == SOURCE_MD_OGC:
+            abstract = layer_config.abstract or layer_config.metadata_abstract
+            title = layer_config.title or layer_config.metadata_title
+        else:
+            abstract = layer_config.metadata_abstract or layer_config.abstract
+            title = layer_config.metadata_title or layer_config.title
+
+        abstract = ""
+        title = ""
+        for oSource in self.optionSourceMD:
+            if oSource == SOURCE_MD_OGC:
+                abstract = (
+                    layer_config.metadata_abstract if abstract == "" else abstract
+                )
+                title = title or layer_config.metadata_title
+
+            if oSource == SOURCE_MD_LAYER:
+                abstract = layer_config.abstract if abstract == "" else abstract
+                title = title or layer_config.title
+
+            if oSource == SOURCE_MD_NOTE:
+                abstract = layer_config.layer_notes if abstract == "" else abstract
+
+        if (abstract != "") and (title == ""):
+            tooltip = "<p>{}</p>".format(abstract)
+        else:
+            if abstract != "" or title != "":
+                tooltip = "<b>{}</b><br/>{}".format(title, abstract)
+            else:
+                tooltip = ""
+        return tooltip
 
 
 class PlgOptionsManager:
