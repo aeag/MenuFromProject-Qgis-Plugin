@@ -1,31 +1,26 @@
 [general]
 name=Layers menu from project
-qgisMinimumVersion=3.34
-qgisMaximumVersion=3.98
-description=Build layers shortcuts menus based on QGIS remote projects stored in PostgreSQL, local network or HTTP(S).
 about=Allow easy opening of layers maintaining their style.
-
-version=2.3.0-DEV
-
-changelog=
-
-# tags are comma separated with spaces allowed
+description=Build layers shortcuts menus based on QGIS remote projects stored in PostgreSQL, local network or HTTP(S).
+icon=resources/menu_from_project.png
 tags=menu,layers,project,deployment,shared resource,centralized,remote,shortcut
 
+# credits and contact
+author=Xavier Culos (Agence de l'eau Adour Garonne), Etienne Trimaille, Julien M. (Oslandia), Jean-Marie Kerloch (Oslandia)
+email=xavier.culos@eau-adour-garonne.fr
 homepage=https://aeag.github.io/MenuFromProject-Qgis-Plugin/
-tracker=https://github.com/aeag/MenuFromProject-Qgis-Plugin/issues
 repository=https://github.com/aeag/MenuFromProject-Qgis-Plugin
-icon=resources/menu_from_project.png
+tracker=https://github.com/aeag/MenuFromProject-Qgis-Plugin/issues
 
-# experimental flag
-experimental=False
-
-# deprecated flag (applies to the whole plugin, not just a single version)
+# QGIS integration
 deprecated=False
-
-# Qt6 flag
+experimental=False
+qgisMinimumVersion=3.34
+qgisMaximumVersion=3.98
 supportsQt6=True
 
 # Author contact information
-author=Xavier Culos (Agence de l'eau Adour Garonne), Etienne Trimaille, Julien M. (Oslandia)
-email=xavier.culos@eau-adour-garonne.fr
+
+# versioning
+changelog=
+version=2.3.0-DEV
