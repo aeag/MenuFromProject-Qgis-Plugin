@@ -26,7 +26,7 @@ caption: Usage
 usage/en_use
 usage/fr_use
 how_does_it_works
-with_qdt
+usage/with_qdt
 ```
 
 ```{toctree}
