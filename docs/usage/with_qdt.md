@@ -11,3 +11,5 @@ If you want to use this plugin with Q[GIS Deployment Toolbelt (QDT)](https://qgi
       "version": "2.2.1"
     }
 ```
+
+Remember to replace the `version` attribute with the version you want to install.
