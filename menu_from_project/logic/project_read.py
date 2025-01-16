@@ -1,10 +1,10 @@
 # standard
 import re
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 # PyQGIS
-from qgis.core import QgsMapLayerType, QgsMessageLog, QgsWkbTypes
+from qgis.core import QgsMapLayerType, QgsMessageLog, QgsProviderRegistry, QgsWkbTypes
 from qgis.PyQt import QtXml
 from qgis.PyQt.QtCore import QFileInfo
 
@@ -23,6 +23,84 @@ from menu_from_project.logic.qgs_manager import (
     is_absolute,
 )
 from menu_from_project.logic.xml_utils import getFirstChildByAttrValue
+
+# Expression régulière pour capturer la partie avant le $ et le champ de version
+PATTERN_VERSION = re.compile(r"^(.*?)\s*\$(.+)$")
+
+# Regular expression to get extension list
+PATTERN_NAME_EXTENSION = re.compile(r"^(.*?)\s+\(\*([^\)]+)\)$")
+
+
+def extract_filter_data(text: str) -> Optional[Tuple[str, List[str]]]:
+    """Extract filter data to get provider name and extension list
+
+    :param text: _description_
+    :type text: str
+    :return: _description_
+    :rtype: Optional[Tuple[str, List[str]]]
+    """
+    match = re.match(PATTERN_NAME_EXTENSION, text)
+    if match:
+        field = match.group(1).strip()
+        extensions = [ext.strip() for ext in match.group(2).split()]
+        return field, extensions
+    return None
+
+
+def init_extension_list_from_file_filters(
+    file_filter: str,
+) -> List[Tuple[str, List[str]]]:
+    """Init extension list for provider name from a file filter
+
+    :param file_filter: _description_
+    :type file_filter: str
+    :return: _description_
+    :rtype: List[Tuple[str, List[str]]]
+    """
+    # Get list of file filters
+    file_filters = file_filter.split(";;")
+    result = []
+    for i, filters in enumerate(file_filters):
+        # Don't use first 2 elements that are for All available files and All supported file
+        if i > 1:
+            res = extract_filter_data(filters)
+            if res:
+                result.append((res[0], res[1]))
+    return result
+
+
+def init_ogr_extension_list() -> List[Tuple[str, List[str]]]:
+    """Define OGR extension list from predifined value are provider registry values
+
+    :return: list of provider name and usable extension
+    :rtype: List[Tuple[str, List[str]]]
+    """
+    # We define provider name to avoid use of exotic names
+    result = [("GeoJSON", [".json", ".geojson", ".JSON", ".GEOJSON"])]
+
+    result += init_extension_list_from_file_filters(
+        QgsProviderRegistry.instance().fileVectorFilters()
+    )
+    return result
+
+
+def init_gdal_extension_list() -> List[Tuple[str, List[str]]]:
+    """Define GDAL extension list from predifined value are provider registry values
+
+    :return: list of provider name and usable extension
+    :rtype: List[Tuple[str, List[str]]]
+    """
+
+    # We define provider name to avoid use of exotic names
+    result = [("GeoTIFF", [".tiff", ".tif"])]
+    result += init_extension_list_from_file_filters(
+        QgsProviderRegistry.instance().fileRasterFilters()
+    )
+    return result
+
+
+OGR_EXTENSION_LIST = init_ogr_extension_list()
+GDAL_EXTENSION_LIST = init_gdal_extension_list()
 
 
 def get_embedded_project_from_layer_tree(
@@ -150,11 +228,9 @@ def define_name_and_version_from_layer_name(layername: str) -> Tuple[str, str]:
     :return: name,version
     :rtype: Tuple[str, str]
     """
-    # Expression régulière pour capturer la partie avant le $ et le champ de version
-    pattern = r"^(.*?)\s*\$(.+)$"
 
     # Recherche de la version
-    match = re.search(pattern, layername)
+    match = re.search(PATTERN_VERSION, layername)
     if match:
         name = match.group(1)  # Tout ce qui est avant le $
         version = match.group(2)  # Le champ de version après le $
@@ -163,6 +239,28 @@ def define_name_and_version_from_layer_name(layername: str) -> Tuple[str, str]:
         name = layername
 
     return name, version
+
+
+def define_provider_name_from_extension_list(
+    provider: str, datasource: str, extension_list: List[Tuple[str, List[str]]]
+) -> str:
+    """Define a provider from datasource and extension list
+
+    :param provider: input provider
+    :type provider: str
+    :param datasource: datasource
+    :type datasource: str
+    :param extension_list: extension dict
+    :type extension_list: List[Tuple[str, List[str]]]
+    :return: provider name from extension dict if datasource extension is found, otherwise input provider
+    :rtype: str
+    """
+    result = provider
+    for provider_name, extensions in extension_list:
+        for extension in extensions:
+            if datasource.count(extension):
+                return provider_name
+    return result
 
 
 def get_layer_menu_config(
@@ -241,6 +339,17 @@ def get_layer_menu_config(
 
     providerNode = ml.namedItem("provider")
     provider = providerNode.firstChild().toText().data()
+
+    datasourceNode = ml.namedItem("datasource")
+    ds = datasourceNode.firstChild().toText().data()
+    if provider == "ogr":
+        provider = define_provider_name_from_extension_list(
+            provider, ds, OGR_EXTENSION_LIST
+        )
+    elif provider == "gdal":
+        provider = define_provider_name_from_extension_list(
+            provider, ds, GDAL_EXTENSION_LIST
+        )
 
     return MenuLayerConfig(
         name=name,
