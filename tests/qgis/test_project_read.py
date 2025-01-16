@@ -74,6 +74,7 @@ class TestProjectMenuConfig(unittest.TestCase):
                         abstract="La couche 'Stations de mesure de la qualit\u00e9 des cours d'eau' localise l'ensemble des stations appartenant \u00e0 des r\u00e9seaux de mesure de la qualit\u00e9 des eaux de surface : r\u00e9seaux nationaux (ie. RNB, RCB, R\u00e9seau Hydrobiologique et Piscicole), mais aussi r\u00e9seaux d\u00e9partementaux et locaux.",
                         title="Stations de mesure qualit\u00e9 (cours d'eau)",
                         geometry_type=QgsWkbTypes.GeometryType.PointGeometry,
+                        format="WFS",
                     ),
                     MenuLayerConfig(
                         name="Cours d'eau",
@@ -90,6 +91,7 @@ class TestProjectMenuConfig(unittest.TestCase):
                         abstract="",
                         title="",
                         geometry_type=None,
+                        format="wms",
                     ),
                     MenuLayerConfig(
                         name="Bassin Hydrographique",
@@ -106,6 +108,7 @@ class TestProjectMenuConfig(unittest.TestCase):
                         abstract="",
                         title="",
                         geometry_type=None,
+                        format="wms",
                     ),
                 ],
                 embedded=False,
