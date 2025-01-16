@@ -22,6 +22,7 @@ from qgis.utils import iface, plugins
 # project
 from menu_from_project.__about__ import __title__
 from menu_from_project.datamodel.project_config import MenuLayerConfig
+from menu_from_project.logic.project_read import define_name_and_version_from_layer_name
 from menu_from_project.logic.qgs_manager import (
     QgsDomManager,
     is_absolute,
@@ -100,6 +101,7 @@ class LayerLoad:
         )
         if node:
             node = node.cloneNode()
+
             idNode = node.namedItem("id")
             layerType = node.toElement().attribute("type", "vector")
             # give it a new id (for multiple import)
@@ -110,6 +112,14 @@ class LayerLoad:
                 idNode.firstChild().toText().setData(newLayerId)
             except Exception:
                 pass
+
+            # Update name node to remove syntaxic type on name
+            nameNode = node.namedItem("layername")
+            name, version = define_name_and_version_from_layer_name(
+                nameNode.firstChild().toText().data()
+            )
+            name = f"{name} {version}" if version else name
+            nameNode.firstChild().toText().setData(name)
 
             # if relative path, adapt datasource
             if not absolute:

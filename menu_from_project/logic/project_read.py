@@ -142,6 +142,29 @@ def get_layer_type_from_geometry_str(
     return None, None, False
 
 
+def define_name_and_version_from_layer_name(layername: str) -> Tuple[str, str]:
+    """Define name and version from layer name
+
+    :param layername: layer name
+    :type layername: str
+    :return: name,version
+    :rtype: Tuple[str, str]
+    """
+    # Expression régulière pour capturer la partie avant le $ et le champ de version
+    pattern = r"^(.*?)\s*\$(.+)$"
+
+    # Recherche de la version
+    match = re.search(pattern, layername)
+    if match:
+        name = match.group(1)  # Tout ce qui est avant le $
+        version = match.group(2)  # Le champ de version après le $
+    else:
+        version = ""
+        name = layername
+
+    return name, version
+
+
 def get_layer_menu_config(
     node: QtXml.QDomNode,
     maplayer_dict: Dict[str, QtXml.QDomNode],
@@ -214,17 +237,7 @@ def get_layer_menu_config(
     )
 
     name = element.attribute("name")
-
-    # Expression régulière pour capturer la partie avant le $ et le champ de version
-    pattern = r"^(.*?)\s*\$(.+)$"
-
-    # Recherche de la version
-    match = re.search(pattern, name)
-    if match:
-        name = match.group(1)  # Tout ce qui est avant le $
-        version = match.group(2)  # Le champ de version après le $
-    else:
-        version = ""
+    name, version = define_name_and_version_from_layer_name(name)
 
     providerNode = ml.namedItem("provider")
     provider = providerNode.firstChild().toText().data()

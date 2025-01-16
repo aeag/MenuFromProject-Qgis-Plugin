@@ -291,16 +291,11 @@ class MenuFromProject:
                                 layer_dict[layer.version] = {layer.format: layer}
                         layer_inserted.append(
                             self.add_layer_dict(
-                                layer.name, layer_dict, grp_menu, group.name
+                                child.name, layer_dict, grp_menu, group.name
                             )
                         )
                     else:
-                        action_text = f"{child.name}"
-                        if child.version:
-                            action_text += f" - {child.version}"
-                        if child.format:
-                            action_text += f"- {child.format}"
-                        self.add_layer(child, grp_menu, group.name, action_text)
+                        self.add_layer(child, grp_menu, group.name, child.name)
                         layer_inserted.append(child)
 
                     layer_name_inserted.append(child.name)
@@ -380,7 +375,9 @@ class MenuFromProject:
 
         # Create action or menu for each version
         for version, format_dict in layer_dict.items():
-            if version and len(format_dict) > 1:
+            multiple_format = len(format_dict) > 1
+            version_menu_used = version and multiple_format
+            if version_menu_used:
                 # Multiple format for this version : create a specific menu in layer menu
                 version_menu = layer_menu.addMenu(version)
             else:
@@ -389,7 +386,7 @@ class MenuFromProject:
 
             # Create action for each format
             for format_, layer in format_dict.items():
-                if version and len(format_dict) > 1:
+                if version_menu_used:
                     # Multiple format for this version : we only display format
                     action_text = format_
                 else:
