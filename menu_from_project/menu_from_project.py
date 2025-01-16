@@ -380,7 +380,7 @@ class MenuFromProject:
 
         # Create action or menu for each version
         for version, format_dict in layer_dict.items():
-            if len(format_dict) > 1:
+            if version and len(format_dict) > 1:
                 # Multiple format for this version : create a specific menu in layer menu
                 version_menu = layer_menu.addMenu(version)
             else:
@@ -389,12 +389,14 @@ class MenuFromProject:
 
             # Create action for each format
             for format_, layer in format_dict.items():
-                if len(format_dict) > 1:
+                if version and len(format_dict) > 1:
                     # Multiple format for this version : we only display format
                     action_text = format_
                 else:
                     # Only one format for this version : no specific menu, we display version and format
-                    action_text = f"{layer.version} - {layer.format}"
+                    action_text = (
+                        f"{layer.version} - {layer.format}" if version else layer.format
+                    )
                 self.add_layer(layer, version_menu, group_name, action_text)
 
         return first_layer

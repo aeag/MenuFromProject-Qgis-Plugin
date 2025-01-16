@@ -176,6 +176,7 @@ class GroupItem(QgsDataCollectionItem):
         :rtype: List[QgsDataItem]
         """
         children = []
+        layer_name_inserted = []
         for child in self.group_config.childs:
             if isinstance(child, MenuGroupConfig):
                 name = child.name
@@ -184,14 +185,37 @@ class GroupItem(QgsDataCollectionItem):
                 if name != "-" and not name.startswith("-"):
                     children.insert(0, GroupItem(parent=self, group_config=child))
             elif isinstance(child, MenuLayerConfig):
-                children.insert(
-                    0,
-                    LayerItem(
-                        parent=self,
-                        layer_config=child,
-                        group_name=self.group_config.name,
-                    ),
-                )
+                if child.name not in layer_name_inserted:
+                    layer_name_list = [
+                        layer
+                        for layer in self.group_config.childs
+                        if isinstance(layer, MenuLayerConfig)
+                        and layer.name == child.name
+                    ]
+                    if len(layer_name_list) > 1:
+                        layer_dict = {}
+                        for layer in layer_name_list:
+                            if layer.version in layer_dict:
+                                layer_dict[layer.version][layer.format] = layer
+                            else:
+                                layer_dict[layer.version] = {layer.format: layer}
+                        item = LayerDictItem(
+                            parent=self,
+                            layer_dict=layer_dict,
+                            group_name=self.group_config.name,
+                        )
+                        children.insert(0, item)
+                    else:
+                        children.insert(
+                            0,
+                            LayerItem(
+                                parent=self,
+                                layer_config=child,
+                                group_name=self.group_config.name,
+                            ),
+                        )
+
+                    layer_name_inserted.append(child.name)
         return children
 
     def actions(self, parent: QWidget) -> List[QAction]:
@@ -293,7 +317,7 @@ class LayerDictItem(QgsDataItem):
         )
 
         for version, format_dict in self.layer_dict.items():
-            if len(format_dict) > 1:
+            if version and len(format_dict) > 1:
                 ac_version = QAction(version, parent)
                 version_menu = QMenu(version, parent)
                 ac_version.setMenu(version_menu)
@@ -301,10 +325,12 @@ class LayerDictItem(QgsDataItem):
             else:
                 version_menu = None
             for format_, layer in format_dict.items():
-                if len(format_dict) > 1:
+                if version and len(format_dict) > 1:
                     action_text = format_
                 else:
-                    action_text = f"{layer.version} - {layer.format}"
+                    action_text = (
+                        f"{layer.version} - {layer.format}" if version else layer.format
+                    )
                 ac_layer = create_add_layer_action(
                     layer, action_text, self.group_name, parent
                 )
