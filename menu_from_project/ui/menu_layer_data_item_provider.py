@@ -316,16 +316,32 @@ class LayerDictItem(QgsDataItem):
             )
         )
 
+        settings = PlgOptionsManager().get_plg_settings()
+
+        # Add menu for all version
+        versions_str = self.tr("Versions")
+        ac_all_version = QAction(versions_str, parent)
+        all_version_menu = QMenu(versions_str, parent)
+        all_version_menu.setToolTipsVisible(settings.optionTooltip)
+        ac_all_version.setMenu(all_version_menu)
+        actions.append(ac_all_version)
+
+        # Create action or menu for each version
         for version, format_dict in self.layer_dict.items():
-            if version and len(format_dict) > 1:
+            multiple_format = len(format_dict) > 1
+            version_menu_used = version and multiple_format
+            if version_menu_used:
+                # Multiple format for this version : create a specific menu in versions menu
                 ac_version = QAction(version, parent)
                 version_menu = QMenu(version, parent)
                 ac_version.setMenu(version_menu)
-                actions.append(ac_version)
+
+                all_version_menu.addAction(ac_version)
             else:
-                version_menu = None
+                # Only one format for this version : directly create action in versions menu
+                version_menu = all_version_menu
             for format_, layer in format_dict.items():
-                if version and len(format_dict) > 1:
+                if version_menu_used:
                     action_text = format_
                 else:
                     action_text = (
@@ -334,10 +350,7 @@ class LayerDictItem(QgsDataItem):
                 ac_layer = create_add_layer_action(
                     layer, action_text, self.group_name, parent
                 )
-                if version_menu:
-                    version_menu.addAction(ac_layer)
-                else:
-                    actions.append(ac_layer)
+                version_menu.addAction(ac_layer)
         return actions
 
 

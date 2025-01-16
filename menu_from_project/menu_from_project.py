@@ -368,21 +368,25 @@ class MenuFromProject:
         :return: _description_
         :rtype: MenuLayerConfig
         """
+        settings = self.plg_settings.get_plg_settings()
         layer_menu = menu.addMenu(layer_name)
+        layer_menu.setToolTipsVisible(settings.optionTooltip)
 
         first_layer = list(list(layer_dict.values())[0].values())[0]
         self.add_layer(first_layer, layer_menu, group_name, self.tr("Load layer"))
+        all_version_menu = layer_menu.addMenu(self.tr("Versions"))
+        all_version_menu.setToolTipsVisible(settings.optionTooltip)
 
         # Create action or menu for each version
         for version, format_dict in layer_dict.items():
             multiple_format = len(format_dict) > 1
             version_menu_used = version and multiple_format
             if version_menu_used:
-                # Multiple format for this version : create a specific menu in layer menu
-                version_menu = layer_menu.addMenu(version)
+                # Multiple format for this version : create a specific menu in versions menu
+                version_menu = all_version_menu.addMenu(version)
             else:
-                # Only one format for this version : directly create action in layer menu
-                version_menu = layer_menu
+                # Only one format for this version : directly create action in versions menu
+                version_menu = all_version_menu
 
             # Create action for each format
             for format_, layer in format_dict.items():
