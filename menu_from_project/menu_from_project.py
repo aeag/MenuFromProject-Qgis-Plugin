@@ -373,7 +373,7 @@ class MenuFromProject:
         layer_menu.setToolTipsVisible(settings.optionTooltip)
 
         first_layer = list(list(layer_dict.values())[0].values())[0]
-        self.add_layer(first_layer, layer_menu, group_name, self.tr("Load layer"))
+        self.add_layer(first_layer, layer_menu, group_name, self.tr("Display layer"))
         all_version_menu = layer_menu.addMenu(self.tr("Versions"))
         all_version_menu.setToolTipsVisible(settings.optionTooltip)
 
