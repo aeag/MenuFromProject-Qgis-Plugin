@@ -363,13 +363,13 @@ class MenuFromProject:
 
         :param layer_name: layer name
         :type layer_name: str
-        :param layer_dict: _description_
+        :param layer_dict: layer dict containing all versions and format for layer name
         :type layer_dict: Dict[str, Dict[str, MenuLayerConfig]]
-        :param menu: _description_
+        :param menu: menu where the action and submenu must be added
         :type menu: QMenu
-        :param group_name: _description_
+        :param group_name: name of the group
         :type group_name: str
-        :return: _description_
+        :return: first available layer config for this layer name
         :rtype: MenuLayerConfig
         """
         settings = self.plg_settings.get_plg_settings()
