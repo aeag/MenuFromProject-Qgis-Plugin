@@ -185,6 +185,7 @@ class GroupItem(QgsDataCollectionItem):
                 if name != "-" and not name.startswith("-"):
                     children.insert(0, GroupItem(parent=self, group_config=child))
             elif isinstance(child, MenuLayerConfig):
+                # Check if this layer name was already inserted
                 if child.name not in layer_name_inserted:
                     layer_name_list = [
                         layer
@@ -193,6 +194,7 @@ class GroupItem(QgsDataCollectionItem):
                         and layer.name == child.name
                     ]
                     if len(layer_name_list) > 1:
+                        # Multiple version of format available, must use a layer dict to create children
                         layer_dict = {}
                         for layer in layer_name_list:
                             if layer.version in layer_dict:
@@ -206,6 +208,7 @@ class GroupItem(QgsDataCollectionItem):
                         )
                         children.insert(0, item)
                     else:
+                        # Only one version or format
                         children.insert(
                             0,
                             LayerItem(
@@ -214,7 +217,7 @@ class GroupItem(QgsDataCollectionItem):
                                 group_name=self.group_config.name,
                             ),
                         )
-
+                    # Indicate that this layer name was added
                     layer_name_inserted.append(child.name)
         return children
 

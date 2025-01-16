@@ -275,6 +275,7 @@ class MenuFromProject:
             if isinstance(child, MenuGroupConfig):
                 self.add_group(child, grp_menu)
             elif isinstance(child, MenuLayerConfig):
+                # Check if this layer name was already inserted
                 if child.name not in layer_name_inserted:
                     layer_name_list = [
                         layer
@@ -283,6 +284,7 @@ class MenuFromProject:
                         and layer.name == child.name
                     ]
                     if len(layer_name_list) > 1:
+                        # Multiple version of format available, must use a layer dict to create menu
                         layer_dict = {}
                         for layer in layer_name_list:
                             if layer.version in layer_dict:
@@ -295,9 +297,11 @@ class MenuFromProject:
                             )
                         )
                     else:
+                        # Only one version or format
                         self.add_layer(child, grp_menu, group.name, child.name)
                         layer_inserted.append(child)
 
+                    # Indicate that this layer name was added
                     layer_name_inserted.append(child.name)
         return layer_inserted
 
