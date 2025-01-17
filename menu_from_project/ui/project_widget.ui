@@ -67,13 +67,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="mergePreviousCheckBox">
-        <property name="text">
-         <string>Merge with previous</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="newMenuCheckBox">
         <property name="text">
          <string>New menu</string>
@@ -87,6 +80,13 @@
        <widget class="QCheckBox" name="browserCheckBox">
         <property name="text">
          <string>Browser</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="mergePreviousCheckBox">
+        <property name="text">
+         <string>Merge with previous</string>
         </property>
        </widget>
       </item>

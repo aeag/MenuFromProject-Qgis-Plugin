@@ -99,7 +99,7 @@ class RootCollection(QgsDataCollectionItem):
                     parent=previous, project_menu_config=project_config
                 )
                 previous.merged_project.append(pfc)
-            elif project.location == "browser":
+            elif project.location.count("browser"):
                 previous = ProjectCollection(
                     parent=self, project_menu_config=project_config
                 )
