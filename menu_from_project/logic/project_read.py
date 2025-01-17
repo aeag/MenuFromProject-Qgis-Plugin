@@ -30,6 +30,8 @@ PATTERN_VERSION = re.compile(r"^(.*?)\s*\$(.+)$")
 # Regular expression to get extension list
 PATTERN_NAME_EXTENSION = re.compile(r"^(.*?)\s+\(\*([^\)]+)\)$")
 
+LMFP_FORMAT_KEYWORD = "LMFP_FORMAT"
+
 
 def extract_filter_data(text: str) -> Optional[Tuple[str, List[str]]]:
     """Extract filter data to get provider name and extension list
@@ -263,6 +265,28 @@ def define_provider_name_from_extension_list(
     return result
 
 
+def define_provider_name_from_metadata(md: QtXml.QDomNode, provider: str) -> str:
+    """Define provider name from metadata if available
+
+    :param md: metadata dom node
+    :type md: QtXml.QDomNode
+    :param provider: initial provider
+    :type provider: str
+    :return: provider name from metadata if available otherwise input provider name
+    :rtype: str
+    """
+    keywords = md.toElement().elementsByTagName("keywords")
+    for i in range(0, keywords.size()):
+        value = keywords.at(i)
+        element = value.toElement()
+        vocabulary = element.attribute("vocabulary")
+        if vocabulary == LMFP_FORMAT_KEYWORD:
+            keyword = element.elementsByTagName("keyword")
+            if keyword.size() > 0:
+                return keyword.at(0).toElement().text()
+    return provider
+
+
 def get_layer_menu_config(
     node: QtXml.QDomNode,
     maplayer_dict: Dict[str, QtXml.QDomNode],
@@ -350,6 +374,8 @@ def get_layer_menu_config(
         provider = define_provider_name_from_extension_list(
             provider, ds, GDAL_EXTENSION_LIST
         )
+
+    provider = define_provider_name_from_metadata(md, provider)
 
     return MenuLayerConfig(
         name=name,
