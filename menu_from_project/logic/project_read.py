@@ -4,7 +4,13 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # PyQGIS
-from qgis.core import QgsMapLayerType, QgsMessageLog, QgsProviderRegistry, QgsWkbTypes
+from qgis.core import (
+    QgsDataSourceUri,
+    QgsMapLayerType,
+    QgsMessageLog,
+    QgsProviderRegistry,
+    QgsWkbTypes,
+)
 from qgis.PyQt import QtXml
 from qgis.PyQt.QtCore import QFileInfo
 
@@ -265,6 +271,28 @@ def define_provider_name_from_extension_list(
     return result
 
 
+def define_provider_name_wms_datasource(provider: str, datasource: str) -> str:
+    """Define provider name from wms datasource
+    Check for type parameter or tileMatrixSet/tileDimensions for WMTS
+
+    :param provider: input provider name
+    :type provider: str
+    :param datasource: datasource uri
+    :type datasource: str
+    :return: provider name from datasource uri if rule apply, otherwise input provider
+    :rtype: str
+    """
+    uri = QgsDataSourceUri()
+    uri.setEncodedUri(datasource)
+    if uri.hasParam("type"):
+        return uri.param("type")
+    if uri.hasParam("tileMatrixSet"):
+        return "WMTS"
+    if uri.hasParam("tileDimensions"):
+        return "WMTS"
+    return provider
+
+
 def define_provider_name_from_metadata(md: QtXml.QDomNode, provider: str) -> str:
     """Define provider name from metadata if available
 
@@ -374,6 +402,8 @@ def get_layer_menu_config(
         provider = define_provider_name_from_extension_list(
             provider, ds, GDAL_EXTENSION_LIST
         )
+    elif provider == "wms":
+        provider = define_provider_name_wms_datasource(provider, ds)
 
     provider = define_provider_name_from_metadata(md, provider)
 
