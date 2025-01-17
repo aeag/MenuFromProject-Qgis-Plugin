@@ -277,20 +277,12 @@ class MenuFromProject:
             elif isinstance(child, MenuLayerConfig):
                 # Check if this layer name was already inserted
                 if child.name not in layer_name_inserted:
-                    layer_name_list = [
-                        layer
-                        for layer in group.childs
-                        if isinstance(layer, MenuLayerConfig)
-                        and layer.name == child.name
-                    ]
+                    layer_name_list = group.get_layer_configs_from_name(child.name)
                     if len(layer_name_list) > 1:
                         # Multiple version of format available, must use a layer dict to create menu
-                        layer_dict = {}
-                        for layer in layer_name_list:
-                            if layer.version in layer_dict:
-                                layer_dict[layer.version][layer.format] = layer
-                            else:
-                                layer_dict[layer.version] = {layer.format: layer}
+                        layer_dict = MenuGroupConfig.sort_layer_list_by_version(
+                            layer_name_list
+                        )
                         layer_inserted.append(
                             self.add_layer_dict(
                                 child.name, layer_dict, grp_menu, group.name
@@ -351,7 +343,7 @@ class MenuFromProject:
     def add_layer_dict(
         self,
         layer_name: str,
-        layer_dict: Dict[str, Dict[str, MenuLayerConfig]],
+        layer_dict: Dict[str, List[MenuLayerConfig]],
         menu: QMenu,
         group_name: str,
     ) -> MenuLayerConfig:
@@ -364,7 +356,7 @@ class MenuFromProject:
         :param layer_name: layer name
         :type layer_name: str
         :param layer_dict: layer dict containing all versions and format for layer name
-        :type layer_dict: Dict[str, Dict[str, MenuLayerConfig]]
+        :type layer_dict: Dict[str, List[MenuLayerConfig]]
         :param menu: menu where the action and submenu must be added
         :type menu: QMenu
         :param group_name: name of the group
@@ -382,8 +374,8 @@ class MenuFromProject:
         all_version_menu.setToolTipsVisible(settings.optionTooltip)
 
         # Create action or menu for each version
-        for version, format_dict in layer_dict.items():
-            multiple_format = len(format_dict) > 1
+        for version, format_list in layer_dict.items():
+            multiple_format = len(format_list) > 1
             version_menu_used = version and multiple_format
             if version_menu_used:
                 # Multiple format for this version : create a specific menu in versions menu
@@ -393,10 +385,10 @@ class MenuFromProject:
                 version_menu = all_version_menu
 
             # Create action for each format
-            for format_, layer in format_dict.items():
+            for layer in format_list:
                 if version_menu_used:
                     # Multiple format for this version : we only display format
-                    action_text = format_
+                    action_text = layer.format
                 else:
                     # Only one format for this version : no specific menu, we display version and format
                     action_text = (
