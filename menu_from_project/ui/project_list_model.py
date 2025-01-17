@@ -15,9 +15,8 @@ from menu_from_project.logic.tools import icon_per_storage_type
 
 class ProjectListModel(QStandardItemModel):
     NAME_COL = 0
-    TYPE_COL = 1
-    LOCATION_COL = 2
-    FILE_COL = 3
+    LOCATION_COL = 1
+    FILE_COL = 2
 
     def __init__(self, parent: QObject = None):
         """
@@ -28,7 +27,7 @@ class ProjectListModel(QStandardItemModel):
         """
         super().__init__(parent)
         self.setHorizontalHeaderLabels(
-            [self.tr("Name"), self.tr("Type"), self.tr("Location"), self.tr("File")]
+            [self.tr("Name"), self.tr("Location"), self.tr("File")]
         )
 
     def flags(self, index: QModelIndex) -> QtCore.Qt.ItemFlags:
@@ -83,9 +82,8 @@ class ProjectListModel(QStandardItemModel):
         """
         self.setData(self.index(row, self.NAME_COL), project.name)
         self.setData(self.index(row, self.NAME_COL), project, Qt.UserRole)
-        self.setData(self.index(row, self.TYPE_COL), project.type_storage)
         self.setData(
-            self.index(row, self.TYPE_COL),
+            self.index(row, self.NAME_COL),
             QIcon(icon_per_storage_type(project.type_storage)),
             Qt.DecorationRole,
         )
