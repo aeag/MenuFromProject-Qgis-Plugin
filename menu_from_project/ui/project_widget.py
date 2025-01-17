@@ -187,13 +187,13 @@ class ProjectWidget(QWidget):
         self.mergePreviousCheckBox.setChecked(False)
         self.browserCheckBox.setChecked(False)
 
-        if project.location == "new":
-            self.newMenuCheckBox.setChecked(True)
-        if project.location == "layer":
-            self.addLayerMenuCheckBox.setChecked(True)
         if project.location == "merge":
             self.mergePreviousCheckBox.setChecked(True)
-        if project.location == "browser":
+        if project.location.count("new"):
+            self.newMenuCheckBox.setChecked(True)
+        if project.location.count("layer"):
+            self.addLayerMenuCheckBox.setChecked(True)
+        if project.location.count("browser"):
             self.browserCheckBox.setChecked(True)
 
         if project.type_storage == "file":
@@ -222,15 +222,18 @@ class ProjectWidget(QWidget):
             refresh_days_period=self.refreshIntervalSpinBox.value(),
             cache_validation_uri=self.validationFileLineEdit.filePath(),
         )
-        location = "new"
-        if self.newMenuCheckBox.isChecked():
-            location = "new"
-        if self.addLayerMenuCheckBox.isChecked():
-            location = "layer"
         if self.mergePreviousCheckBox.isChecked():
             location = "merge"
-        if self.browserCheckBox.isChecked():
-            location = "browser"
+        else:
+            locations = []
+            if self.newMenuCheckBox.isChecked():
+                locations.append("new")
+            if self.addLayerMenuCheckBox.isChecked():
+                locations.append("layer")
+            if self.browserCheckBox.isChecked():
+                locations.append("browser")
+
+            location = ",".join(locations)
 
         type_storage = "file"
         if self.fileRatioButton.isChecked():
