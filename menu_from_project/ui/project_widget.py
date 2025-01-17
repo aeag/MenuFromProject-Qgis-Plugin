@@ -86,18 +86,23 @@ class ProjectWidget(QWidget):
         """Disable other options if merge location is checked"""
         self.newMenuCheckBox.clicked.disconnect(self._project_changed)
         self.addLayerMenuCheckBox.clicked.disconnect(self._project_changed)
+        self.browserCheckBox.clicked.disconnect(self._project_changed)
         if self.mergePreviousCheckBox.isChecked():
             self.newMenuCheckBox.setChecked(False)
             self.addLayerMenuCheckBox.setChecked(False)
+            self.browserCheckBox.setChecked(False)
 
             self.newMenuCheckBox.setEnabled(False)
             self.addLayerMenuCheckBox.setEnabled(False)
+            self.browserCheckBox.setEnabled(False)
         else:
             self.newMenuCheckBox.setEnabled(True)
             self.addLayerMenuCheckBox.setEnabled(True)
+            self.browserCheckBox.setEnabled(True)
 
         self.newMenuCheckBox.clicked.connect(self._project_changed)
         self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
+        self.browserCheckBox.clicked.connect(self._project_changed)
 
     def _project_changed(self) -> None:
         """Slot for projectChanged signal emit if enabled"""
@@ -140,6 +145,7 @@ class ProjectWidget(QWidget):
         self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
         self.newMenuCheckBox.clicked.connect(self._project_changed)
         self.mergePreviousCheckBox.clicked.connect(self._project_changed)
+        self.browserCheckBox.clicked.connect(self._project_changed)
 
         # Name/id/path update connection
         self.nameLineEdit.textChanged.connect(self._project_changed)
@@ -179,6 +185,7 @@ class ProjectWidget(QWidget):
         self.newMenuCheckBox.setChecked(False)
         self.addLayerMenuCheckBox.setChecked(False)
         self.mergePreviousCheckBox.setChecked(False)
+        self.browserCheckBox.setChecked(False)
 
         if project.location == "new":
             self.newMenuCheckBox.setChecked(True)
@@ -186,6 +193,8 @@ class ProjectWidget(QWidget):
             self.addLayerMenuCheckBox.setChecked(True)
         if project.location == "merge":
             self.mergePreviousCheckBox.setChecked(True)
+        if project.location == "browser":
+            self.browserCheckBox.setChecked(True)
 
         if project.type_storage == "file":
             self.fileRatioButton.setChecked(True)
@@ -220,6 +229,8 @@ class ProjectWidget(QWidget):
             location = "layer"
         if self.mergePreviousCheckBox.isChecked():
             location = "merge"
+        if self.browserCheckBox.isChecked():
+            location = "browser"
 
         type_storage = "file"
         if self.fileRatioButton.isChecked():
