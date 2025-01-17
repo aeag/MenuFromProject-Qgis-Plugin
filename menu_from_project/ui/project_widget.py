@@ -111,6 +111,24 @@ class ProjectWidget(QWidget):
         else:
             self.pathLineEdit.setStyleSheet("color: {};".format("red"))
 
+        self._update_path_selection_button_from_project(project)
+
+    def _update_path_selection_button_from_project(self, project: Project) -> None:
+        """Update path selection button from project configuration
+
+        :param project: project configuration
+        :type project: Project
+        """
+        self.pathSelectionButton.setVisible(True)
+        if project.type_storage == "file":
+            self.pathSelectionButton.setIcon(QIcon())
+        elif project.type_storage == "database":
+            self.pathSelectionButton.setIcon(
+                QIcon(":images/themes/default/mIconConnect.svg")
+            )
+        elif project.type_storage == "http":
+            self.pathSelectionButton.setVisible(False)
+
     def _connect_update_signal(self) -> None:
         """Connect update signal for project"""
         # Type storage update connection
@@ -175,6 +193,8 @@ class ProjectWidget(QWidget):
             self.postgresqlRadioButton.setChecked(True)
         elif project.type_storage == "http":
             self.urlRadioButton.setChecked(True)
+
+        self._update_path_selection_button_from_project(project)
 
         # Simulate merge location change to update check button
         self._merge_location_changed()
