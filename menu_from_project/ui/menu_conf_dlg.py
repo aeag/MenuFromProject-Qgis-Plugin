@@ -126,6 +126,8 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         )
 
         self.projectWidget.projectChanged.connect(self._project_changed)
+        if len(settings.projects) != 0:
+            self.projectTableView.selectRow(0)
 
     def _selected_project_changed(self) -> None:
         """Update displayed project"""
