@@ -2,13 +2,15 @@
 
 # standard
 import os
+import platform
+import subprocess
 
 # PyQGIS
 from qgis.core import QgsApplication, QgsMessageLog
 from qgis.gui import QgsProviderGuiRegistry
 from qgis.PyQt import QtCore, uic
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QFileDialog, QWidget
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QWidget
 from qgis.utils import iface
 
 # project
@@ -56,6 +58,7 @@ class ProjectWidget(QWidget):
         self.validationFileLineEdit.setFilter("*.json")
 
         self.clearCacheButton.clicked.connect(self._delete_project_cache)
+        self.openCacheButton.clicked.connect(self._open_project_cache_folder)
 
         self.mergePreviousCheckBox.clicked.connect(self._merge_location_changed)
 
@@ -273,6 +276,26 @@ class ProjectWidget(QWidget):
         """Delete displayed project cache"""
         cache_manager = CacheManager(iface)
         cache_manager.clear_project_cache(project=self.get_project())
+
+    def _open_project_cache_folder(self) -> None:
+        """Open displayed project cache folder"""
+        cache_manager = CacheManager(iface)
+        project_cache_dir = str(cache_manager.get_project_cache_dir(self.get_project()))
+        system_platform = platform.system()
+        try:
+            if system_platform == "Windows":
+                os.startfile(project_cache_dir)
+            elif system_platform == "Darwin":  # macOS
+                subprocess.run(["open", project_cache_dir])
+            else:  # Linux/Unix
+                subprocess.run(["xdg-open", project_cache_dir])
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                self.tr("Explorator open error"),
+                self.tr("Can't open project cache folder : {e}"),
+            )
+            print(f"Erreur lors de l'ouverture du répertoire : {e}")
 
     def _check_if_project_valid(self) -> bool:
         """Check if project is valid by reading Qgs project

@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>356</height>
+    <width>926</width>
+    <height>499</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,12 +18,6 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>660</width>
-    <height>310</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Projects</string>
@@ -44,202 +38,7 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="2" column="0">
-      <widget class="QCheckBox" name="cbxLoadAll">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Load all layers item</string>
-       </property>
-       <property name="tristate">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lblSettings">
-       <property name="font">
-        <font>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>IBeamCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>Options</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QCheckBox" name="cbxOpenLinks">
-       <property name="toolTip">
-        <string>Opens with layer, layers linked by 'relations' or joins.</string>
-       </property>
-       <property name="text">
-        <string>Also load linked layers.</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="cbxCreateGroup">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Create group</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <property name="tristate">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="5" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QCheckBox" name="cbxShowTooltip">
-       <property name="toolTip">
-        <string>Show title &amp;&amp; abstract in tooltip - click to move the item to the first position</string>
-       </property>
-       <property name="text">
-        <string>Tooltip. Priority to :</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <property name="tristate">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="font">
-        <font>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>1 :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mdSource1">
-       <property name="text">
-        <string>OGC QGis Server metadata</string>
-       </property>
-       <property name="checkable">
-        <bool>false</bool>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>false</bool>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="font">
-        <font>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>2 :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mdSource2">
-       <property name="font">
-        <font>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="text">
-        <string>Layer metadata</string>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="font">
-        <font>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>3 :</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="mdSource3">
-       <property name="font">
-        <font>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="text">
-        <string>Layer notes</string>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0,0,0,0,0" columnstretch="0" rowminimumheight="0,0,0,0,0,0,0">
    <item row="0" column="0">
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
@@ -256,20 +55,195 @@
      <widget class="ProjectWidget" name="projectWidget" native="true"/>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="3" column="0">
+    <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
+     <property name="title">
+      <string>Global options</string>
      </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="cbxShowTooltip">
+          <property name="toolTip">
+           <string>Show title &amp;&amp; abstract in tooltip - click to move the item to the first position</string>
+          </property>
+          <property name="text">
+           <string>Tooltip. Priority to :</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="tristate">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>1 :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mdSource1">
+          <property name="text">
+           <string>OGC QGis Server metadata</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>2 :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mdSource2">
+          <property name="font">
+           <font>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Layer metadata</string>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>3 :</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="mdSource3">
+          <property name="font">
+           <font>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Layer notes</string>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="cbxLoadAll">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Load all layers item</string>
+          </property>
+          <property name="tristate">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbxCreateGroup">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Create group</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="tristate">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="cbxOpenLinks">
+          <property name="toolTip">
+           <string>Opens with layer, layers linked by 'relations' or joins.</string>
+          </property>
+          <property name="text">
+           <string>Also load linked layers.</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0">
      <property name="spacing">
       <number>6</number>
-     </property>
-     <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -375,21 +349,31 @@
     </layout>
    </item>
    <item row="6" column="0">
-    <spacer name="verticalSpacer">
+    <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
-    </spacer>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QgsCollapsibleGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>qgscollapsiblegroupbox.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>ProjectWidget</class>
    <extends>QWidget</extends>
@@ -402,7 +386,6 @@
   <tabstop>btnDelete</tabstop>
   <tabstop>btnUp</tabstop>
   <tabstop>btnDown</tabstop>
-  <tabstop>cbxLoadAll</tabstop>
   <tabstop>cbxShowTooltip</tabstop>
  </tabstops>
  <resources/>
