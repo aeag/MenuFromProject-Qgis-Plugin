@@ -6,26 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>507</height>
+    <width>696</width>
+    <height>547</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>50</number>
-   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="sizePolicy">
@@ -39,21 +27,21 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="5">
-    <widget class="QLineEdit" name="idLineEdit">
-     <property name="text">
-      <string>fbc115c5-83d6-4439-bd78-b9c494779344</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="2">
+   <item row="0" column="1">
     <widget class="QLineEdit" name="nameLineEdit">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="6">
+   <item row="0" column="2">
+    <widget class="QCheckBox" name="checkBox">
+     <property name="text">
+      <string>Enable/disable</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_2">
      <property name="title">
       <string>Locations</string>
@@ -106,7 +94,20 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" colspan="6">
+   <item row="5" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="0" colspan="3">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox_3">
      <property name="title">
       <string>QGIS project path</string>
@@ -179,38 +180,19 @@
      </layout>
     </widget>
    </item>
-   <item row="0" column="3" colspan="2">
-    <widget class="QLabel" name="label_5">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>ID</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="6" column="0" colspan="6">
+   <item row="3" column="0" colspan="3">
     <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
      <property name="title">
       <string>Cache configuration</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="2">
+       <widget class="QgsSpinBox" name="refreshIntervalSpinBox">
+        <property name="suffix">
+         <string> days</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="enableCacheCheckBox">
         <property name="sizePolicy">
@@ -227,34 +209,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QToolButton" name="openCacheButton">
-        <property name="text">
-         <string>Open cache folder</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QToolButton" name="clearCacheButton">
-        <property name="text">
-         <string>Clear cache</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QgsSpinBox" name="refreshIntervalSpinBox">
-        <property name="suffix">
-         <string> days</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Validation file</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_3">
         <property name="sizePolicy">
@@ -268,8 +222,78 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1" colspan="4">
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="3">
+    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
+     <property name="title">
+      <string>Advanced</string>
+     </property>
+     <property name="collapsed">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Validation file</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Cache:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="2">
        <widget class="QgsFileWidget" name="validationFileLineEdit"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QToolButton" name="openCacheButton">
+        <property name="text">
+         <string>Open cache folder</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QToolButton" name="clearCacheButton">
+        <property name="text">
+         <string>Clear cache</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Comment:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="2">
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="idLineEdit">
+        <property name="text">
+         <string notr="true">fbc115c5-83d6-4439-bd78-b9c494779344</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
