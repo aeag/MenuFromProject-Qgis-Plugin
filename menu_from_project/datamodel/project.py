@@ -21,6 +21,7 @@ class Project:
     file: str
     type_storage: str
     valid: bool = True
+    enable: bool = True
     cache_config: ProjectCacheConfig = field(
         default_factory=lambda: ProjectCacheConfig()
     )

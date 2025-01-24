@@ -181,10 +181,11 @@ class MenuFromProject:
             self.registry.removeProvider(self.provider)
         self.provider = MenuLayerProvider(project_configs)
 
-        previous = None
+        previous = None, None
         for project, project_config in project_configs:
-            # Add to QGIS instance
-            previous = self.add_project_config(project, project_config, previous)
+            if project.enable:
+                # Add to QGIS instance
+                previous = self.add_project_config(project, project_config, previous)
 
         self.registry.addProvider(self.provider)
         QgsApplication.restoreOverrideCursor()
@@ -193,8 +194,8 @@ class MenuFromProject:
         self,
         project: Project,
         project_config: MenuProjectConfig,
-        previous: Optional[QMenu],
-    ) -> Optional[QMenu]:
+        previous: Tuple[Optional[QMenu], Optional[QMenu]],
+    ) -> Tuple[Optional[QMenu], Optional[QMenu]]:
         """Add a project menu configuration to current QGIS instance
 
         :param menu_name: Name of the menu to create
@@ -203,57 +204,69 @@ class MenuFromProject:
         :type project: Project
         :param project_config: project menu configuration
         :type project_config: MenuProjectConfig
-        :param previous: previous created menu
-        :type previous: Optional[QMenu]
-        :return: created menu
-        :rtype: QMenu
+        :param previous: previous created menus
+        :type previous: Tuple[Optional[QMenu], Optional[QMenu]]
+        :return: created menus
+        :rtype: Tuple[Optional[QMenu], Optional[QMenu]]
         """
         project_menu = self.create_project_menu(
             menu_name=project_config.project_name, project=project, previous=previous
         )
-        if project_menu:
-            self.add_group_childs(project_config.root_group, project_menu)
+        if project_menu[0]:
+            self.add_group_childs(project_config.root_group, project_menu[0])
+        if project_menu[1]:
+            self.add_group_childs(project_config.root_group, project_menu[1])
 
         return project_menu
 
     def create_project_menu(
-        self, menu_name: str, project: Project, previous: Optional[QMenu]
-    ) -> Optional[QMenu]:
-        """Create project menu and add it to QGIS instance
+        self,
+        menu_name: str,
+        project: Project,
+        previous: Tuple[Optional[QMenu], Optional[QMenu]],
+    ) -> Tuple[Optional[QMenu], Optional[QMenu]]:
+        """Create project menus for project locations and add it to QGIS instance
 
         :param menu_name: Name of the menu to create
         :type menu_name: str
         :param project: dict of information about the project
         :type project: Project
-        :param previous: previous created menu
-        :type previous: Optional[QMenu]
-        :return: created menu
-        :rtype: Optional[QMenu]
+        :param previous: previous created menus
+        :type previous: Tuple[Optional[QMenu], Optional[QMenu]]
+        :return: created menus
+        :rtype: Tuple[Optional[QMenu], Optional[QMenu]]
         """
-        project_menu = None
         location = project.location
-        if location == "merge" and previous:
-            project_menu = previous
-            project_menu.addSeparator()
-        elif location in ["layer", "new"]:
-            if location == "layer":
-                menu_bar = self.iface.addLayerMenu()
-            if location == "new":
-                menu_bar = self.iface.editMenu().parentWidget()
 
-            project_menu = QMenu("&" + menu_name, menu_bar)
-            project_menu.setToolTipsVisible(
+        # For merge, only add separator on previous menu
+        if location == "merge" and previous:
+            if previous[0]:
+                previous[0].addSeparator()
+            if previous[1]:
+                previous[1].addSeparator()
+            return previous
+
+        project_menu_layer = None
+        if location.count("layer") != 0:
+            menu_bar = self.iface.addLayerMenu()
+            project_menu_layer = QMenu("&" + menu_name, menu_bar)
+            project_menu_layer.setToolTipsVisible(
                 self.plg_settings.get_plg_settings().optionTooltip
             )
-            project_action = menu_bar.addMenu(project_menu)
+            project_action = menu_bar.addMenu(project_menu_layer)
+            self.layerMenubarActions.append(project_action)
 
-            if location == "layer":
-                self.layerMenubarActions.append(project_action)
-            if location == "new":
-                self.menubarActions.append(project_action)
-        else:
-            project_menu = None
-        return project_menu
+        project_menu_new = None
+        if location.count("new") != 0:
+            menu_bar = self.iface.editMenu().parentWidget()
+            project_menu_new = QMenu("&" + menu_name, menu_bar)
+            project_menu_new.setToolTipsVisible(
+                self.plg_settings.get_plg_settings().optionTooltip
+            )
+            project_action = menu_bar.addMenu(project_menu_new)
+            self.menubarActions.append(project_action)
+
+        return project_menu_layer, project_menu_new
 
     def add_group_childs(
         self, group: MenuGroupConfig, grp_menu: QMenu
