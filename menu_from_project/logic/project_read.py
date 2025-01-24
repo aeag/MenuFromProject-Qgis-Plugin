@@ -30,7 +30,7 @@ from menu_from_project.logic.qgs_manager import (
 )
 from menu_from_project.logic.xml_utils import getFirstChildByAttrValue
 
-# Expression régulière pour capturer la partie avant le $ et le champ de version
+# Regular expression to get part before $ and the version after
 PATTERN_VERSION = re.compile(r"^(.*?)\s*\$(.+)$")
 
 # Regular expression to get extension list
@@ -42,9 +42,9 @@ LMFP_FORMAT_KEYWORD = "LMFP_FORMAT"
 def extract_filter_data(text: str) -> Optional[Tuple[str, List[str]]]:
     """Extract filter data to get provider name and extension list
 
-    :param text: _description_
+    :param text: filter text
     :type text: str
-    :return: _description_
+    :return: provider name and usable extensions
     :rtype: Optional[Tuple[str, List[str]]]
     """
     match = re.match(PATTERN_NAME_EXTENSION, text)
@@ -60,9 +60,9 @@ def init_extension_list_from_file_filters(
 ) -> List[Tuple[str, List[str]]]:
     """Init extension list for provider name from a file filter
 
-    :param file_filter: _description_
+    :param file_filter: file filter text
     :type file_filter: str
-    :return: _description_
+    :return: list of provider name and usable extensions
     :rtype: List[Tuple[str, List[str]]]
     """
     # Get list of file filters
@@ -80,7 +80,7 @@ def init_extension_list_from_file_filters(
 def init_ogr_extension_list() -> List[Tuple[str, List[str]]]:
     """Define OGR extension list from predifined value are provider registry values
 
-    :return: list of provider name and usable extension
+    :return: list of provider name and usable extensions
     :rtype: List[Tuple[str, List[str]]]
     """
     # We define provider name to avoid use of exotic names
