@@ -176,6 +176,7 @@ class GroupItem(QgsDataCollectionItem):
         :rtype: List[QgsDataItem]
         """
         children = []
+        layer_name_inserted = []
         for child in self.group_config.childs:
             if isinstance(child, MenuGroupConfig):
                 name = child.name
@@ -184,14 +185,34 @@ class GroupItem(QgsDataCollectionItem):
                 if name != "-" and not name.startswith("-"):
                     children.insert(0, GroupItem(parent=self, group_config=child))
             elif isinstance(child, MenuLayerConfig):
-                children.insert(
-                    0,
-                    LayerItem(
-                        parent=self,
-                        layer_config=child,
-                        group_name=self.group_config.name,
-                    ),
-                )
+                # Check if this layer name was already inserted
+                if child.name not in layer_name_inserted:
+                    layer_name_list = self.group_config.get_layer_configs_from_name(
+                        child.name
+                    )
+                    if len(layer_name_list) > 1:
+                        # Multiple version of format available, must use a layer dict to create children
+                        layer_dict = MenuGroupConfig.sort_layer_list_by_version(
+                            layer_name_list
+                        )
+                        item = LayerDictItem(
+                            parent=self,
+                            layer_dict=layer_dict,
+                            group_name=self.group_config.name,
+                        )
+                        children.insert(0, item)
+                    else:
+                        # Only one version or format
+                        children.insert(
+                            0,
+                            LayerItem(
+                                parent=self,
+                                layer_config=child,
+                                group_name=self.group_config.name,
+                            ),
+                        )
+                    # Indicate that this layer name was added
+                    layer_name_inserted.append(child.name)
         return children
 
     def actions(self, parent: QWidget) -> List[QAction]:
@@ -236,22 +257,24 @@ def create_add_layer_action(
 
 
 class LayerDictItem(QgsDataItem):
-    """QgsDataCollectionItem to add all group and layer available in a group"""
+    """QgsDataCollectionItem to add a single entry for multiple layer version and format"""
 
     def __init__(
         self,
         parent: QgsDataItem,
-        layer_dict: Dict[str, Dict[str, MenuLayerConfig]],
+        layer_dict: Dict[str, List[MenuLayerConfig]],
         group_name: str,
     ):
-        """Constructor for a group QgsDataCollectionItem
+        """Constructor of a layer dict
 
         :param parent: parent
         :type parent: QgsDataItem
-        :param group_config: group configuration
-        :type group_config: MenuGroupConfig
+        :param layer_dict: dict of layer by version
+        :type layer_dict: Dict[str, List[MenuLayerConfig]]
+        :param group_name: group name
+        :type group_name: str
         """
-        self.first_layer = list(list(layer_dict.values())[0].values())[0]
+        self.first_layer = list(layer_dict.values())[0][0]
         self.path = os.path.join(parent.path, self.first_layer.name)
         self.layer_dict = layer_dict
         self.group_name = group_name
@@ -292,26 +315,41 @@ class LayerDictItem(QgsDataItem):
             )
         )
 
-        for version, format_dict in self.layer_dict.items():
-            if len(format_dict) > 1:
+        settings = PlgOptionsManager().get_plg_settings()
+
+        # Add menu for all version
+        versions_str = self.tr("Versions")
+        ac_all_version = QAction(versions_str, parent)
+        all_version_menu = QMenu(versions_str, parent)
+        all_version_menu.setToolTipsVisible(settings.optionTooltip)
+        ac_all_version.setMenu(all_version_menu)
+        actions.append(ac_all_version)
+
+        # Create action or menu for each version
+        for version, format_list in self.layer_dict.items():
+            multiple_format = len(format_list) > 1
+            version_menu_used = version and multiple_format
+            if version_menu_used:
+                # Multiple format for this version : create a specific menu in versions menu
                 ac_version = QAction(version, parent)
                 version_menu = QMenu(version, parent)
                 ac_version.setMenu(version_menu)
-                actions.append(ac_version)
+
+                all_version_menu.addAction(ac_version)
             else:
-                version_menu = None
-            for format_, layer in format_dict.items():
-                if len(format_dict) > 1:
-                    action_text = format_
+                # Only one format for this version : directly create action in versions menu
+                version_menu = all_version_menu
+            for layer in format_list:
+                if version_menu_used:
+                    action_text = layer.format
                 else:
-                    action_text = f"{layer.version} - {layer.format}"
+                    action_text = (
+                        f"{layer.version} - {layer.format}" if version else layer.format
+                    )
                 ac_layer = create_add_layer_action(
                     layer, action_text, self.group_name, parent
                 )
-                if version_menu:
-                    version_menu.addAction(ac_layer)
-                else:
-                    actions.append(ac_layer)
+                version_menu.addAction(ac_layer)
         return actions
 
 

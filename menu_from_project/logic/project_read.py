@@ -1,9 +1,16 @@
 # standard
+import re
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 # PyQGIS
-from qgis.core import QgsMapLayerType, QgsMessageLog, QgsWkbTypes
+from qgis.core import (
+    QgsDataSourceUri,
+    QgsMapLayerType,
+    QgsMessageLog,
+    QgsProviderRegistry,
+    QgsWkbTypes,
+)
 from qgis.PyQt import QtXml
 from qgis.PyQt.QtCore import QFileInfo
 
@@ -22,6 +29,86 @@ from menu_from_project.logic.qgs_manager import (
     is_absolute,
 )
 from menu_from_project.logic.xml_utils import getFirstChildByAttrValue
+
+# Regular expression to get part before $ and the version after
+PATTERN_VERSION = re.compile(r"^(.*?)\s*\$(.+)$")
+
+# Regular expression to get extension list
+PATTERN_NAME_EXTENSION = re.compile(r"^(.*?)\s+\(\*([^\)]+)\)$")
+
+LMFP_FORMAT_KEYWORD = "LMFP_FORMAT"
+
+
+def extract_filter_data(text: str) -> Optional[Tuple[str, List[str]]]:
+    """Extract filter data to get provider name and extension list
+
+    :param text: filter text
+    :type text: str
+    :return: provider name and usable extensions
+    :rtype: Optional[Tuple[str, List[str]]]
+    """
+    match = re.match(PATTERN_NAME_EXTENSION, text)
+    if match:
+        field = match.group(1).strip()
+        extensions = [ext.strip() for ext in match.group(2).split()]
+        return field, extensions
+    return None
+
+
+def init_extension_list_from_file_filters(
+    file_filter: str,
+) -> List[Tuple[str, List[str]]]:
+    """Init extension list for provider name from a file filter
+
+    :param file_filter: file filter text
+    :type file_filter: str
+    :return: list of provider name and usable extensions
+    :rtype: List[Tuple[str, List[str]]]
+    """
+    # Get list of file filters
+    file_filters = file_filter.split(";;")
+    result = []
+    for i, filters in enumerate(file_filters):
+        # Don't use first 2 elements that are for All available files and All supported file
+        if i > 1:
+            res = extract_filter_data(filters)
+            if res:
+                result.append((res[0], res[1]))
+    return result
+
+
+def init_ogr_extension_list() -> List[Tuple[str, List[str]]]:
+    """Define OGR extension list from predifined value are provider registry values
+
+    :return: list of provider name and usable extensions
+    :rtype: List[Tuple[str, List[str]]]
+    """
+    # We define provider name to avoid use of exotic names
+    result = [("GeoJSON", [".json", ".geojson", ".JSON", ".GEOJSON"])]
+
+    result += init_extension_list_from_file_filters(
+        QgsProviderRegistry.instance().fileVectorFilters()
+    )
+    return result
+
+
+def init_gdal_extension_list() -> List[Tuple[str, List[str]]]:
+    """Define GDAL extension list from predifined value are provider registry values
+
+    :return: list of provider name and usable extension
+    :rtype: List[Tuple[str, List[str]]]
+    """
+
+    # We define provider name to avoid use of exotic names
+    result = [("GeoTIFF", [".tiff", ".tif"])]
+    result += init_extension_list_from_file_filters(
+        QgsProviderRegistry.instance().fileRasterFilters()
+    )
+    return result
+
+
+OGR_EXTENSION_LIST = init_ogr_extension_list()
+GDAL_EXTENSION_LIST = init_gdal_extension_list()
 
 
 def get_embedded_project_from_layer_tree(
@@ -141,6 +228,93 @@ def get_layer_type_from_geometry_str(
     return None, None, False
 
 
+def define_name_and_version_from_layer_name(layername: str) -> Tuple[str, str]:
+    """Define name and version from layer name
+
+    :param layername: layer name
+    :type layername: str
+    :return: name,version
+    :rtype: Tuple[str, str]
+    """
+
+    # Recherche de la version
+    match = re.search(PATTERN_VERSION, layername)
+    if match:
+        name = match.group(1)  # Tout ce qui est avant le $
+        version = match.group(2)  # Le champ de version après le $
+    else:
+        version = ""
+        name = layername
+
+    return name, version
+
+
+def define_provider_name_from_extension_list(
+    provider: str, datasource: str, extension_list: List[Tuple[str, List[str]]]
+) -> str:
+    """Define a provider from datasource and extension list
+
+    :param provider: input provider
+    :type provider: str
+    :param datasource: datasource
+    :type datasource: str
+    :param extension_list: extension dict
+    :type extension_list: List[Tuple[str, List[str]]]
+    :return: provider name from extension dict if datasource extension is found, otherwise input provider
+    :rtype: str
+    """
+    result = provider
+    for provider_name, extensions in extension_list:
+        for extension in extensions:
+            if datasource.count(extension):
+                return provider_name
+    return result
+
+
+def define_provider_name_wms_datasource(provider: str, datasource: str) -> str:
+    """Define provider name from wms datasource
+    Check for type parameter or tileMatrixSet/tileDimensions for WMTS
+
+    :param provider: input provider name
+    :type provider: str
+    :param datasource: datasource uri
+    :type datasource: str
+    :return: provider name from datasource uri if rule apply, otherwise input provider
+    :rtype: str
+    """
+    uri = QgsDataSourceUri()
+    uri.setEncodedUri(datasource)
+    if uri.hasParam("type"):
+        return uri.param("type")
+    if uri.hasParam("tileMatrixSet"):
+        return "WMTS"
+    if uri.hasParam("tileDimensions"):
+        return "WMTS"
+    return provider
+
+
+def define_provider_name_from_metadata(md: QtXml.QDomNode, provider: str) -> str:
+    """Define provider name from metadata if available
+
+    :param md: metadata dom node
+    :type md: QtXml.QDomNode
+    :param provider: initial provider
+    :type provider: str
+    :return: provider name from metadata if available otherwise input provider name
+    :rtype: str
+    """
+    keywords = md.toElement().elementsByTagName("keywords")
+    for i in range(0, keywords.size()):
+        value = keywords.at(i)
+        element = value.toElement()
+        vocabulary = element.attribute("vocabulary")
+        if vocabulary == LMFP_FORMAT_KEYWORD:
+            keyword = element.elementsByTagName("keyword")
+            if keyword.size() > 0:
+                return keyword.at(0).toElement().text()
+    return provider
+
+
 def get_layer_menu_config(
     node: QtXml.QDomNode,
     maplayer_dict: Dict[str, QtXml.QDomNode],
@@ -212,8 +386,29 @@ def get_layer_menu_config(
         geometry_type_str
     )
 
+    name = element.attribute("name")
+    name, version = define_name_and_version_from_layer_name(name)
+
+    providerNode = ml.namedItem("provider")
+    provider = providerNode.firstChild().toText().data()
+
+    datasourceNode = ml.namedItem("datasource")
+    ds = datasourceNode.firstChild().toText().data()
+    if provider == "ogr":
+        provider = define_provider_name_from_extension_list(
+            provider, ds, OGR_EXTENSION_LIST
+        )
+    elif provider == "gdal":
+        provider = define_provider_name_from_extension_list(
+            provider, ds, GDAL_EXTENSION_LIST
+        )
+    elif provider == "wms":
+        provider = define_provider_name_wms_datasource(provider, ds)
+
+    provider = define_provider_name_from_metadata(md, provider)
+
     return MenuLayerConfig(
-        name=element.attribute("name"),
+        name=name,
         layer_id=layer_id,
         filename=filename,
         visible=element.attribute("checked", "") == "Qt::Checked",
@@ -227,6 +422,8 @@ def get_layer_menu_config(
         title=title,
         geometry_type=geometry_type,
         layer_notes=layer_notes,
+        version=version,
+        format=provider,
     )
 
 
