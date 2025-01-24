@@ -1,6 +1,6 @@
-# Using this plugin with QGIS Deployment Toolbelt (QDT)
+# Déployer ce plugin avec QGIS Deployment Toolbelt (QDT)
 
-If you want to use this plugin with [QGIS Deployment Toolbelt (QDT)](https://qgis-deployment.github.io/qgis-deployment-toolbelt-cli/), you can add the following snippet to your `profile.json` file, under the `plugins` attribute:
+Si vous souhaitez déployer ce plugin avec [QGIS Deployment Toolbelt (QDT)](https://qgis-deployment.github.io/qgis-deployment-toolbelt-cli/), vous pouvez ajouter l'extrait de configuration suivant dans le fichier `profile.json` à la suite des autres plugins à déployer :
 
 ```json
     {
@@ -12,4 +12,4 @@ If you want to use this plugin with [QGIS Deployment Toolbelt (QDT)](https://qgi
     }
 ```
 
-Remember to replace the `version` attribute with the version you want to install.
+N'oubliez pas de replacer la valeur de l'attribut `version` avec le numéro de la version que vous souhaitez déployer.
