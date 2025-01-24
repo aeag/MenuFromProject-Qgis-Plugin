@@ -129,14 +129,6 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         if len(settings.projects) != 0:
             self.projectTableView.selectRow(0)
 
-        header = self.projectTableView.horizontalHeader()
-        # Use name column for stretch
-        header.setSectionResizeMode(ProjectListModel.NAME_COL, QHeaderView.Stretch)
-        header.setSectionResizeMode(ProjectListModel.CACHE_COL, QHeaderView.Interactive)
-        header.setSectionResizeMode(
-            ProjectListModel.LOCATION_COL, QHeaderView.Interactive
-        )
-
     def _selected_project_changed(self) -> None:
         """Update displayed project"""
         selected_index = self.projectTableView.selectionModel().selectedRows()

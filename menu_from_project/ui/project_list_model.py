@@ -1,7 +1,7 @@
 #! python3  # noqa: E265
 
 # standard
-from typing import List
+from typing import List, Optional
 
 # PyQGIS
 from qgis.PyQt import QtCore
@@ -82,6 +82,7 @@ class ProjectListModel(QStandardItemModel):
         """
         self.setData(self.index(row, self.NAME_COL), project.name)
         self.setData(self.index(row, self.NAME_COL), project, Qt.UserRole)
+        self.setData(self.index(row, self.NAME_COL), project.file, Qt.ToolTipRole)
         self.setData(
             self.index(row, self.NAME_COL),
             QIcon(icon_per_storage_type(project.type_storage)),
@@ -95,10 +96,24 @@ class ProjectListModel(QStandardItemModel):
                 Qt.DecorationRole,
             )
 
-        if not project.valid:
-            self.setData(
-                self.index(row, self.FILE_COL), QColor("red"), Qt.ForegroundRole
-            )
+        if not project.enable:
+            self._set_row_color(row, QColor("lightgrey"))
+        elif not project.valid:
+            self._set_row_color(row, QColor("crimson"))
+        else:
+            self._set_row_color(row, None)
+
+    def _set_row_color(self, row: int, color: Optional[QColor]) -> None:
+        """Define row color
+
+        :param row: row
+        :type row: int
+        :param color: color to use
+        :type color: Optional[QColor]
+        """
+        self.setData(self.index(row, self.NAME_COL), color, Qt.BackgroundRole)
+        self.setData(self.index(row, self.LOCATION_COL), color, Qt.BackgroundRole)
+        self.setData(self.index(row, self.CACHE_COL), color, Qt.BackgroundRole)
 
     def get_row_project(self, row) -> Project:
         """Get project for a row
