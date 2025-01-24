@@ -16,7 +16,7 @@ from menu_from_project.logic.tools import icon_per_storage_type
 class ProjectListModel(QStandardItemModel):
     NAME_COL = 0
     LOCATION_COL = 1
-    FILE_COL = 2
+    CACHE_COL = 2
 
     def __init__(self, parent: QObject = None):
         """
@@ -27,7 +27,7 @@ class ProjectListModel(QStandardItemModel):
         """
         super().__init__(parent)
         self.setHorizontalHeaderLabels(
-            [self.tr("Name"), self.tr("Location"), self.tr("File")]
+            [self.tr("Name"), self.tr("Location"), self.tr("Cache")]
         )
 
     def flags(self, index: QModelIndex) -> QtCore.Qt.ItemFlags:
@@ -88,7 +88,12 @@ class ProjectListModel(QStandardItemModel):
             Qt.DecorationRole,
         )
         self.setData(self.index(row, self.LOCATION_COL), project.location)
-        self.setData(self.index(row, self.FILE_COL), project.file)
+        if project.cache_config.enable:
+            self.setData(
+                self.index(row, self.CACHE_COL),
+                QIcon(":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg"),
+                Qt.DecorationRole,
+            )
 
         if not project.valid:
             self.setData(
