@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>837</width>
-    <height>623</height>
+    <width>805</width>
+    <height>769</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -170,37 +170,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="cbxOpenLinks">
-        <property name="toolTip">
-         <string>Opens with layer, layers linked by 'relations' or joins.</string>
-        </property>
-        <property name="text">
-         <string>Also load linked layers.</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
+      <item row="3" column="0" colspan="3">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="QCheckBox" name="cbxLoadAll">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Load all layers item</string>
-          </property>
-          <property name="tristate">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QCheckBox" name="cbxShowTooltip">
           <property name="toolTip">
@@ -329,6 +300,35 @@
         </item>
        </layout>
       </item>
+      <item row="2" column="0">
+       <widget class="QCheckBox" name="cbxLoadAll">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Load all layers item</string>
+        </property>
+        <property name="tristate">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="cbxOpenLinks">
+        <property name="toolTip">
+         <string>Opens with layer, layers linked by 'relations' or joins.</string>
+        </property>
+        <property name="text">
+         <string>Also load linked layers.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -338,7 +338,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
      <property name="centerButtons">
       <bool>false</bool>
@@ -357,7 +357,6 @@
  </customwidgets>
  <tabstops>
   <tabstop>btnAdd</tabstop>
-  <tabstop>cbxShowTooltip</tabstop>
  </tabstops>
  <resources/>
  <connections>
