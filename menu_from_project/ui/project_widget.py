@@ -147,15 +147,17 @@ class ProjectWidget(QWidget):
         self.mergePreviousCheckBox.clicked.connect(self._project_changed)
         self.browserCheckBox.clicked.connect(self._project_changed)
 
-        # Name/id/path update connection
+        # Name/path update connection
         self.nameLineEdit.textChanged.connect(self._project_changed)
-        self.idLineEdit.textChanged.connect(self._project_changed)
         self.pathLineEdit.textChanged.connect(self._project_changed)
 
         # Cache config update connection
         self.enableCacheCheckBox.clicked.connect(self._project_changed)
         self.refreshIntervalSpinBox.valueChanged.connect(self._project_changed)
         self.validationFileLineEdit.fileChanged.connect(self._project_changed)
+
+        # Project enable
+        self.enableCheckBox.clicked.connect(self._project_changed)
 
     def set_project(self, project: Project) -> None:
         """Define display project
@@ -202,6 +204,8 @@ class ProjectWidget(QWidget):
             self.postgresqlRadioButton.setChecked(True)
         elif project.type_storage == "http":
             self.urlRadioButton.setChecked(True)
+
+        self.enableCheckBox.setChecked(project.enable)
 
         self._update_path_selection_button_from_project(project)
 
@@ -251,6 +255,7 @@ class ProjectWidget(QWidget):
             type_storage=type_storage,
             cache_config=cache_config,
             valid=self._check_if_project_valid(),
+            enable=self.enableCheckBox.isChecked(),
         )
 
     def _select_path(self) -> None:

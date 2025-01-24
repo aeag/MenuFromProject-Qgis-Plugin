@@ -183,8 +183,9 @@ class MenuFromProject:
 
         previous = None, None
         for project, project_config in project_configs:
-            # Add to QGIS instance
-            previous = self.add_project_config(project, project_config, previous)
+            if project.enable:
+                # Add to QGIS instance
+                previous = self.add_project_config(project, project_config, previous)
 
         self.registry.addProvider(self.provider)
         QgsApplication.restoreOverrideCursor()

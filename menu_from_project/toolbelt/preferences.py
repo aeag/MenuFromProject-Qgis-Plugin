@@ -194,6 +194,7 @@ class PlgOptionsManager:
                                     type_storage=type_storage,
                                     cache_config=cache_config,
                                     id=s.value("id", str(uuid.uuid4())),
+                                    enable=s.value("enable", True, type=bool),
                                 )
                             )
                 finally:
@@ -234,6 +235,7 @@ class PlgOptionsManager:
                     s.setValue("location", project.location)
                     s.setValue("type_storage", guess_type_from_uri(project.file))
                     s.setValue("id", project.id)
+                    s.setValue("enable", project.enable)
 
                     s.beginGroup("cache_config")
                     s.setValue(
