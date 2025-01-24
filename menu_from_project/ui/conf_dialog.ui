@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>725</height>
+    <width>837</width>
+    <height>623</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,36 +38,161 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0,0,0,0,0,0" columnstretch="0,0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0,0,0" columnstretch="0,0">
    <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label_4">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
+    <widget class="QGroupBox" name="grp_project">
+     <property name="title">
       <string>Projects configuration</string>
      </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="5" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QToolButton" name="btnAdd">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::WheelFocus</enum>
+          </property>
+          <property name="toolTip">
+           <string>Add new project</string>
+          </property>
+          <property name="text">
+           <string>Add</string>
+          </property>
+          <property name="popupMode">
+           <enum>QToolButton::InstantPopup</enum>
+          </property>
+          <property name="arrowType">
+           <enum>Qt::NoArrow</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QPushButton" name="btnDown">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Move down selected project</string>
+          </property>
+          <property name="text">
+           <string>Down</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="btnUp">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Move up selected project</string>
+          </property>
+          <property name="text">
+           <string>Up</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnDelete">
+          <property name="toolTip">
+           <string>Delete selected</string>
+          </property>
+          <property name="text">
+           <string>Del</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSplitter" name="splitter">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <widget class="QTableView" name="projectTableView">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+        </widget>
+        <widget class="ProjectWidget" name="projectWidget" native="true"/>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
+   <item row="1" column="0" colspan="2">
+    <widget class="QGroupBox" name="grp_options">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
      <property name="title">
       <string>Global options</string>
      </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="0" colspan="2">
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="cbxCreateGroup">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Create group</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="tristate">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="cbxOpenLinks">
+        <property name="toolTip">
+         <string>Opens with layer, layers linked by 'relations' or joins.</string>
+        </property>
+        <property name="text">
+         <string>Also load linked layers.</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="QCheckBox" name="cbxLoadAll">
@@ -213,145 +338,10 @@
         </item>
        </layout>
       </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="cbxOpenLinks">
-        <property name="toolTip">
-         <string>Opens with layer, layers linked by 'relations' or joins.</string>
-        </property>
-        <property name="text">
-         <string>Also load linked layers.</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="cbxCreateGroup">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Create group</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="tristate">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QSplitter" name="splitter">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <widget class="QTableView" name="projectTableView">
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-     </widget>
-     <widget class="ProjectWidget" name="projectWidget" native="true"/>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <item row="5" column="0">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="0">
-      <widget class="QToolButton" name="btnAdd">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="focusPolicy">
-        <enum>Qt::WheelFocus</enum>
-       </property>
-       <property name="toolTip">
-        <string>Add new project</string>
-       </property>
-       <property name="text">
-        <string>Add</string>
-       </property>
-       <property name="popupMode">
-        <enum>QToolButton::InstantPopup</enum>
-       </property>
-       <property name="arrowType">
-        <enum>Qt::NoArrow</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QPushButton" name="btnDown">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Move down selected project</string>
-       </property>
-       <property name="text">
-        <string>Down</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="btnUp">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Move up selected project</string>
-       </property>
-       <property name="text">
-        <string>Up</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="btnDelete">
-       <property name="toolTip">
-        <string>Delete selected</string>
-       </property>
-       <property name="text">
-        <string>Del</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0" colspan="2">
+   <item row="4" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -364,22 +354,9 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <customwidgets>
-  <customwidget>
-   <class>QgsCollapsibleGroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>qgscollapsiblegroupbox.h</header>
-   <container>1</container>
-  </customwidget>
   <customwidget>
    <class>ProjectWidget</class>
    <extends>QWidget</extends>
