@@ -328,27 +328,16 @@ class LayerDictItem(QgsDataItem):
 
         # Create action or menu for each version
         for version, format_list in self.layer_dict.items():
-            multiple_format = len(format_list) > 1
-            version_menu_used = version and multiple_format
-            if version_menu_used:
-                # Multiple format for this version : create a specific menu in versions menu
-                ac_version = QAction(version, parent)
-                version_menu = QMenu(version, parent)
-                ac_version.setMenu(version_menu)
+            version_label = version if version else self.tr("Latest")
+            ac_version = QAction(version_label, parent)
+            version_menu = QMenu(version_label, parent)
+            ac_version.setMenu(version_menu)
 
-                all_version_menu.addAction(ac_version)
-            else:
-                # Only one format for this version : directly create action in versions menu
-                version_menu = all_version_menu
+            all_version_menu.addAction(ac_version)
+
             for layer in format_list:
-                if version_menu_used:
-                    action_text = layer.format
-                else:
-                    action_text = (
-                        f"{layer.version} - {layer.format}" if version else layer.format
-                    )
                 ac_layer = create_add_layer_action(
-                    layer, action_text, self.group_name, parent
+                    layer, layer.format, self.group_name, parent
                 )
                 version_menu.addAction(ac_layer)
         return actions
