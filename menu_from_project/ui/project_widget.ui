@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>680</width>
-    <height>577</height>
+    <width>441</width>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -132,6 +132,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Refresh interval</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="enableCacheCheckBox">
         <property name="sizePolicy">
@@ -148,19 +161,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="label_3">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Refresh interval</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -169,59 +169,6 @@
      <property name="text">
       <string>Enable/disable</string>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="0" colspan="3">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_2">
-     <property name="title">
-      <string>Locations</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QCheckBox" name="addLayerMenuCheckBox">
-        <property name="text">
-         <string>Add layer menu</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="newMenuCheckBox">
-        <property name="text">
-         <string>New menu</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="browserCheckBox">
-        <property name="text">
-         <string>Browser</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="mergePreviousCheckBox">
-        <property name="text">
-         <string>Merge with previous</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
     </widget>
    </item>
    <item row="0" column="0">
@@ -242,7 +189,7 @@
      <property name="title">
       <string>Advanced</string>
      </property>
-     <property name="collapsed">
+     <property name="collapsed" stdset="0">
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
@@ -308,7 +255,70 @@
        </widget>
       </item>
       <item row="4" column="1" colspan="3">
-       <widget class="QgsFileWidget" name="validationFileLineEdit"/>
+       <widget class="QgsFileWidget" name="validationFileLineEdit" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_2">
+     <property name="title">
+      <string>Locations</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="3">
+       <widget class="QCheckBox" name="newMenuCheckBox">
+        <property name="text">
+         <string>Menu bar</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="6">
+       <widget class="QRadioButton" name="mergePreviousRadioButton">
+        <property name="text">
+         <string>Merge with previous</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="newMenuRadioButton">
+        <property name="text">
+         <string>New menu in</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QCheckBox" name="browserCheckBox">
+        <property name="text">
+         <string>Browser</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QCheckBox" name="addLayerMenuCheckBox">
+        <property name="text">
+         <string>Layer menu</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
