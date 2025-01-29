@@ -60,7 +60,8 @@ class ProjectWidget(QWidget):
         self.clearCacheButton.clicked.connect(self._delete_project_cache)
         self.openCacheButton.clicked.connect(self._open_project_cache_folder)
 
-        self.mergePreviousCheckBox.clicked.connect(self._merge_location_changed)
+        self.mergePreviousRadioButton.clicked.connect(self._merge_location_changed)
+        self.newMenuRadioButton.clicked.connect(self._merge_location_changed)
 
         self._emit_changed_signal = True
         self._connect_update_signal()
@@ -72,37 +73,23 @@ class ProjectWidget(QWidget):
         :type enable: bool
         """
         self._emit_changed_signal = False
-        self.mergePreviousCheckBox.setEnabled(enable)
+        self.mergePreviousRadioButton.setEnabled(enable)
         if not enable:
-            self.mergePreviousCheckBox.setToolTip(
+            self.mergePreviousRadioButton.setToolTip(
                 self.tr("Project in first position, no project to merge.")
             )
-            self.mergePreviousCheckBox.setChecked(False)
+            self.mergePreviousRadioButton.setChecked(False)
         else:
-            self.mergePreviousCheckBox.setToolTip("")
+            self.mergePreviousRadioButton.setToolTip("")
         self._emit_changed_signal = True
 
     def _merge_location_changed(self) -> None:
         """Disable other options if merge location is checked"""
-        self.newMenuCheckBox.clicked.disconnect(self._project_changed)
-        self.addLayerMenuCheckBox.clicked.disconnect(self._project_changed)
-        self.browserCheckBox.clicked.disconnect(self._project_changed)
-        if self.mergePreviousCheckBox.isChecked():
-            self.newMenuCheckBox.setChecked(False)
-            self.addLayerMenuCheckBox.setChecked(False)
-            self.browserCheckBox.setChecked(False)
-
-            self.newMenuCheckBox.setEnabled(False)
-            self.addLayerMenuCheckBox.setEnabled(False)
-            self.browserCheckBox.setEnabled(False)
-        else:
-            self.newMenuCheckBox.setEnabled(True)
-            self.addLayerMenuCheckBox.setEnabled(True)
-            self.browserCheckBox.setEnabled(True)
-
-        self.newMenuCheckBox.clicked.connect(self._project_changed)
-        self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
-        self.browserCheckBox.clicked.connect(self._project_changed)
+        self.newMenuCheckBox.setEnabled(not self.mergePreviousRadioButton.isChecked())
+        self.addLayerMenuCheckBox.setEnabled(
+            not self.mergePreviousRadioButton.isChecked()
+        )
+        self.browserCheckBox.setEnabled(not self.mergePreviousRadioButton.isChecked())
 
     def _project_changed(self) -> None:
         """Slot for projectChanged signal emit if enabled"""
@@ -144,7 +131,7 @@ class ProjectWidget(QWidget):
         # Location update connection
         self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
         self.newMenuCheckBox.clicked.connect(self._project_changed)
-        self.mergePreviousCheckBox.clicked.connect(self._project_changed)
+        self.mergePreviousRadioButton.clicked.connect(self._project_changed)
         self.browserCheckBox.clicked.connect(self._project_changed)
 
         # Name/path update connection
@@ -186,11 +173,11 @@ class ProjectWidget(QWidget):
 
         self.newMenuCheckBox.setChecked(False)
         self.addLayerMenuCheckBox.setChecked(False)
-        self.mergePreviousCheckBox.setChecked(False)
         self.browserCheckBox.setChecked(False)
 
-        if project.location == "merge":
-            self.mergePreviousCheckBox.setChecked(True)
+        self.mergePreviousRadioButton.setChecked(project.location == "merge")
+        self.newMenuRadioButton.setChecked(project.location != "merge")
+
         if project.location.count("new"):
             self.newMenuCheckBox.setChecked(True)
         if project.location.count("layer"):
@@ -226,7 +213,7 @@ class ProjectWidget(QWidget):
             refresh_days_period=self.refreshIntervalSpinBox.value(),
             cache_validation_uri=self.validationFileLineEdit.filePath(),
         )
-        if self.mergePreviousCheckBox.isChecked():
+        if self.mergePreviousRadioButton.isChecked():
             location = "merge"
         else:
             locations = []
