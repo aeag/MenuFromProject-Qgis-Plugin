@@ -95,6 +95,12 @@ class ProjectListModel(QStandardItemModel):
                 QIcon(":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg"),
                 Qt.DecorationRole,
             )
+        else:
+            self.setData(
+                self.index(row, self.CACHE_COL),
+                None,
+                Qt.DecorationRole,
+            )
 
         if not project.enable:
             self._set_row_color(row, QColor("lightgrey"))
