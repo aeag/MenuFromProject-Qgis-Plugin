@@ -31,9 +31,9 @@ from qgis.PyQt.QtCore import (
 )
 from qgis.utils import iface
 
-from menu_from_project.__about__ import __title__, __title_clean__
-
 # project
+from menu_from_project.__about__ import __title__, __title_clean__
+from menu_from_project.datamodel.project import Project
 from menu_from_project.logic.cache_manager import CacheManager
 from menu_from_project.logic.tools import guess_type_from_uri
 from menu_from_project.logic.xml_utils import getFirstChildByTagNameValue
@@ -238,17 +238,42 @@ class QgsDomManager:
         self.project = project
         self.cache_manager = CacheManager(iface)
 
+    @staticmethod
+    def log(message, application=__title__, indent=0):
+        indent_chars = " .. " * indent
+        QgsMessageLog.logMessage(
+            f"{indent_chars}{message}", application, notifyUser=True
+        )
+
     def cache_clear(self) -> None:
         """Clear cache of QtXml.QDomDocument for uri"""
         self.docs = dict()
 
-    def set_project(self, project: Optional[Dict[str, str]]) -> None:
+    def set_project(self, project: Optional[Project]) -> None:
         """Define project used to check cache in project cache directory
 
-        :param project: dict of information about the project
-        :type project: Optional[Dict[str, str]]
+        :param project: project information
+        :type project: Optional[Project]
         """
         self.project = project
+
+    def check_if_project_valid(self, project: Project) -> bool:
+        """Check if project is valid by getting qgs xml doc
+
+        :param project: project to check
+        :type project: Project
+        :return: True if project is valid, False otherwise
+        :rtype: bool
+        """
+        valid = False
+        try:
+            doc, _ = self.getQgsDoc(project.file)
+            valid = not doc.isNull()
+        except Exception as err:
+            self.log(
+                "Error during project reading file '{}': {}".format(project.file, err)
+            )
+        return valid
 
     def _get_download_folder(self) -> Path:
         """Get download folder for url and postgres uri

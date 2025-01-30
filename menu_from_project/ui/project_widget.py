@@ -234,16 +234,19 @@ class ProjectWidget(QWidget):
         elif self.urlRadioButton.isChecked():
             type_storage = "http"
 
-        return Project(
+        project = Project(
             id=self.idLineEdit.text(),
             name=self.nameLineEdit.text(),
             location=location,
             file=self.pathLineEdit.text(),
             type_storage=type_storage,
             cache_config=cache_config,
-            valid=self._check_if_project_valid(),
             enable=self.enableCheckBox.isChecked(),
         )
+
+        project.valid = self.qgs_dom_manager.check_if_project_valid(project)
+
+        return project
 
     def _select_path(self) -> None:
         """Select project path depending on current type storage:
@@ -322,21 +325,6 @@ class ProjectWidget(QWidget):
                 self.tr("Can't open project cache folder : {e}"),
             )
             print(f"Erreur lors de l'ouverture du répertoire : {e}")
-
-    def _check_if_project_valid(self) -> bool:
-        """Check if project is valid by reading Qgs project
-
-        :return: True if project is valid, False otherwise
-        :rtype: bool
-        """
-        valid = False
-        text = self.pathLineEdit.text()
-        try:
-            doc, _ = self.qgs_dom_manager.getQgsDoc(text)
-            valid = not doc.isNull()
-        except Exception as err:
-            self.log("Error during project reading: {}".format(err))
-        return valid
 
     @staticmethod
     def log(message, application=__title__, indent=0):

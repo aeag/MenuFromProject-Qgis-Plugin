@@ -145,6 +145,8 @@ class MenuFromProject:
         settings = self.plg_settings.get_plg_settings()
         nb_projects = len(settings.projects)
         for i, project in enumerate(settings.projects):
+            if not project.valid:
+                continue
             task.setProgress(i * 100.0 / nb_projects)
             cache_manager = CacheManager(self.iface)
             # Try to get project configuration from cache
