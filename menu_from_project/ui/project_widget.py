@@ -129,7 +129,9 @@ class ProjectWidget(QWidget):
         self.urlRadioButton.clicked.connect(self._project_changed)
 
         # Location update connection
+        self.newMenuRadioButton.clicked.connect(self._project_changed)
         self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
+
         self.newMenuCheckBox.clicked.connect(self._project_changed)
         self.mergePreviousRadioButton.clicked.connect(self._project_changed)
         self.browserCheckBox.clicked.connect(self._project_changed)
