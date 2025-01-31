@@ -17,6 +17,7 @@ from qgis.core import QgsSettings
 from menu_from_project.__about__ import __version__
 from menu_from_project.datamodel.project import Project, ProjectCacheConfig
 from menu_from_project.datamodel.project_config import MenuLayerConfig
+from menu_from_project.logic.qgs_manager import QgsDomManager
 from menu_from_project.logic.tools import guess_type_from_uri
 
 # ############################################################################
@@ -106,6 +107,8 @@ class PlgOptionsManager:
 
         s = QgsSettings()
 
+        dom_manager = QgsDomManager()
+
         if s.value("menu_from_project/is_setup_visible") is None:
             # This setting does not exist. We add it by default.
             s.setValue("menu_from_project/is_setup_visible", True)
@@ -186,16 +189,17 @@ class PlgOptionsManager:
                         s.endGroup()
 
                         if file != "":
-                            options.projects.append(
-                                Project(
-                                    file=file,
-                                    name=name,
-                                    location=location,
-                                    type_storage=type_storage,
-                                    cache_config=cache_config,
-                                    id=s.value("id", str(uuid.uuid4())),
-                                )
+                            project = Project(
+                                file=file,
+                                name=name,
+                                location=location,
+                                type_storage=type_storage,
+                                cache_config=cache_config,
+                                id=s.value("id", str(uuid.uuid4())),
+                                enable=s.value("enable", True, type=bool),
                             )
+                            project.valid = dom_manager.check_if_project_valid(project)
+                            options.projects.append(project)
                 finally:
                     s.endArray()
 
@@ -234,6 +238,7 @@ class PlgOptionsManager:
                     s.setValue("location", project.location)
                     s.setValue("type_storage", guess_type_from_uri(project.file))
                     s.setValue("id", project.id)
+                    s.setValue("enable", project.enable)
 
                     s.beginGroup("cache_config")
                     s.setValue(

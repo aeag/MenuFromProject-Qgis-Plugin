@@ -10,16 +10,22 @@ Unreleased
 
 -->
 
+## 2.4.0-beta1 - 2025-01-24
+
+* Feature: support syntaxic sugar for a layer with different versions and format by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/159>
+* Feature: refactor project configuration widget by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/133>
+* update(docs): add QDT helper by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/156>
+
 ## 2.3.0 - 2025-01-14
 
 * Move to stable canal
 
 ## 2.3.0-beta2 - 2024-12-20
 
-* fix(browser): don't add group that start with `-` by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/154
-* fix(browser): show load all action if children not created by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/155
-* update(i18n): complete French translation by @Guts in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/153
-* feat(doc): add browser support by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/152
+* fix(browser): don't add group that start with `-` by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/154>
+* fix(browser): show load all action if children not created by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/155>
+* update(i18n): complete French translation by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/153>
+* feat(doc): add browser support by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/152>
 
 ## 2.3.0-beta1 - 2024-12-20
 
