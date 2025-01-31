@@ -32,6 +32,7 @@ extensions = [
     # 3rd party
     "myst_parser",
     "sphinx_copybutton",
+    "sphinx_design",
     "sphinxcontrib.mermaid",
 ]
 
@@ -99,7 +100,6 @@ myst_enable_extensions = [
     "amsmath",
     "colon_fence",
     "deflist",
-    "dollarmath",
     "html_image",
     "linkify",
     "replacements",
