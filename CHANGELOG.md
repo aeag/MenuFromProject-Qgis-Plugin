@@ -10,6 +10,13 @@ Unreleased
 
 -->
 
+## 2.4.0-beta2 - 2025-01-31
+
+* (fix): small fixes for project configuration UI by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/163>
+* feat(projet conf): update merge selection by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/161>
+* feat(menu): always use version for layer action creation by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/162>
+* update(docs): broadcast project's sponsors by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/160>
+
 ## 2.4.0-beta1 - 2025-01-24
 
 * Feature: support syntaxic sugar for a layer with different versions and format by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/159>
