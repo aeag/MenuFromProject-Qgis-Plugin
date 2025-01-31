@@ -42,6 +42,7 @@ class LayerLoad:
         self.qgs_dom_manager = QgsDomManager()
         self.mapLayerIds = {}
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent

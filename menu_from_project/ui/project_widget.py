@@ -328,6 +328,7 @@ class ProjectWidget(QWidget):
             )
             print(f"Erreur lors de l'ouverture du répertoire : {e}")
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent

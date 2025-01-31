@@ -180,6 +180,7 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.projectTableView.selectRow(self.projetListModel.rowCount() - 1)
         self.projectTableView.scrollToBottom()
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent

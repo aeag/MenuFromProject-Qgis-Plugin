@@ -101,6 +101,7 @@ class MenuFromProject:
     def tr(message):
         return QCoreApplication.translate("MenuFromProject", message)
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent

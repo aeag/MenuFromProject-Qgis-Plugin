@@ -238,6 +238,7 @@ class QgsDomManager:
         self.project = project
         self.cache_manager = CacheManager(iface)
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent
