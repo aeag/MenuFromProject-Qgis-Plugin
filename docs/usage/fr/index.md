@@ -4,7 +4,7 @@ Cette extension pour QGIS permet de construire automatiquement des menus déroul
 
 Tous les paramètrages des couches, le style, les étiquettes, les actions, les métadonnées, les jointures et relations sont conservées. La maintenance se résume à la gestion de quelques projets QGIS centralisés.
 
-![dropdown menu en](../static/drop_down_menu_fr.png)
+![dropdown menu en](../../static/drop_down_menu_fr.png)
 
 Lorsque le plugin est configuré (choix des projets et attribution d'un nom associé via le menu Extensions - Layers menu from projects), de nouveaux menus apparaissent, pour chacun des projets sélectionnés. Chaque item de menu correspond alors à une couche du projet et déclenche son ouverture.
 
@@ -22,7 +22,7 @@ Les projets peuvent être sauvés au format qgz, dans une base PostgreSQL [(cf. 
 Le projet placé dans un espace partagé du réseau, sous postgres ou un serveur web permettra à différents utilisateurs d'exploiter les mêmes ressources (à condition bien sûr que celles-ci soit accessible).
 ```
 
-![Mapping configuration <--> created menu](../static/mapping.png)
+![Mapping configuration <--> created menu](../../static/mapping.png)
 
 ----
 
@@ -30,11 +30,11 @@ Le projet placé dans un espace partagé du réseau, sous postgres ou un serveur
 
 1. menu `Extensions` / `Layer menu from project` :
 
-    ![Open plugin configuration window](../static/config_window_access_fr.png)
+    ![Open plugin configuration window](../../static/config_window_access_fr.png)
 
 1. L'interface de configuration s'ouvre :
 
-    ![configuration window](../static/config_window_fr.png)
+    ![configuration window](../../static/config_window_fr.png)
 
 1. Cliquer sur `+` pour ajouter un projet .qgs, .qgz à la liste, ou coller l'URI d'un projet PostgreSQL ou coller l'URL d'un projet distant. ex : <https://adour-garonne.eaufrance.fr/upload/DATA/SIG/aeag-web.qgz>
 1. Il est possible de donner un alias qui deviendra le nom du menu. Sion c'est le titre du projet qui est utilisé.
@@ -51,13 +51,13 @@ Pour l'explorateur QGIS, les couches et les groupes ne peuvent être qu'affiché
 
 Si elle est cochée permet de charger l'ensemble des couches d'un même niveau de sous-menu :
 
-![Option - Tout ajouter](../static/add_all_option_fr.png)
+![Option - Tout ajouter](../../static/add_all_option_fr.png)
 
 #### Créer un groupe au chargement de la couche
 
 Place la nouvelle couche sous un groupe portant le nom du menu :
 
-![Option - Créer un groupe au chargement de la couche](../static/add_group_option_fr.png)
+![Option - Créer un groupe au chargement de la couche](../../static/add_group_option_fr.png)
 
 #### Ouvrir aussi les couches liées
 
