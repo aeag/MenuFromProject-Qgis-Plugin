@@ -114,6 +114,8 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         }
         self.optionSourceMD = settings.optionSourceMD
 
+        self.lne_browser_name.setText(settings.browser_name)
+
         self.projetListModel = ProjectListModel(self)
         self.projetListModel.set_project_list(settings.projects)
         self.projectTableView.setModel(self.projetListModel)
@@ -160,6 +162,8 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         settings.optionOpenLinks = self.cbxOpenLinks.isChecked()
 
         settings.optionSourceMD = self.optionSourceMD
+
+        settings.browser_name = self.lne_browser_name.text()
 
         PlgOptionsManager().save_from_object(settings)
 

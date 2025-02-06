@@ -81,7 +81,10 @@ class RootCollection(QgsDataCollectionItem):
         :param project_configs: list of project configuration
         :type project_configs: List[Tuple[Project, MenuProjectConfig]]
         """
-        QgsDataCollectionItem.__init__(self, parent, "MenuLayer", "/MenuLayer")
+        settings = PlgOptionsManager().get_plg_settings()
+        QgsDataCollectionItem.__init__(
+            self, parent, settings.browser_name, "/MenuLayer"
+        )
         # TODO : define icon
         self.project_configs = project_configs
 

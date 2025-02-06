@@ -49,6 +49,9 @@ class PlgSettingsStructure:
         default_factory=lambda: [SOURCE_MD_OGC, SOURCE_MD_LAYER, SOURCE_MD_NOTE]
     )
 
+    # Browser option
+    browser_name: str = "Layers from project"
+
     # Internal option
     is_setup_visible: bool = True
 
@@ -167,6 +170,8 @@ class PlgOptionsManager:
                         SOURCE_MD_OGC,
                     ]
 
+                options.browser_name = s.value("browser_name", options.browser_name)
+
                 size = s.beginReadArray("projects")
                 try:
                     for i in range(size):
@@ -227,6 +232,8 @@ class PlgOptionsManager:
             s.setValue("optionLoadAll", plugin_settings_obj.optionLoadAll)
             s.setValue("optionOpenLinks", plugin_settings_obj.optionOpenLinks)
             s.setValue("optionSourceMD", ",".join(plugin_settings_obj.optionSourceMD))
+
+            s.setValue("browser_name", plugin_settings_obj.browser_name)
 
             s.remove("projects")
             s.beginWriteArray("projects", len(plugin_settings_obj.projects))
