@@ -60,7 +60,7 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
             self.windowTitle() + " - {} v{}".format(__title__, __version__)
         )
         self.setWindowIcon(
-            QIcon(str(DIR_PLUGIN_ROOT / "resources/gear.svg")),
+            QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
         )
 
         settings = self.plg_settings.get_plg_settings()
@@ -325,7 +325,7 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
         self.conf_widget = None
 
     def icon(self):
-        return QIcon(str(DIR_PLUGIN_ROOT / "resources/images/icon.svg"))
+        return QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png"))
 
     def createWidget(self, parent):
         widget = SettingsWidget(parent)

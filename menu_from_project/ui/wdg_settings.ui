@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>677</width>
-    <height>613</height>
+    <width>659</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,7 +32,19 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0,0,0" columnstretch="0,0">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" columnstretch="0,0">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="grp_project">
      <property name="title">
@@ -403,5 +415,5 @@
   <tabstop>btnAdd</tabstop>
  </tabstops>
  <resources/>
-
+ <connections/>
 </ui>
