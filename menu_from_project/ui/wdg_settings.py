@@ -149,6 +149,9 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
             ProjectListModel.NAME_COL, QHeaderView.Stretch
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
+            ProjectListModel.COMMENT_COL, QHeaderView.ResizeToContents
+        )
+        self.projectTableView.horizontalHeader().setSectionResizeMode(
             ProjectListModel.LOCATION_COL, QHeaderView.ResizeToContents
         )
         self.projectTableView.resizeColumnsToContents()

@@ -148,6 +148,9 @@ class ProjectWidget(QWidget):
         # Project enable
         self.enableCheckBox.clicked.connect(self._project_changed)
 
+        # Project comment
+        self.lne_comment.textChanged.connect(self._project_changed)
+
     def set_project(self, project: Project) -> None:
         """Define display project
 
@@ -198,6 +201,8 @@ class ProjectWidget(QWidget):
 
         self._update_path_selection_button_from_project(project)
 
+        self.lne_comment.setText(project.comment)
+
         # Simulate merge location change to update check button
         self._merge_location_changed()
 
@@ -244,6 +249,7 @@ class ProjectWidget(QWidget):
             type_storage=type_storage,
             cache_config=cache_config,
             enable=self.enableCheckBox.isChecked(),
+            comment=self.lne_comment.text(),
         )
 
         project.valid = self.qgs_dom_manager.check_if_project_valid(project)
