@@ -49,8 +49,9 @@ from menu_from_project.logic.qgs_manager import (
 )
 from menu_from_project.logic.tools import icon_per_layer_type
 from menu_from_project.toolbelt.preferences import PlgOptionsManager
-from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
+from menu_from_project.ui.dlg_settings import MenuConfDialog
 from menu_from_project.ui.menu_layer_data_item_provider import MenuLayerProvider
+from menu_from_project.ui.wdg_settings import PlgOptionsFactory
 
 # ############################################################################
 # ########## Classes ###############
@@ -81,6 +82,8 @@ class MenuFromProject:
 
         self.iface = iface
         self.toolBar = None
+
+        self.options_factory = None
 
         self.qgs_dom_manager = QgsDomManager()
         self.menubarActions = []
@@ -433,6 +436,22 @@ class MenuFromProject:
     def initGui(self):
         settings = self.plg_settings.get_plg_settings()
         if settings.is_setup_visible:
+            # settings page within the QGIS preferences menu
+            if not self.options_factory:
+                self.options_factory = PlgOptionsFactory()
+                self.options_factory.settingsApplied.connect(self._apply_settings)
+                self.iface.registerOptionsWidgetFactory(self.options_factory)
+                # Add search path for plugin
+                help_search_paths = QgsSettings().value("help/helpSearchPath")
+                if (
+                    isinstance(help_search_paths, list)
+                    and __uri_homepage__ not in help_search_paths
+                ):
+                    help_search_paths.append(__uri_homepage__)
+                else:
+                    help_search_paths = [help_search_paths, __uri_homepage__]
+                QgsSettings().setValue("help/helpSearchPath", help_search_paths)
+
             # menu item - Main
             self.action_project_configuration = QAction(
                 QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
@@ -460,7 +479,13 @@ class MenuFromProject:
                 partial(QDesktopServices.openUrl, QUrl(__uri_homepage__))
             )
 
-        self.iface.initializationCompleted.connect(self.on_initializationCompleted)
+        self.iface.initializationCompleted.connect(self._apply_settings)
+
+    def _apply_settings(self) -> None:
+        """Apply current settings"""
+
+        # Rebuild menus and browser
+        self.initMenus()
 
     def unload(self):
         menuBar = self.iface.editMenu().parentWidget()
@@ -478,6 +503,18 @@ class MenuFromProject:
 
         settings = self.plg_settings.get_plg_settings()
         if settings.is_setup_visible:
+            # -- Clean up preferences panel in QGIS settings
+            if self.options_factory:
+                self.iface.unregisterOptionsWidgetFactory(self.options_factory)
+                # pop from help path
+                help_search_paths = QgsSettings().value("help/helpSearchPath")
+                if (
+                    isinstance(help_search_paths, list)
+                    and __uri_homepage__ in help_search_paths
+                ):
+                    help_search_paths.remove(__uri_homepage__)
+                QgsSettings().setValue("help/helpSearchPath", help_search_paths)
+
             self.iface.removePluginMenu(
                 "&" + __title__, self.action_project_configuration
             )
@@ -487,7 +524,7 @@ class MenuFromProject:
             )
             self.iface.removePluginMenu(__title__, self.action_menu_help)
 
-        self.iface.initializationCompleted.disconnect(self.on_initializationCompleted)
+        self.iface.initializationCompleted.disconnect(self._apply_settings)
 
         if self.provider:
             self.registry.removeProvider(self.provider)

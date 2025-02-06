@@ -10,13 +10,19 @@ from functools import partial
 
 # PyQGIS
 from qgis.core import QgsApplication, QgsMessageLog
-from qgis.PyQt import uic
+from qgis.gui import QgsOptionsPageWidget, QgsOptionsWidgetFactory
+from qgis.PyQt import QtCore, uic
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDialog, QHeaderView, QMenu, QPushButton
+from qgis.PyQt.QtWidgets import QAction, QHeaderView, QMenu, QPushButton
 
 # project
-from menu_from_project.__about__ import DIR_PLUGIN_ROOT, __title__, __version__
+from menu_from_project.__about__ import (
+    DIR_PLUGIN_ROOT,
+    __title__,
+    __uri_homepage__,
+    __version__,
+)
 from menu_from_project.datamodel.project import Project
 from menu_from_project.toolbelt.preferences import (
     SOURCE_MD_LAYER,
@@ -32,16 +38,19 @@ from menu_from_project.ui.project_list_model import ProjectListModel
 
 
 # load ui
-FORM_CLASS, _ = uic.loadUiType(DIR_PLUGIN_ROOT / "ui/conf_dialog.ui")
+FORM_CLASS, _ = uic.loadUiType(DIR_PLUGIN_ROOT / "ui/wdg_settings.ui")
 
 # ############################################################################
 # ########## Classes ###############
 # ##################################
 
 
-class MenuConfDialog(QDialog, FORM_CLASS):
+class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
+
+    settingsApplied = QtCore.pyqtSignal()
+
     def __init__(self, parent):
-        QDialog.__init__(self, parent)
+        super().__init__(parent)
         self.setupUi(self)
 
         self.plg_settings = PlgOptionsManager()
@@ -55,7 +64,6 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         )
 
         settings = self.plg_settings.get_plg_settings()
-        self.buttonBox.accepted.connect(self.onAccepted)
         self.btnDelete.clicked.connect(self.onDelete)
         self.btnDelete.setText(None)
         self.btnDelete.setIcon(
@@ -210,6 +218,8 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         PlgOptionsManager().save_from_object(settings)
 
+        self.settingsApplied.emit()
+
     def onAdd(self, qgs_type_storage: str = "file"):
         """Add a new line to the table.
 
@@ -299,3 +309,31 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         if len(selected_index) > 0:
             project = self.projectWidget.get_project()
             self.projetListModel.set_row_project(selected_index[0].row(), project)
+
+    def apply(self):
+        """Called to permanently apply the settings shown in the options page (e.g. \
+        save them to QgsSettings objects). This is usually called when the options \
+        dialog is accepted."""
+        self.onAccepted()
+
+
+class PlgOptionsFactory(QgsOptionsWidgetFactory):
+    settingsApplied = QtCore.pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self.conf_widget = None
+
+    def icon(self):
+        return QIcon(str(DIR_PLUGIN_ROOT / "resources/images/icon.svg"))
+
+    def createWidget(self, parent):
+        widget = SettingsWidget(parent)
+        widget.settingsApplied.connect(self.settingsApplied.emit)
+        return widget
+
+    def title(self):
+        return __title__
+
+    def helpId(self) -> str:
+        return __uri_homepage__
