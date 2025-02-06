@@ -13,7 +13,7 @@ from qgis.core import QgsApplication, QgsMessageLog
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDialog, QHeaderView, QMenu
+from qgis.PyQt.QtWidgets import QAction, QDialog, QHeaderView, QMenu, QPushButton
 
 # project
 from menu_from_project.__about__ import DIR_PLUGIN_ROOT, __title__, __version__
@@ -99,6 +99,10 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.addMenu.addAction(add_option_http)
         self.btnAdd.setMenu(self.addMenu)
 
+        self._add_action_in_new_project_widget(add_option_file)
+        self._add_action_in_new_project_widget(add_option_http)
+        self._add_action_in_new_project_widget(add_option_pgdb)
+
         # -- Options
         self.cbxLoadAll.setChecked(settings.optionLoadAll)
         self.cbxLoadAll.setTristate(False)
@@ -125,6 +129,11 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.projetListModel.set_project_list(settings.projects)
         self.projectTableView.setModel(self.projetListModel)
 
+        if len(settings.projects) == 0:
+            self.stackedWidget.setCurrentWidget(self.no_project_page)
+        else:
+            self.stackedWidget.setCurrentWidget(self.project_page)
+
         self.projectTableView.selectionModel().selectionChanged.connect(
             self._selected_project_changed
         )
@@ -139,6 +148,22 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.projectWidget.projectChanged.connect(self._project_changed)
         if len(settings.projects) != 0:
             self.projectTableView.selectRow(0)
+
+    def _add_action_in_new_project_widget(self, action: QAction) -> None:
+        """Add action in new project widget for project add
+
+        :param action: _description_
+        :type action: QAction
+        """
+        # QPushButton can't directly use QAction, need to define text,icon,toolTip from action
+        btn = QPushButton(action.icon(), action.text(), self)
+        btn.setToolTip(action.toolTip())
+
+        # Connect to QAction trigger
+        btn.clicked.connect(action.trigger)
+
+        # Add to layout
+        self.layout_btn_project_add.addWidget(btn)
 
     def _selected_project_changed(self) -> None:
         """Update displayed project"""
@@ -202,6 +227,7 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.projectTableView.selectRow(self.projetListModel.rowCount() - 1)
         self.projectTableView.scrollToBottom()
         self._selected_project_changed()
+        self.stackedWidget.setCurrentWidget(self.project_page)
 
     # TODO: until a log manager is implemented
     @staticmethod
@@ -218,6 +244,11 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             r = selected_index[0].row()
             self.projetListModel.removeRows(r, 1)
             self._selected_project_changed()
+
+        if self.projetListModel.rowCount() == 0:
+            self.stackedWidget.setCurrentWidget(self.no_project_page)
+        else:
+            self.stackedWidget.setCurrentWidget(self.project_page)
 
     def onMoveUp(self):
         """Move the selected lines upwards."""
