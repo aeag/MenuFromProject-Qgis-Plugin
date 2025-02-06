@@ -61,12 +61,17 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.btnDelete.setIcon(
             QIcon(QgsApplication.iconPath("mActionDeleteSelected.svg"))
         )
+        self.btnDelete.setEnabled(False)
+
         self.btnUp.clicked.connect(self.onMoveUp)
         self.btnUp.setText(None)
         self.btnUp.setIcon(QIcon(QgsApplication.iconPath("mActionArrowUp.svg")))
+        self.btnUp.setEnabled(False)
+
         self.btnDown.clicked.connect(self.onMoveDown)
         self.btnDown.setText(None)
         self.btnDown.setIcon(QIcon(QgsApplication.iconPath("mActionArrowDown.svg")))
+        self.btnDown.setEnabled(False)
 
         # add button
         self.btnAdd.setIcon(QIcon(QgsApplication.iconPath("mActionAdd.svg")))
@@ -124,8 +129,12 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             self._selected_project_changed
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
-            ProjectListModel.NAME_COL, QHeaderView.ResizeToContents
+            ProjectListModel.NAME_COL, QHeaderView.Stretch
         )
+        self.projectTableView.horizontalHeader().setSectionResizeMode(
+            ProjectListModel.LOCATION_COL, QHeaderView.ResizeToContents
+        )
+        self.projectTableView.resizeColumnsToContents()
 
         self.projectWidget.projectChanged.connect(self._project_changed)
         if len(settings.projects) != 0:
@@ -142,6 +151,14 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             )
             self.projectWidget.set_project(project)
             self.projectWidget.enable_merge_option(row != 0)
+
+            self.btnUp.setEnabled(row != 0)
+            self.btnDown.setEnabled(row != self.projetListModel.rowCount() - 1)
+            self.btnDelete.setEnabled(True)
+        else:
+            self.btnUp.setEnabled(False)
+            self.btnDown.setEnabled(False)
+            self.btnDelete.setEnabled(False)
 
     def setSourceMdText(self):
         self.mdSource1.setText(self.sourcesMdText[self.optionSourceMD[0]])
