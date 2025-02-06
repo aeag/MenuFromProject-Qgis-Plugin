@@ -202,6 +202,7 @@ class PlgOptionsManager:
                                 cache_config=cache_config,
                                 id=s.value("id", str(uuid.uuid4())),
                                 enable=s.value("enable", True, type=bool),
+                                comment=s.value("comment", ""),
                             )
                             project.valid = dom_manager.check_if_project_valid(project)
                             options.projects.append(project)
@@ -256,6 +257,7 @@ class PlgOptionsManager:
                         "cache_validation_uri",
                         project.cache_config.cache_validation_uri,
                     )
+                    s.setValue("comment", project.comment)
                     s.endGroup()
             finally:
                 s.endArray()
