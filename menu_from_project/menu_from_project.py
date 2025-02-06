@@ -84,6 +84,7 @@ class MenuFromProject:
         self.toolBar = None
 
         self.options_factory = None
+        self.settings_dialog = None
 
         self.qgs_dom_manager = QgsDomManager()
         self.menubarActions = []
@@ -483,7 +484,13 @@ class MenuFromProject:
 
     def _apply_settings(self) -> None:
         """Apply current settings"""
-
+        # clear web projects cache
+        try:
+            self.qgs_dom_manager.cache_clear()
+            read_from_http.cache_clear()
+            read_from_file.cache_clear()
+        except Exception:
+            pass
         # Rebuild menus and browser
         self.initMenus()
 
@@ -529,22 +536,15 @@ class MenuFromProject:
         if self.provider:
             self.registry.removeProvider(self.provider)
 
+        if self.settings_dialog:
+            self.settings_dialog.deleteLater()
+
     def open_projects_config(self):
-        dlg = MenuConfDialog(self.iface.mainWindow())
-        dlg.setModal(True)
+        if not self.settings_dialog:
+            self.settings_dialog = MenuConfDialog(self.iface.mainWindow())
+            self.settings_dialog.wdg_config.settingsApplied.connect(
+                self._apply_settings
+            )
+            self.settings_dialog.setModal(False)
 
-        dlg.show()
-        result = dlg.exec()
-        del dlg
-
-        if result != 0:
-            # clear web projects cache
-            try:
-                self.qgs_dom_manager.cache_clear()
-                read_from_http.cache_clear()
-                read_from_file.cache_clear()
-            except Exception:
-                pass
-
-            # build menus
-            self.initMenus()
+        self.settings_dialog.show()

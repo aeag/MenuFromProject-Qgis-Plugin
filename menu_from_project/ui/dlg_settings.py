@@ -8,7 +8,7 @@
 
 # PyQGIS
 from qgis.PyQt import uic
-from qgis.PyQt.QtWidgets import QDialog
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox
 
 # project
 from menu_from_project.__about__ import DIR_PLUGIN_ROOT
@@ -30,6 +30,10 @@ class MenuConfDialog(QDialog, FORM_CLASS):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.setupUi(self)
+
+        self.buttonBox.button(QDialogButtonBox.Apply).clicked.connect(
+            self.wdg_config.apply
+        )
 
     def accept(self):
         self.wdg_config.apply()
