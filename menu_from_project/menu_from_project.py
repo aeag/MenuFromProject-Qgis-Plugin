@@ -49,8 +49,9 @@ from menu_from_project.logic.qgs_manager import (
 )
 from menu_from_project.logic.tools import icon_per_layer_type
 from menu_from_project.toolbelt.preferences import PlgOptionsManager
-from menu_from_project.ui.menu_conf_dlg import MenuConfDialog  # noqa: F4 I001
+from menu_from_project.ui.dlg_settings import MenuConfDialog
 from menu_from_project.ui.menu_layer_data_item_provider import MenuLayerProvider
+from menu_from_project.ui.wdg_settings import PlgOptionsFactory
 
 # ############################################################################
 # ########## Classes ###############
@@ -82,6 +83,9 @@ class MenuFromProject:
         self.iface = iface
         self.toolBar = None
 
+        self.options_factory = None
+        self.settings_dialog = None
+
         self.qgs_dom_manager = QgsDomManager()
         self.menubarActions = []
         self.layerMenubarActions = []
@@ -101,6 +105,7 @@ class MenuFromProject:
     def tr(message):
         return QCoreApplication.translate("MenuFromProject", message)
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent
@@ -145,6 +150,8 @@ class MenuFromProject:
         settings = self.plg_settings.get_plg_settings()
         nb_projects = len(settings.projects)
         for i, project in enumerate(settings.projects):
+            if not project.valid:
+                continue
             task.setProgress(i * 100.0 / nb_projects)
             cache_manager = CacheManager(self.iface)
             # Try to get project configuration from cache
@@ -388,26 +395,13 @@ class MenuFromProject:
 
         # Create action or menu for each version
         for version, format_list in layer_dict.items():
-            multiple_format = len(format_list) > 1
-            version_menu_used = version and multiple_format
-            if version_menu_used:
-                # Multiple format for this version : create a specific menu in versions menu
-                version_menu = all_version_menu.addMenu(version)
-            else:
-                # Only one format for this version : directly create action in versions menu
-                version_menu = all_version_menu
+
+            version_label = version if version else self.tr("Latest")
+            version_menu = all_version_menu.addMenu(version_label)
 
             # Create action for each format
             for layer in format_list:
-                if version_menu_used:
-                    # Multiple format for this version : we only display format
-                    action_text = layer.format
-                else:
-                    # Only one format for this version : no specific menu, we display version and format
-                    action_text = (
-                        f"{layer.version} - {layer.format}" if version else layer.format
-                    )
-                self.add_layer(layer, version_menu, group_name, action_text)
+                self.add_layer(layer, version_menu, group_name, layer.format)
 
         return first_layer
 
@@ -443,6 +437,22 @@ class MenuFromProject:
     def initGui(self):
         settings = self.plg_settings.get_plg_settings()
         if settings.is_setup_visible:
+            # settings page within the QGIS preferences menu
+            if not self.options_factory:
+                self.options_factory = PlgOptionsFactory()
+                self.options_factory.settingsApplied.connect(self._apply_settings)
+                self.iface.registerOptionsWidgetFactory(self.options_factory)
+                # Add search path for plugin
+                help_search_paths = QgsSettings().value("help/helpSearchPath")
+                if (
+                    isinstance(help_search_paths, list)
+                    and __uri_homepage__ not in help_search_paths
+                ):
+                    help_search_paths.append(__uri_homepage__)
+                else:
+                    help_search_paths = [help_search_paths, __uri_homepage__]
+                QgsSettings().setValue("help/helpSearchPath", help_search_paths)
+
             # menu item - Main
             self.action_project_configuration = QAction(
                 QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
@@ -470,7 +480,19 @@ class MenuFromProject:
                 partial(QDesktopServices.openUrl, QUrl(__uri_homepage__))
             )
 
-        self.iface.initializationCompleted.connect(self.on_initializationCompleted)
+        self.iface.initializationCompleted.connect(self._apply_settings)
+
+    def _apply_settings(self) -> None:
+        """Apply current settings"""
+        # clear web projects cache
+        try:
+            self.qgs_dom_manager.cache_clear()
+            read_from_http.cache_clear()
+            read_from_file.cache_clear()
+        except Exception:
+            pass
+        # Rebuild menus and browser
+        self.initMenus()
 
     def unload(self):
         menuBar = self.iface.editMenu().parentWidget()
@@ -488,6 +510,18 @@ class MenuFromProject:
 
         settings = self.plg_settings.get_plg_settings()
         if settings.is_setup_visible:
+            # -- Clean up preferences panel in QGIS settings
+            if self.options_factory:
+                self.iface.unregisterOptionsWidgetFactory(self.options_factory)
+                # pop from help path
+                help_search_paths = QgsSettings().value("help/helpSearchPath")
+                if (
+                    isinstance(help_search_paths, list)
+                    and __uri_homepage__ in help_search_paths
+                ):
+                    help_search_paths.remove(__uri_homepage__)
+                QgsSettings().setValue("help/helpSearchPath", help_search_paths)
+
             self.iface.removePluginMenu(
                 "&" + __title__, self.action_project_configuration
             )
@@ -497,27 +531,20 @@ class MenuFromProject:
             )
             self.iface.removePluginMenu(__title__, self.action_menu_help)
 
-        self.iface.initializationCompleted.disconnect(self.on_initializationCompleted)
+        self.iface.initializationCompleted.disconnect(self._apply_settings)
 
         if self.provider:
             self.registry.removeProvider(self.provider)
 
+        if self.settings_dialog:
+            self.settings_dialog.deleteLater()
+
     def open_projects_config(self):
-        dlg = MenuConfDialog(self.iface.mainWindow())
-        dlg.setModal(True)
+        if not self.settings_dialog:
+            self.settings_dialog = MenuConfDialog(self.iface.mainWindow())
+            self.settings_dialog.wdg_config.settingsApplied.connect(
+                self._apply_settings
+            )
+            self.settings_dialog.setModal(False)
 
-        dlg.show()
-        result = dlg.exec()
-        del dlg
-
-        if result != 0:
-            # clear web projects cache
-            try:
-                self.qgs_dom_manager.cache_clear()
-                read_from_http.cache_clear()
-                read_from_file.cache_clear()
-            except Exception:
-                pass
-
-            # build menus
-            self.initMenus()
+        self.settings_dialog.show()

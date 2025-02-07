@@ -25,3 +25,4 @@ class Project:
     cache_config: ProjectCacheConfig = field(
         default_factory=lambda: ProjectCacheConfig()
     )
+    comment: str = ""

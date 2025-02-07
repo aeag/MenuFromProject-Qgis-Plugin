@@ -17,6 +17,7 @@ from qgis.core import QgsSettings
 from menu_from_project.__about__ import __version__
 from menu_from_project.datamodel.project import Project, ProjectCacheConfig
 from menu_from_project.datamodel.project_config import MenuLayerConfig
+from menu_from_project.logic.qgs_manager import QgsDomManager
 from menu_from_project.logic.tools import guess_type_from_uri
 
 # ############################################################################
@@ -47,6 +48,9 @@ class PlgSettingsStructure:
     optionSourceMD: List[str] = field(
         default_factory=lambda: [SOURCE_MD_OGC, SOURCE_MD_LAYER, SOURCE_MD_NOTE]
     )
+
+    # Browser option
+    browser_name: str = "Layers from project"
 
     # Internal option
     is_setup_visible: bool = True
@@ -106,6 +110,8 @@ class PlgOptionsManager:
 
         s = QgsSettings()
 
+        dom_manager = QgsDomManager()
+
         if s.value("menu_from_project/is_setup_visible") is None:
             # This setting does not exist. We add it by default.
             s.setValue("menu_from_project/is_setup_visible", True)
@@ -164,6 +170,8 @@ class PlgOptionsManager:
                         SOURCE_MD_OGC,
                     ]
 
+                options.browser_name = s.value("browser_name", options.browser_name)
+
                 size = s.beginReadArray("projects")
                 try:
                     for i in range(size):
@@ -186,17 +194,18 @@ class PlgOptionsManager:
                         s.endGroup()
 
                         if file != "":
-                            options.projects.append(
-                                Project(
-                                    file=file,
-                                    name=name,
-                                    location=location,
-                                    type_storage=type_storage,
-                                    cache_config=cache_config,
-                                    id=s.value("id", str(uuid.uuid4())),
-                                    enable=s.value("enable", True, type=bool),
-                                )
+                            project = Project(
+                                file=file,
+                                name=name,
+                                location=location,
+                                type_storage=type_storage,
+                                cache_config=cache_config,
+                                id=s.value("id", str(uuid.uuid4())),
+                                enable=s.value("enable", True, type=bool),
+                                comment=s.value("comment", ""),
                             )
+                            project.valid = dom_manager.check_if_project_valid(project)
+                            options.projects.append(project)
                 finally:
                     s.endArray()
 
@@ -225,6 +234,8 @@ class PlgOptionsManager:
             s.setValue("optionOpenLinks", plugin_settings_obj.optionOpenLinks)
             s.setValue("optionSourceMD", ",".join(plugin_settings_obj.optionSourceMD))
 
+            s.setValue("browser_name", plugin_settings_obj.browser_name)
+
             s.remove("projects")
             s.beginWriteArray("projects", len(plugin_settings_obj.projects))
             try:
@@ -246,6 +257,7 @@ class PlgOptionsManager:
                         "cache_validation_uri",
                         project.cache_config.cache_validation_uri,
                     )
+                    s.setValue("comment", project.comment)
                     s.endGroup()
             finally:
                 s.endArray()

@@ -16,7 +16,10 @@ from menu_from_project.logic.tools import icon_per_storage_type
 class ProjectListModel(QStandardItemModel):
     NAME_COL = 0
     LOCATION_COL = 1
-    CACHE_COL = 2
+    COMMENT_COL = 2
+    CACHE_COL = 3
+
+    MAX_NB_CHAR_COMMENT = 20
 
     def __init__(self, parent: QObject = None):
         """
@@ -27,7 +30,7 @@ class ProjectListModel(QStandardItemModel):
         """
         super().__init__(parent)
         self.setHorizontalHeaderLabels(
-            [self.tr("Name"), self.tr("Location"), self.tr("Cache")]
+            [self.tr("Name"), self.tr("Location"), self.tr("Comment"), self.tr("Cache")]
         )
 
     def flags(self, index: QModelIndex) -> QtCore.Qt.ItemFlags:
@@ -89,10 +92,25 @@ class ProjectListModel(QStandardItemModel):
             Qt.DecorationRole,
         )
         self.setData(self.index(row, self.LOCATION_COL), project.location)
+
+        # Limit comment display size
+        display_comment = project.comment
+        if len(display_comment) > self.MAX_NB_CHAR_COMMENT:
+            display_comment = f"{project.comment[:self.MAX_NB_CHAR_COMMENT]}..."
+
+        self.setData(self.index(row, self.COMMENT_COL), display_comment)
+        self.setData(self.index(row, self.COMMENT_COL), project.comment, Qt.ToolTipRole)
+
         if project.cache_config.enable:
             self.setData(
                 self.index(row, self.CACHE_COL),
                 QIcon(":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg"),
+                Qt.DecorationRole,
+            )
+        else:
+            self.setData(
+                self.index(row, self.CACHE_COL),
+                None,
                 Qt.DecorationRole,
             )
 
@@ -113,6 +131,7 @@ class ProjectListModel(QStandardItemModel):
         """
         self.setData(self.index(row, self.NAME_COL), color, Qt.BackgroundRole)
         self.setData(self.index(row, self.LOCATION_COL), color, Qt.BackgroundRole)
+        self.setData(self.index(row, self.COMMENT_COL), color, Qt.BackgroundRole)
         self.setData(self.index(row, self.CACHE_COL), color, Qt.BackgroundRole)
 
     def get_row_project(self, row) -> Project:

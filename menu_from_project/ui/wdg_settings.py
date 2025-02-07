@@ -10,13 +10,19 @@ from functools import partial
 
 # PyQGIS
 from qgis.core import QgsApplication, QgsMessageLog
-from qgis.PyQt import uic
+from qgis.gui import QgsOptionsPageWidget, QgsOptionsWidgetFactory
+from qgis.PyQt import QtCore, uic
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QDialog, QHeaderView, QMenu
+from qgis.PyQt.QtWidgets import QAction, QHeaderView, QMenu, QPushButton
 
 # project
-from menu_from_project.__about__ import DIR_PLUGIN_ROOT, __title__, __version__
+from menu_from_project.__about__ import (
+    DIR_PLUGIN_ROOT,
+    __title__,
+    __uri_homepage__,
+    __version__,
+)
 from menu_from_project.datamodel.project import Project
 from menu_from_project.toolbelt.preferences import (
     SOURCE_MD_LAYER,
@@ -32,16 +38,19 @@ from menu_from_project.ui.project_list_model import ProjectListModel
 
 
 # load ui
-FORM_CLASS, _ = uic.loadUiType(DIR_PLUGIN_ROOT / "ui/conf_dialog.ui")
+FORM_CLASS, _ = uic.loadUiType(DIR_PLUGIN_ROOT / "ui/wdg_settings.ui")
 
 # ############################################################################
 # ########## Classes ###############
 # ##################################
 
 
-class MenuConfDialog(QDialog, FORM_CLASS):
+class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
+
+    settingsApplied = QtCore.pyqtSignal()
+
     def __init__(self, parent):
-        QDialog.__init__(self, parent)
+        super().__init__(parent)
         self.setupUi(self)
 
         self.plg_settings = PlgOptionsManager()
@@ -51,22 +60,26 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             self.windowTitle() + " - {} v{}".format(__title__, __version__)
         )
         self.setWindowIcon(
-            QIcon(str(DIR_PLUGIN_ROOT / "resources/gear.svg")),
+            QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
         )
 
         settings = self.plg_settings.get_plg_settings()
-        self.buttonBox.accepted.connect(self.onAccepted)
         self.btnDelete.clicked.connect(self.onDelete)
         self.btnDelete.setText(None)
         self.btnDelete.setIcon(
             QIcon(QgsApplication.iconPath("mActionDeleteSelected.svg"))
         )
+        self.btnDelete.setEnabled(False)
+
         self.btnUp.clicked.connect(self.onMoveUp)
         self.btnUp.setText(None)
         self.btnUp.setIcon(QIcon(QgsApplication.iconPath("mActionArrowUp.svg")))
+        self.btnUp.setEnabled(False)
+
         self.btnDown.clicked.connect(self.onMoveDown)
         self.btnDown.setText(None)
         self.btnDown.setIcon(QIcon(QgsApplication.iconPath("mActionArrowDown.svg")))
+        self.btnDown.setEnabled(False)
 
         # add button
         self.btnAdd.setIcon(QIcon(QgsApplication.iconPath("mActionAdd.svg")))
@@ -94,6 +107,10 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.addMenu.addAction(add_option_http)
         self.btnAdd.setMenu(self.addMenu)
 
+        self._add_action_in_new_project_widget(add_option_file)
+        self._add_action_in_new_project_widget(add_option_http)
+        self._add_action_in_new_project_widget(add_option_pgdb)
+
         # -- Options
         self.cbxLoadAll.setChecked(settings.optionLoadAll)
         self.cbxLoadAll.setTristate(False)
@@ -114,20 +131,50 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         }
         self.optionSourceMD = settings.optionSourceMD
 
+        self.lne_browser_name.setText(settings.browser_name)
+
         self.projetListModel = ProjectListModel(self)
         self.projetListModel.set_project_list(settings.projects)
         self.projectTableView.setModel(self.projetListModel)
+
+        if len(settings.projects) == 0:
+            self.stackedWidget.setCurrentWidget(self.no_project_page)
+        else:
+            self.stackedWidget.setCurrentWidget(self.project_page)
 
         self.projectTableView.selectionModel().selectionChanged.connect(
             self._selected_project_changed
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
-            ProjectListModel.NAME_COL, QHeaderView.ResizeToContents
+            ProjectListModel.NAME_COL, QHeaderView.Stretch
         )
+        self.projectTableView.horizontalHeader().setSectionResizeMode(
+            ProjectListModel.COMMENT_COL, QHeaderView.ResizeToContents
+        )
+        self.projectTableView.horizontalHeader().setSectionResizeMode(
+            ProjectListModel.LOCATION_COL, QHeaderView.ResizeToContents
+        )
+        self.projectTableView.resizeColumnsToContents()
 
         self.projectWidget.projectChanged.connect(self._project_changed)
         if len(settings.projects) != 0:
             self.projectTableView.selectRow(0)
+
+    def _add_action_in_new_project_widget(self, action: QAction) -> None:
+        """Add action in new project widget for project add
+
+        :param action: _description_
+        :type action: QAction
+        """
+        # QPushButton can't directly use QAction, need to define text,icon,toolTip from action
+        btn = QPushButton(action.icon(), action.text(), self)
+        btn.setToolTip(action.toolTip())
+
+        # Connect to QAction trigger
+        btn.clicked.connect(action.trigger)
+
+        # Add to layout
+        self.layout_btn_project_add.addWidget(btn)
 
     def _selected_project_changed(self) -> None:
         """Update displayed project"""
@@ -140,6 +187,15 @@ class MenuConfDialog(QDialog, FORM_CLASS):
             )
             self.projectWidget.set_project(project)
             self.projectWidget.enable_merge_option(row != 0)
+
+            row_count = self.projetListModel.rowCount()
+            self.btnUp.setEnabled(row != 0 and row_count != 1)
+            self.btnDown.setEnabled(row != row_count - 1 and row_count != 1)
+            self.btnDelete.setEnabled(True)
+        else:
+            self.btnUp.setEnabled(False)
+            self.btnDown.setEnabled(False)
+            self.btnDelete.setEnabled(False)
 
     def setSourceMdText(self):
         self.mdSource1.setText(self.sourcesMdText[self.optionSourceMD[0]])
@@ -161,7 +217,11 @@ class MenuConfDialog(QDialog, FORM_CLASS):
 
         settings.optionSourceMD = self.optionSourceMD
 
+        settings.browser_name = self.lne_browser_name.text()
+
         PlgOptionsManager().save_from_object(settings)
+
+        self.settingsApplied.emit()
 
     def onAdd(self, qgs_type_storage: str = "file"):
         """Add a new line to the table.
@@ -179,7 +239,10 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         self.projetListModel.insert_project(project)
         self.projectTableView.selectRow(self.projetListModel.rowCount() - 1)
         self.projectTableView.scrollToBottom()
+        self._selected_project_changed()
+        self.stackedWidget.setCurrentWidget(self.project_page)
 
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent
@@ -193,6 +256,12 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         if len(selected_index) > 0:
             r = selected_index[0].row()
             self.projetListModel.removeRows(r, 1)
+            self._selected_project_changed()
+
+        if self.projetListModel.rowCount() == 0:
+            self.stackedWidget.setCurrentWidget(self.no_project_page)
+        else:
+            self.stackedWidget.setCurrentWidget(self.project_page)
 
     def onMoveUp(self):
         """Move the selected lines upwards."""
@@ -243,3 +312,31 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         if len(selected_index) > 0:
             project = self.projectWidget.get_project()
             self.projetListModel.set_row_project(selected_index[0].row(), project)
+
+    def apply(self):
+        """Called to permanently apply the settings shown in the options page (e.g. \
+        save them to QgsSettings objects). This is usually called when the options \
+        dialog is accepted."""
+        self.onAccepted()
+
+
+class PlgOptionsFactory(QgsOptionsWidgetFactory):
+    settingsApplied = QtCore.pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self.conf_widget = None
+
+    def icon(self):
+        return QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png"))
+
+    def createWidget(self, parent):
+        widget = SettingsWidget(parent)
+        widget.settingsApplied.connect(self.settingsApplied.emit)
+        return widget
+
+    def title(self):
+        return __title__
+
+    def helpId(self) -> str:
+        return __uri_homepage__

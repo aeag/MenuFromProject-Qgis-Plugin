@@ -129,7 +129,9 @@ class ProjectWidget(QWidget):
         self.urlRadioButton.clicked.connect(self._project_changed)
 
         # Location update connection
+        self.newMenuRadioButton.clicked.connect(self._project_changed)
         self.addLayerMenuCheckBox.clicked.connect(self._project_changed)
+
         self.newMenuCheckBox.clicked.connect(self._project_changed)
         self.mergePreviousRadioButton.clicked.connect(self._project_changed)
         self.browserCheckBox.clicked.connect(self._project_changed)
@@ -145,6 +147,9 @@ class ProjectWidget(QWidget):
 
         # Project enable
         self.enableCheckBox.clicked.connect(self._project_changed)
+
+        # Project comment
+        self.lne_comment.textChanged.connect(self._project_changed)
 
     def set_project(self, project: Project) -> None:
         """Define display project
@@ -196,6 +201,8 @@ class ProjectWidget(QWidget):
 
         self._update_path_selection_button_from_project(project)
 
+        self.lne_comment.setText(project.comment)
+
         # Simulate merge location change to update check button
         self._merge_location_changed()
 
@@ -234,16 +241,20 @@ class ProjectWidget(QWidget):
         elif self.urlRadioButton.isChecked():
             type_storage = "http"
 
-        return Project(
+        project = Project(
             id=self.idLineEdit.text(),
             name=self.nameLineEdit.text(),
             location=location,
             file=self.pathLineEdit.text(),
             type_storage=type_storage,
             cache_config=cache_config,
-            valid=self._check_if_project_valid(),
             enable=self.enableCheckBox.isChecked(),
+            comment=self.lne_comment.text(),
         )
+
+        project.valid = self.qgs_dom_manager.check_if_project_valid(project)
+
+        return project
 
     def _select_path(self) -> None:
         """Select project path depending on current type storage:
@@ -323,21 +334,7 @@ class ProjectWidget(QWidget):
             )
             print(f"Erreur lors de l'ouverture du répertoire : {e}")
 
-    def _check_if_project_valid(self) -> bool:
-        """Check if project is valid by reading Qgs project
-
-        :return: True if project is valid, False otherwise
-        :rtype: bool
-        """
-        valid = False
-        text = self.pathLineEdit.text()
-        try:
-            doc, _ = self.qgs_dom_manager.getQgsDoc(text)
-            valid = not doc.isNull()
-        except Exception as err:
-            self.log("Error during project reading: {}".format(err))
-        return valid
-
+    # TODO: until a log manager is implemented
     @staticmethod
     def log(message, application=__title__, indent=0):
         indent_chars = " .. " * indent

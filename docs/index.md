@@ -23,10 +23,11 @@ Styling, actions, labeling, metadata, joined layers and relations are reused as 
 maxdepth: 3
 caption: Usage
 ---
-usage/en_use
-usage/fr_use
-how_does_it_works
-usage/with_qdt
+usage/en/configuration
+usage/en/with_qdt
+usage/fr/index
+usage/fr/with_qdt
+usage/how_does_it_works
 ```
 
 ```{toctree}
@@ -34,6 +35,7 @@ usage/with_qdt
 maxdepth: 1
 caption: Contributing
 ---
+misc/funding
 development/contribute
 development/setup
 development/documentation

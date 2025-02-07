@@ -189,10 +189,24 @@
      <property name="title">
       <string>Advanced</string>
      </property>
-     <property name="collapsed" stdset="0">
+     <property name="collapsed">
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Validation file</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Cache:</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="2">
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
@@ -206,28 +220,7 @@
         </property>
        </spacer>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Validation file</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="3">
-       <widget class="QLabel" name="idLineEdit">
-        <property name="text">
-         <string>&lt;id&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QToolButton" name="clearCacheButton">
-        <property name="text">
-         <string>Clear cache</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="label_5">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -247,15 +240,32 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_6">
+      <item row="4" column="1" colspan="3">
+       <widget class="QgsFileWidget" name="validationFileLineEdit"/>
+      </item>
+      <item row="6" column="1" colspan="3">
+       <widget class="QLabel" name="idLineEdit">
         <property name="text">
-         <string>Cache:</string>
+         <string>&lt;id&gt;</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1" colspan="3">
-       <widget class="QgsFileWidget" name="validationFileLineEdit" native="true"/>
+      <item row="1" column="3">
+       <widget class="QToolButton" name="clearCacheButton">
+        <property name="text">
+         <string>Clear cache</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_comment">
+        <property name="text">
+         <string>Comment</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1" colspan="3">
+       <widget class="QLineEdit" name="lne_comment"/>
       </item>
      </layout>
     </widget>
