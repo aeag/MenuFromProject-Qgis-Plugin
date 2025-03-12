@@ -7,16 +7,16 @@
 
 ## English :gb:
 
-This plugin provides a convenient way to add prestyled and configured frequently used layers using dropdown menus built by simply reading existing QGIS projects (qgs, qgz, postgres, Web resource)
+This extension for QGIS automatically builds menus and/or enhances the explorer panel, allowing layers defined in external "model" QGIS projects (QGS, QGZ, Postgres, web resources) to be added.
 
 Styling, actions, labeling, metadata, joined layers are reused as defined in source qgs projects
 
-:book: Whole documentation is available just here: <https://aeag.github.io/MenuFromProject-Qgis-Plugin/usage/en_use.html>
+:book: Whole documentation is available just here: <https://aeag.github.io/MenuFromProject-Qgis-Plugin/usage/en/configuration.html>
 
 ## Français :fr:
 
-Cette extension pour QGIS permet de construire automatiquement des menus déroulants permettant d'ajouter des couches préstylées définies dans des projets qgis externes "modèles" (qgs, qgz, postgres, ressource web).
+Cette extension pour QGIS permet de construire automatiquement des menus et/ou d'enrichir le panneau explorateur, permettant l'ajout de couches définies dans des projets qgis externes "modèles" (qgs, qgz, postgres, ressource web).
 
-Tous les paramètrages des couches, le style, les étiquettes, les actions, les métadonnées, les jointures sont conservés. La maintenance se résume à la gestion de quelques projets QGIS centralisés.
+Tous les paramétrages des couches, le style, les étiquettes, les actions, les métadonnées, les jointures sont conservés. La maintenance se résume à la gestion de quelques projets QGIS centralisés.
 
-:book: La documentation ici : <https://aeag.github.io/MenuFromProject-Qgis-Plugin/usage/fr_use.html>
+:book: La documentation ici : <https://aeag.github.io/MenuFromProject-Qgis-Plugin/usage/fr/index.html>
