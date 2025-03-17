@@ -4,22 +4,22 @@
 <context>
     <name>CacheManager</name>
     <message>
-        <location filename="../../logic/cache_manager.py" line="167"/>
+        <location filename="../../logic/cache_manager.py" line="181"/>
         <source>Cache disabled for project {project.name}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="187"/>
+        <location filename="../../logic/cache_manager.py" line="201"/>
         <source>Cache is not up to date since {refresh_date} for project {project.name}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="204"/>
+        <location filename="../../logic/cache_manager.py" line="218"/>
         <source>Cache is not up to date with last release version in cache validation file {last_release} for project {project.name}.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="223"/>
+        <location filename="../../logic/cache_manager.py" line="237"/>
         <source>Cache disabled for project {project.name}. Reloading data.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -247,17 +247,17 @@
 <context>
     <name>MenuFromProject</name>
     <message>
-        <location filename="../../menu_from_project.py" line="354"/>
+        <location filename="../../menu_from_project.py" line="373"/>
         <source>Load all</source>
         <translation>すべてを読み込む</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="457"/>
+        <location filename="../../menu_from_project.py" line="475"/>
         <source>Projects configuration</source>
         <translation>プロジェクトのコンフィグ</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="472"/>
+        <location filename="../../menu_from_project.py" line="490"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
@@ -277,27 +277,27 @@
         <translation type="obsolete">レイヤーノート</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="131"/>
+        <location filename="../../menu_from_project.py" line="149"/>
         <source>Load projects menu configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="168"/>
+        <location filename="../../menu_from_project.py" line="187"/>
         <source>Can&apos;t define project configuration for project {project.name}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="392"/>
+        <location filename="../../menu_from_project.py" line="411"/>
         <source>Display layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="393"/>
+        <location filename="../../menu_from_project.py" line="412"/>
         <source>Versions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="399"/>
+        <location filename="../../menu_from_project.py" line="417"/>
         <source>Latest</source>
         <translation type="unfinished"></translation>
     </message>
@@ -626,32 +626,32 @@
         <translation type="unfinished">リンクされたレイヤーも読み込みます。</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="88"/>
+        <location filename="../../ui/wdg_settings.py" line="97"/>
         <source>Add from file</source>
         <translation type="unfinished">ファイルから追加</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="93"/>
+        <location filename="../../ui/wdg_settings.py" line="102"/>
         <source>Add from PostgreSQL database</source>
         <translation type="unfinished">PostgreSQLデータベースから追加</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="98"/>
+        <location filename="../../ui/wdg_settings.py" line="107"/>
         <source>Add from URL</source>
         <translation type="unfinished">URLから追加</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="129"/>
+        <location filename="../../ui/wdg_settings.py" line="138"/>
         <source>QGIS Server metadata</source>
         <translation type="unfinished">サーバーメタデータ</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="130"/>
+        <location filename="../../ui/wdg_settings.py" line="139"/>
         <source>Layer Metadata</source>
         <translation type="unfinished">レイヤメタデータ</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="131"/>
+        <location filename="../../ui/wdg_settings.py" line="140"/>
         <source>Layer Notes</source>
         <translation type="unfinished">レイヤーノート</translation>
     </message>

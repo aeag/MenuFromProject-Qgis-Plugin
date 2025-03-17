@@ -4,22 +4,22 @@
 <context>
     <name>CacheManager</name>
     <message>
-        <location filename="../../logic/cache_manager.py" line="167"/>
+        <location filename="../../logic/cache_manager.py" line="181"/>
         <source>Cache disabled for project {project.name}</source>
         <translation>Cache désactivé pour le projet {project.name}</translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="187"/>
+        <location filename="../../logic/cache_manager.py" line="201"/>
         <source>Cache is not up to date since {refresh_date} for project {project.name}.</source>
         <translation>Le cache n&apos;est pas à jour depuis {refresh_date} pour le projet {project.name}.</translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="204"/>
+        <location filename="../../logic/cache_manager.py" line="218"/>
         <source>Cache is not up to date with last release version in cache validation file {last_release} for project {project.name}.</source>
         <translation>Le cache n&apos;est pas à jour avec la dernière version issue du fichier de validation {last_release} pour le projet {project.name}.</translation>
     </message>
     <message>
-        <location filename="../../logic/cache_manager.py" line="223"/>
+        <location filename="../../logic/cache_manager.py" line="237"/>
         <source>Cache disabled for project {project.name}. Reloading data.</source>
         <translation>Cache désactivé pour le projet {project.name}. Rechargement des données.</translation>
     </message>
@@ -302,17 +302,17 @@
 <context>
     <name>MenuFromProject</name>
     <message>
-        <location filename="../../menu_from_project.py" line="354"/>
+        <location filename="../../menu_from_project.py" line="373"/>
         <source>Load all</source>
         <translation>Tout ajouter</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="457"/>
+        <location filename="../../menu_from_project.py" line="475"/>
         <source>Projects configuration</source>
         <translation>Configurer les projets</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="472"/>
+        <location filename="../../menu_from_project.py" line="490"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
@@ -332,27 +332,27 @@
         <translation type="obsolete">Notes de couche</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="131"/>
+        <location filename="../../menu_from_project.py" line="149"/>
         <source>Load projects menu configuration</source>
         <translation>Chargement de la configuration des projets de menus</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="168"/>
+        <location filename="../../menu_from_project.py" line="187"/>
         <source>Can&apos;t define project configuration for project {project.name}</source>
         <translation>Impossible de définir la configuration pour le projet {project.name}</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="392"/>
+        <location filename="../../menu_from_project.py" line="411"/>
         <source>Display layer</source>
         <translation>Ajouter la couche</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="393"/>
+        <location filename="../../menu_from_project.py" line="412"/>
         <source>Versions</source>
         <translation>Versions</translation>
     </message>
     <message>
-        <location filename="../../menu_from_project.py" line="399"/>
+        <location filename="../../menu_from_project.py" line="417"/>
         <source>Latest</source>
         <translation>Dernière version</translation>
     </message>
@@ -701,32 +701,32 @@
         <translation>Ouvrir aussi les couches liées.</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="88"/>
+        <location filename="../../ui/wdg_settings.py" line="97"/>
         <source>Add from file</source>
         <translation>Fichier QGS/QGZ</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="93"/>
+        <location filename="../../ui/wdg_settings.py" line="102"/>
         <source>Add from PostgreSQL database</source>
         <translation>Depuis une base de données PostgreSQL</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="98"/>
+        <location filename="../../ui/wdg_settings.py" line="107"/>
         <source>Add from URL</source>
         <translation>URL distante (HTTP)</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="129"/>
+        <location filename="../../ui/wdg_settings.py" line="138"/>
         <source>QGIS Server metadata</source>
         <translation>Métadonnées OGC du serveur QGIS</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="130"/>
+        <location filename="../../ui/wdg_settings.py" line="139"/>
         <source>Layer Metadata</source>
         <translation>Métadonnées de la couche</translation>
     </message>
     <message>
-        <location filename="../../ui/wdg_settings.py" line="131"/>
+        <location filename="../../ui/wdg_settings.py" line="140"/>
         <source>Layer Notes</source>
         <translation>Notes de la couche</translation>
     </message>
@@ -743,7 +743,7 @@
     <message>
         <location filename="../../ui/wdg_settings.ui" line="403"/>
         <source>Browser entry name:</source>
-        <translation>Nom de l&apos;entrée dans le navgiateur QGIS :</translation>
+        <translation>Nom de l&apos;entrée dans le navigateur QGIS :</translation>
     </message>
 </context>
 <context>
