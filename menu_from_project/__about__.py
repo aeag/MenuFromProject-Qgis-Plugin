@@ -1,8 +1,8 @@
 #! python3  # noqa: E265
 
 """
-    Metadata about the package to easily retrieve informations about it.
-    See: https://packaging.python.org/guides/single-sourcing-package-version/
+Metadata about the package to easily retrieve informations about it.
+See: https://packaging.python.org/guides/single-sourcing-package-version/
 """
 
 from configparser import ConfigParser
@@ -54,6 +54,9 @@ __plugin_md__ = plugin_metadata_as_dict()
 __author__ = __plugin_md__.get("general").get("author")
 __copyright__ = "2014 - {0}, {1}".format(date.today().year, __author__)
 __email__ = __plugin_md__.get("general").get("email")
+__icon_path__: Path = DIR_PLUGIN_ROOT.resolve() / __plugin_md__.get("general").get(
+    "icon"
+)
 __keywords__ = __plugin_md__.get("general").get("repository").split("tags")
 __license__ = "GPL-2.0"
 __summary__ = "{}\n{}".format(
@@ -96,3 +99,4 @@ if __name__ == "__main__":
             plugin_md.get("general").get("qgismaximumversion"),
         )
     )
+    print(f"Plugin icon: {__icon_path__} ({__icon_path__.is_file()})")

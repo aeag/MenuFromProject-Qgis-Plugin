@@ -1,7 +1,7 @@
 #! python3  # noqa: E265
 
 """
-    Dialog for setting up the plugin.
+Dialog for setting up the plugin.
 """
 
 # Standard library
@@ -19,6 +19,7 @@ from qgis.PyQt.QtWidgets import QAction, QHeaderView, QMenu, QPushButton
 # project
 from menu_from_project.__about__ import (
     DIR_PLUGIN_ROOT,
+    __icon_path__,
     __title__,
     __uri_homepage__,
     __version__,
@@ -60,7 +61,7 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
             self.windowTitle() + " - {} v{}".format(__title__, __version__)
         )
         self.setWindowIcon(
-            QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
+            QIcon(f"{__icon_path__.resolve()}"),
         )
 
         settings = self.plg_settings.get_plg_settings()
@@ -328,7 +329,7 @@ class PlgOptionsFactory(QgsOptionsWidgetFactory):
         self.conf_widget = None
 
     def icon(self):
-        return QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png"))
+        return QIcon(f"{__icon_path__.resolve()}")
 
     def createWidget(self, parent):
         widget = SettingsWidget(parent)

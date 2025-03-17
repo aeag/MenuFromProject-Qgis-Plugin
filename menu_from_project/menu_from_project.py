@@ -30,7 +30,12 @@ from qgis.PyQt.QtGui import QDesktopServices, QFont, QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu
 
 # project
-from menu_from_project.__about__ import DIR_PLUGIN_ROOT, __title__, __uri_homepage__
+from menu_from_project.__about__ import (
+    DIR_PLUGIN_ROOT,
+    __icon_path__,
+    __title__,
+    __uri_homepage__,
+)
 
 # PyQGIS
 from menu_from_project.datamodel.project import Project
@@ -455,7 +460,7 @@ class MenuFromProject:
 
             # menu item - Main
             self.action_project_configuration = QAction(
-                QIcon(str(DIR_PLUGIN_ROOT / "resources/menu_from_project.png")),
+                QIcon(f"{__icon_path__.resolve()}"),
                 self.tr("Projects configuration"),
                 self.iface.mainWindow(),
             )
