@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>659</width>
+    <width>661</width>
     <height>447</height>
    </rect>
   </property>
@@ -219,7 +219,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Load all layers item</string>
+         <string>Load all layers items</string>
         </property>
         <property name="tristate">
          <bool>false</bool>
@@ -264,7 +264,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="lbl_priority_first">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -272,7 +272,10 @@
            </font>
           </property>
           <property name="text">
-           <string>1 :</string>
+           <string>1:</string>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
           </property>
          </widget>
         </item>
@@ -282,7 +285,7 @@
            <cursorShape>OpenHandCursor</cursorShape>
           </property>
           <property name="text">
-           <string>OGC QGis Server metadata</string>
+           <string>OGC QGIS Server metadata</string>
           </property>
           <property name="checkable">
            <bool>false</bool>
@@ -299,7 +302,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="lbl_priority_second">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -307,7 +310,10 @@
            </font>
           </property>
           <property name="text">
-           <string>2 :</string>
+           <string>2:</string>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
           </property>
          </widget>
         </item>
@@ -330,7 +336,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="lbl_priority_third">
           <property name="font">
            <font>
             <weight>75</weight>
@@ -338,7 +344,10 @@
            </font>
           </property>
           <property name="text">
-           <string>3 :</string>
+           <string>3:</string>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::NoTextInteraction</set>
           </property>
          </widget>
         </item>
@@ -389,9 +398,12 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_browser_name">
+       <widget class="QLabel" name="lbl_browser_name">
         <property name="text">
-         <string>Browser name</string>
+         <string>Browser entry name:</string>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::NoTextInteraction</set>
         </property>
        </widget>
       </item>

@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>475</height>
+    <width>639</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Project configuration</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -40,31 +43,37 @@
     </spacer>
    </item>
    <item row="1" column="0" colspan="3">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_3">
+    <widget class="QgsCollapsibleGroupBox" name="qgrp_source">
      <property name="title">
       <string>QGIS project path</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="1" column="1">
-       <widget class="QLineEdit" name="pathLineEdit"/>
+       <widget class="QLineEdit" name="lne_project_path_uri"/>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="lbl_project_path">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Local path, remote URL (http(s)://) or PostgreSQL URI</string>
+        </property>
         <property name="text">
-         <string>Path</string>
+         <string>Path:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QToolButton" name="pathSelectionButton">
+       <widget class="QToolButton" name="btn_project_path_selection">
         <property name="text">
-         <string>...</string>
+         <string notr="true">...</string>
+        </property>
+        <property name="shortcut">
+         <string notr="true"/>
         </property>
        </widget>
       </item>
@@ -74,23 +83,23 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="fileRatioButton">
+         <widget class="QRadioButton" name="rbn_source_type_file">
           <property name="text">
            <string>File</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="urlRadioButton">
+         <widget class="QRadioButton" name="rbn_source_type_url">
           <property name="text">
            <string>URL</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="postgresqlRadioButton">
+         <widget class="QRadioButton" name="rbn_source_type_postgresql">
           <property name="text">
-           <string>Postgresql</string>
+           <string>PostgreSQL</string>
           </property>
          </widget>
         </item>
@@ -113,27 +122,36 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLineEdit" name="nameLineEdit">
+    <widget class="QLineEdit" name="lne_configuration_name">
+     <property name="toolTip">
+      <string>Label used as menu name. If not set, the project's title is used or the file/table name as fallback.</string>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="placeholderText">
+      <string>Menu name</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="3" column="0" colspan="3">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox">
+    <widget class="QgsCollapsibleGroupBox" name="qgrp_cache">
      <property name="title">
       <string>Cache configuration</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="2">
-       <widget class="QgsSpinBox" name="refreshIntervalSpinBox">
+       <widget class="QgsSpinBox" name="qsbx_cache_refresh_interval">
         <property name="suffix">
          <string> days</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="lbl_cache_refresh_interval">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -146,7 +164,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QCheckBox" name="enableCacheCheckBox">
+       <widget class="QCheckBox" name="cbx_cache_enable">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -165,14 +183,14 @@
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QCheckBox" name="enableCheckBox">
+    <widget class="QCheckBox" name="cbx_project_config_enable">
      <property name="text">
       <string>Enable/disable</string>
      </property>
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="lbl_project_name">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -180,12 +198,12 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Name</string>
+      <string>Name:</string>
      </property>
     </widget>
    </item>
    <item row="4" column="0" colspan="3">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_4">
+    <widget class="QgsCollapsibleGroupBox" name="qgrp_advanced">
      <property name="title">
       <string>Advanced</string>
      </property>
@@ -194,14 +212,14 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="4" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="lbl_cache_validation_filepath">
         <property name="text">
-         <string>Validation file</string>
+         <string>Validation file:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="lbl_cache_management">
         <property name="text">
          <string>Cache:</string>
         </property>
@@ -221,63 +239,91 @@
        </spacer>
       </item>
       <item row="6" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="lbl_cache_id">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Projectc configuration UUID</string>
+        </property>
         <property name="text">
-         <string>ID</string>
+         <string>ID:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QToolButton" name="openCacheButton">
+       <widget class="QToolButton" name="btn_cache_open_folder">
         <property name="text">
          <string>Open cache folder</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1" colspan="3">
-       <widget class="QgsFileWidget" name="validationFileLineEdit"/>
+       <widget class="QgsFileWidget" name="qfile_cache_validation"/>
       </item>
       <item row="6" column="1" colspan="3">
-       <widget class="QLabel" name="idLineEdit">
+       <widget class="QLabel" name="lbl_cache_id_display">
+        <property name="cursor">
+         <cursorShape>IBeamCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Unique identifier autogenerated to identify this project configuration.</string>
+        </property>
+        <property name="statusTip">
+         <string notr="true"/>
+        </property>
+        <property name="autoFillBackground">
+         <bool>true</bool>
+        </property>
         <property name="text">
-         <string>&lt;id&gt;</string>
+         <string notr="true">&lt;id&gt;</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::TextSelectableByMouse</set>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QToolButton" name="clearCacheButton">
+       <widget class="QToolButton" name="btn_cache_clear">
         <property name="text">
          <string>Clear cache</string>
         </property>
        </widget>
       </item>
       <item row="5" column="0">
-       <widget class="QLabel" name="label_comment">
+       <widget class="QLabel" name="lbl_comment">
         <property name="text">
-         <string>Comment</string>
+         <string>Comment:</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1" colspan="3">
-       <widget class="QLineEdit" name="lne_comment"/>
+       <widget class="QLineEdit" name="lne_comment">
+        <property name="toolTip">
+         <string>Short description not visible to end-users. Useful to share information between configuration editors.</string>
+        </property>
+        <property name="placeholderText">
+         <string/>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item row="2" column="0" colspan="3">
-    <widget class="QgsCollapsibleGroupBox" name="mGroupBox_2">
+    <widget class="QgsCollapsibleGroupBox" name="qgrp_destination">
      <property name="title">
       <string>Locations</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="3">
-       <widget class="QCheckBox" name="newMenuCheckBox">
+       <widget class="QCheckBox" name="cbx_dest_menu_bar">
         <property name="text">
          <string>Menu bar</string>
         </property>
@@ -287,7 +333,7 @@
        </widget>
       </item>
       <item row="1" column="0" colspan="6">
-       <widget class="QRadioButton" name="mergePreviousRadioButton">
+       <widget class="QRadioButton" name="rbn_merge_with_previous">
         <property name="text">
          <string>Merge with previous</string>
         </property>
@@ -307,9 +353,9 @@
        </spacer>
       </item>
       <item row="0" column="0">
-       <widget class="QRadioButton" name="newMenuRadioButton">
+       <widget class="QRadioButton" name="rbn_create_new">
         <property name="text">
-         <string>New menu in</string>
+         <string>Create new menu in:</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -317,14 +363,14 @@
        </widget>
       </item>
       <item row="0" column="4">
-       <widget class="QCheckBox" name="browserCheckBox">
+       <widget class="QCheckBox" name="cbx_dest_browser">
         <property name="text">
          <string>Browser</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QCheckBox" name="addLayerMenuCheckBox">
+       <widget class="QCheckBox" name="cbx_dest_layer_menu">
         <property name="text">
          <string>Layer menu</string>
         </property>
