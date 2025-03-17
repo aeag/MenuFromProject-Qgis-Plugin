@@ -96,7 +96,7 @@ class ProjectListModel(QStandardItemModel):
         # Limit comment display size
         display_comment = project.comment
         if len(display_comment) > self.MAX_NB_CHAR_COMMENT:
-            display_comment = f"{project.comment[:self.MAX_NB_CHAR_COMMENT]}..."
+            display_comment = f"{project.comment[: self.MAX_NB_CHAR_COMMENT]}..."
 
         self.setData(self.index(row, self.COMMENT_COL), display_comment)
         self.setData(self.index(row, self.COMMENT_COL), project.comment, Qt.ToolTipRole)

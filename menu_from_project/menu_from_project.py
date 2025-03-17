@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from qgis.core import QgsApplication, QgsMessageLog, QgsSettings, QgsTask
+from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, QLocale, Qt, QTranslator, QUrl
 from qgis.PyQt.QtGui import QDesktopServices, QFont, QIcon
 from qgis.PyQt.QtWidgets import QAction, QMenu
@@ -64,12 +65,17 @@ from menu_from_project.ui.wdg_settings import PlgOptionsFactory
 
 
 class MenuFromProject:
-
     def on_initializationCompleted(self):
         # build menu
         self.initMenus()
 
-    def __init__(self, iface):
+    def __init__(self, iface: QgisInterface) -> None:
+        """Constructor.
+
+        :param iface: An interface instance that will be passed to this class which \
+        provides the hook by which you can manipulate the QGIS application at run time.
+        :type iface: QgsInterface
+        """
         self.task = None
         self.path = QFileInfo(os.path.realpath(__file__)).path()
 
@@ -106,9 +112,16 @@ class MenuFromProject:
         self.registry = QgsApplication.instance().dataItemProviderRegistry()
         self.provider = None
 
-    @staticmethod
-    def tr(message):
-        return QCoreApplication.translate("MenuFromProject", message)
+    def tr(self, message: str) -> str:
+        """Get the translation for a string using Qt translation API.
+
+        :param message: string to be translated.
+        :type message: str
+
+        :returns: Translated version of message.
+        :rtype: str
+        """
+        return QCoreApplication.translate(self.__class__.__name__, message)
 
     # TODO: until a log manager is implemented
     @staticmethod
@@ -400,7 +413,6 @@ class MenuFromProject:
 
         # Create action or menu for each version
         for version, format_list in layer_dict.items():
-
             version_label = version if version else self.tr("Latest")
             version_menu = all_version_menu.addMenu(version_label)
 

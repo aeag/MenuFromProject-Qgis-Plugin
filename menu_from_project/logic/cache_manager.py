@@ -10,6 +10,7 @@ from typing import List, Optional
 
 # PyQGIS
 from qgis.core import QgsApplication, QgsFileDownloader, QgsMessageLog
+from qgis.gui import QgisInterface
 from qgis.PyQt.QtCore import QCoreApplication, QEventLoop, QUrl
 
 # project
@@ -25,14 +26,27 @@ class CacheManager:
     :type iface: QgsInterface
     """
 
-    DATETIME_FORMAT = "%d/%m/%Y %H:%M:%S"
+    DATETIME_FORMAT: str = "%d/%m/%Y %H:%M:%S"
 
-    def __init__(self, iface) -> None:
+    def __init__(self, iface: QgisInterface) -> None:
+        """Class initialization.
+
+        :param iface: An interface instance that will be passed to this class which \
+        provides the hook by which you can manipulate the QGIS application at run time.
+        :type iface: QgsInterface
+        """
         self.iface = iface
 
-    @staticmethod
-    def tr(message):
-        return QCoreApplication.translate("MenuFromProject", message)
+    def tr(self, message: str) -> str:
+        """Get the translation for a string using Qt translation API.
+
+        :param message: string to be translated.
+        :type message: str
+
+        :returns: Translated version of message.
+        :rtype: str
+        """
+        return QCoreApplication.translate(self.__class__.__name__, message)
 
     # TODO: until a log manager is implemented
     @staticmethod
@@ -260,12 +274,14 @@ class CacheManager:
 
         :param project: dict of information about the project
         :type project: Project
+
         :return: path to project cache directory
         :rtype: Path
         """
         cache_path = Path(QgsApplication.qgisSettingsDirPath())
         cache_path = cache_path / "cache" / "menu_from_project" / project.id
         cache_path.mkdir(parents=True, exist_ok=True)
+
         return cache_path
 
     def get_project_download_dir(self, project: Project) -> Path:
@@ -273,10 +289,12 @@ class CacheManager:
 
         :param project: dict of information about the project
         :type project: Project
+
         :return: path to project cache directory
         :rtype: Path
         """
         cache_path = self.get_project_cache_dir(project)
         cache_path = cache_path / "downloads"
         cache_path.mkdir(parents=True, exist_ok=True)
+
         return cache_path

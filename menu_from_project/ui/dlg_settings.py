@@ -1,7 +1,7 @@
 #! python3  # noqa: E265
 
 """
-    Dialog for setting up the plugin.
+Dialog for setting up the plugin.
 """
 
 # Standard library
@@ -10,7 +10,7 @@
 from functools import partial
 
 from qgis.PyQt import uic
-from qgis.PyQt.Qt import QUrl
+from qgis.PyQt.QtCore import QUrl
 from qgis.PyQt.QtGui import QDesktopServices
 from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox
 

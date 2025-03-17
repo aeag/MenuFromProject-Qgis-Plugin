@@ -1,7 +1,7 @@
 #! python3  # noqa: E265
 
 """
-    Functions used to manage QGIS Projects: read, extract, get properties.
+Functions used to manage QGIS Projects: read, extract, get properties.
 """
 
 # Standard library
