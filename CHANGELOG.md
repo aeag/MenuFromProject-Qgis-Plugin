@@ -10,14 +10,35 @@ Unreleased
 
 -->
 
+## 2.4.0 - 2025-03-17
+
+<!-- Release notes generated using configuration in .github/release.yml at master -->
+
+## What's Changed
+
+* (fix): small fixes for project configuration UI by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/163>
+* Feat/layer version and format by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/159>
+* Feat/refactor project configuration widget by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/133>
+* feat(projet conf): update merge selection by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/161>
+* feat(menu): always use version for layer action creation by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/162>
+* add(docs): broadcast project's sponsors by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/160>
+* feat(browser): add option to define name in browser by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/165>
+* feat(config UI) : small changes by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/166>
+* feat(config widget): add stacked widget if no project available by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/167>
+* feat(conf widget): transform QDialog in QgsOptionsPageWidget by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/168>
+* feat(project): add new comment parameter for project by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/169>
+* feat(config dialog): add help button by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/170>
+* UI: homogenize Qt widgets and complete French translation by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/175>
+* update(docs): add QDT helper by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/156>
+
 ## 2.4.0-beta3 - 2025-02-06
 
-* feat(browser): add option to define name in browser by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/165
-* feat(config UI) : small changes by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/166
-* feat(config widget): add stacked widget if no project available by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/167
-* feat(conf widget): transform QDialog in QgsOptionsPageWidget by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/168
-* feat(project): add new comment parameter for project by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/169
-* feat(config dialog): add help button by @jmkerloch in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/170
+* feat(browser): add option to define name in browser by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/165>
+* feat(config UI) : small changes by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/166>
+* feat(config widget): add stacked widget if no project available by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/167>
+* feat(conf widget): transform QDialog in QgsOptionsPageWidget by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/168>
+* feat(project): add new comment parameter for project by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/169>
+* feat(config dialog): add help button by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/170>
 
 ## 2.4.0-beta2 - 2025-01-31
 
