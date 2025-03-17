@@ -229,7 +229,7 @@ class CacheManager:
         if json_cache_path.exists():
             with open(json_cache_path, "r", encoding="UTF-8") as f:
                 data = json.load(f)
-                return MenuProjectConfig.from_json(data)
+            return MenuProjectConfig.from_dict(data)
         return None
 
     def save_project_menu_config(

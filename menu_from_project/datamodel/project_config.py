@@ -8,7 +8,7 @@ from qgis.core import QgsMapLayerType, QgsWkbTypes
 
 @dataclass
 class MenuLayerConfig:
-    """Class to store configuration for layer menu creation"""
+    """Class to store configuration for layer menu creation."""
 
     name: str
     layer_id: str
@@ -30,7 +30,7 @@ class MenuLayerConfig:
 
 @dataclass
 class MenuGroupConfig:
-    """Class to store configuration for group menu creation"""
+    """Class to store configuration for group menu creation."""
 
     name: str
     filename: str
@@ -45,6 +45,7 @@ class MenuGroupConfig:
 
         :param layer_name_list: layer config list
         :type layer_name_list: List[MenuLayerConfig]
+
         :return: dict of layer list by version
         :rtype: Dict[str, List[MenuLayerConfig]]
         """
@@ -61,6 +62,7 @@ class MenuGroupConfig:
 
         :param name: layer name
         :type name: str
+
         :return: list of layer configuration
         :rtype: List[MenuLayerConfig]
         """
@@ -71,11 +73,19 @@ class MenuGroupConfig:
         ]
 
     @classmethod
-    def from_json(cls, data):
+    def from_dict(cls, data: dict) -> "MenuGroupConfig":
+        """Convert dictionary data into MenuGroupConfig object.
+
+        :param data: input data , typiclly loaded from a JSON file.
+        :type data: dict
+
+        :return: MenuGroupConfig dataclass instanciated
+        :rtype: MenuGroupConfig
+        """
         childs = []
         for child in data["childs"]:
             if "childs" in child:
-                childs.append(cls.from_json(child))
+                childs.append(cls.from_dict(child))
             else:
                 childs.append(MenuLayerConfig(**child))
         res = cls(
@@ -89,7 +99,7 @@ class MenuGroupConfig:
 
 @dataclass
 class MenuProjectConfig:
-    """Class to store configuration for project menu creation"""
+    """Class to store configuration for project menu creation."""
 
     project_name: str
     filename: str
@@ -97,20 +107,20 @@ class MenuProjectConfig:
     root_group: MenuGroupConfig
 
     @classmethod
-    def from_json(cls, data):
+    def from_dict(cls, data: dict) -> "MenuProjectConfig":
+        """Convert dictionary data into MenuProjectConfig object.
+
+        :param data: input data , typiclly loaded from a JSON file.
+        :type data: dict
+
+        :return: MenuProjectConfig dataclass instanciated
+        :rtype: MenuProjectConfig
         """
-        Define User from json data
 
-        Args:
-            data: json data
-
-        Returns: User
-
-        """
         res = cls(
             filename=data["filename"],
             uri=data["uri"],
             project_name=data["project_name"],
-            root_group=MenuGroupConfig.from_json(data["root_group"]),
+            root_group=MenuGroupConfig.from_dict(data["root_group"]),
         )
         return res
