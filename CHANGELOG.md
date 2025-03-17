@@ -12,11 +12,9 @@ Unreleased
 
 ## 2.4.0 - 2025-03-17
 
-<!-- Release notes generated using configuration in .github/release.yml at master -->
-
-## What's Changed
-
 * (fix): small fixes for project configuration UI by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/163>
+* Improve: methods naming and docstrings by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/176>
+* Fix: Qt6 compatibility before releasing 2.4.0 by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/177>
 * Feat/layer version and format by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/159>
 * Feat/refactor project configuration widget by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/133>
 * feat(projet conf): update merge selection by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/161>
