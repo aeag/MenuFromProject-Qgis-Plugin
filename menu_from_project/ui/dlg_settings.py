@@ -35,11 +35,11 @@ class MenuConfDialog(QDialog, FORM_CLASS):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
-        self.buttonBox.button(QDialogButtonBox.Apply).clicked.connect(
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(
             self.wdg_config.apply
         )
 
-        self.buttonBox.button(QDialogButtonBox.Help).clicked.connect(
+        self.buttonBox.button(QDialogButtonBox.StandardButton.Help).clicked.connect(
             partial(
                 QDesktopServices.openUrl,
                 QUrl(__uri_homepage__),
