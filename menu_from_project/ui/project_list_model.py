@@ -42,7 +42,7 @@ class ProjectListModel(QStandardItemModel):
         :rtype: QtCore.Qt.ItemFlags
         """
         default_flags = super().flags(index)
-        return default_flags & ~Qt.ItemIsEditable  # Disable editing
+        return default_flags & ~Qt.ItemFlag.ItemIsEditable  # Disable editing
 
     def get_project_list(self) -> List[Project]:
         """Return project list
@@ -84,12 +84,14 @@ class ProjectListModel(QStandardItemModel):
         :type project: Project
         """
         self.setData(self.index(row, self.NAME_COL), project.name)
-        self.setData(self.index(row, self.NAME_COL), project, Qt.UserRole)
-        self.setData(self.index(row, self.NAME_COL), project.file, Qt.ToolTipRole)
+        self.setData(self.index(row, self.NAME_COL), project, Qt.ItemDataRole.UserRole)
+        self.setData(
+            self.index(row, self.NAME_COL), project.file, Qt.ItemDataRole.ToolTipRole
+        )
         self.setData(
             self.index(row, self.NAME_COL),
             QIcon(icon_per_storage_type(project.type_storage)),
-            Qt.DecorationRole,
+            Qt.ItemDataRole.DecorationRole,
         )
         self.setData(self.index(row, self.LOCATION_COL), project.location)
 
@@ -99,19 +101,23 @@ class ProjectListModel(QStandardItemModel):
             display_comment = f"{project.comment[: self.MAX_NB_CHAR_COMMENT]}..."
 
         self.setData(self.index(row, self.COMMENT_COL), display_comment)
-        self.setData(self.index(row, self.COMMENT_COL), project.comment, Qt.ToolTipRole)
+        self.setData(
+            self.index(row, self.COMMENT_COL),
+            project.comment,
+            Qt.ItemDataRole.ToolTipRole,
+        )
 
         if project.cache_config.enable:
             self.setData(
                 self.index(row, self.CACHE_COL),
                 QIcon(":images/themes/default/algorithms/mAlgorithmCheckGeometry.svg"),
-                Qt.DecorationRole,
+                Qt.ItemDataRole.DecorationRole,
             )
         else:
             self.setData(
                 self.index(row, self.CACHE_COL),
                 None,
-                Qt.DecorationRole,
+                Qt.ItemDataRole.DecorationRole,
             )
 
         if not project.enable:
@@ -129,10 +135,18 @@ class ProjectListModel(QStandardItemModel):
         :param color: color to use
         :type color: Optional[QColor]
         """
-        self.setData(self.index(row, self.NAME_COL), color, Qt.BackgroundRole)
-        self.setData(self.index(row, self.LOCATION_COL), color, Qt.BackgroundRole)
-        self.setData(self.index(row, self.COMMENT_COL), color, Qt.BackgroundRole)
-        self.setData(self.index(row, self.CACHE_COL), color, Qt.BackgroundRole)
+        self.setData(
+            self.index(row, self.NAME_COL), color, Qt.ItemDataRole.BackgroundRole
+        )
+        self.setData(
+            self.index(row, self.LOCATION_COL), color, Qt.ItemDataRole.BackgroundRole
+        )
+        self.setData(
+            self.index(row, self.COMMENT_COL), color, Qt.ItemDataRole.BackgroundRole
+        )
+        self.setData(
+            self.index(row, self.CACHE_COL), color, Qt.ItemDataRole.BackgroundRole
+        )
 
     def get_row_project(self, row) -> Project:
         """Get project for a row
@@ -142,4 +156,4 @@ class ProjectListModel(QStandardItemModel):
         :return: project
         :rtype: Project
         """
-        return self.data(self.index(row, self.NAME_COL), Qt.UserRole)
+        return self.data(self.index(row, self.NAME_COL), Qt.ItemDataRole.UserRole)

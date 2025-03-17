@@ -156,13 +156,13 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
             self._selected_project_changed
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
-            ProjectListModel.NAME_COL, QHeaderView.Stretch
+            ProjectListModel.NAME_COL, QHeaderView.ResizeMode.Stretch
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
-            ProjectListModel.COMMENT_COL, QHeaderView.ResizeToContents
+            ProjectListModel.COMMENT_COL, QHeaderView.ResizeMode.ResizeToContents
         )
         self.projectTableView.horizontalHeader().setSectionResizeMode(
-            ProjectListModel.LOCATION_COL, QHeaderView.ResizeToContents
+            ProjectListModel.LOCATION_COL, QHeaderView.ResizeMode.ResizeToContents
         )
         self.projectTableView.resizeColumnsToContents()
 
@@ -193,7 +193,7 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
             row = selected_index[0].row()
             project = self.projetListModel.data(
                 self.projetListModel.index(row, ProjectListModel.NAME_COL),
-                Qt.UserRole,
+                Qt.ItemDataRole.UserRole,
             )
             self.projectWidget.set_project(project)
             self.projectWidget.enable_merge_option(row != 0)

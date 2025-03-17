@@ -150,6 +150,7 @@ class MenuFromProject:
             self.tr("Load projects menu configuration"),
             self.load_all_project_config,
             on_finished=self.project_config_loaded,
+            flags=QgsTask.Flag.Silent,
         )
 
         QgsApplication.taskManager().addTask(self.task)
