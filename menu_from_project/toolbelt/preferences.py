@@ -1,7 +1,7 @@
 #! python3  # noqa: E265
 
 """
-    Plugin settings.
+Plugin settings.
 """
 
 import uuid
@@ -219,7 +219,8 @@ class PlgOptionsManager:
 
     @classmethod
     def save_from_object(cls, plugin_settings_obj: PlgSettingsStructure):
-        """Load and return plugin settings as a dictionary. \
+        """Load and return plugin settings as a dictionary.
+
         Useful to get user preferences across plugin logic.
 
         :return: plugin settings value matching key

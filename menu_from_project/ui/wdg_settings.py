@@ -7,6 +7,7 @@ Dialog for setting up the plugin.
 # Standard library
 import uuid
 from functools import partial
+from typing import Optional
 
 # PyQGIS
 from qgis.core import QgsApplication, QgsMessageLog
@@ -14,7 +15,7 @@ from qgis.gui import QgsOptionsPageWidget, QgsOptionsWidgetFactory
 from qgis.PyQt import QtCore, uic
 from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction, QHeaderView, QMenu, QPushButton
+from qgis.PyQt.QtWidgets import QAction, QHeaderView, QMenu, QPushButton, QWidget
 
 # project
 from menu_from_project.__about__ import (
@@ -47,10 +48,18 @@ FORM_CLASS, _ = uic.loadUiType(DIR_PLUGIN_ROOT / "ui/wdg_settings.ui")
 
 
 class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
+    """Settings widget.
+
+    :param FORM_CLASS: _description_
+    :type FORM_CLASS: _type_
+
+    :param QgsOptionsPageWidget: custom QGIS widget to integrate settings as page
+    :type QgsOptionsPageWidget: QWidget
+    """
 
     settingsApplied = QtCore.pyqtSignal()
 
-    def __init__(self, parent):
+    def __init__(self, parent: Optional[QWidget]):
         super().__init__(parent)
         self.setupUi(self)
 

@@ -16,7 +16,7 @@ from qgis.core import (
     QgsVectorTileLayer,
 )
 from qgis.PyQt import QtXml
-from qgis.PyQt.QtCore import QCoreApplication, QFileInfo, Qt, QUuid
+from qgis.PyQt.QtCore import QFileInfo, Qt, QUuid
 from qgis.utils import iface, plugins
 
 # project
@@ -35,8 +35,10 @@ from menu_from_project.toolbelt.preferences import PlgOptionsManager
 
 
 class LayerLoad:
+    """Layer loader."""
 
     def __init__(self) -> None:
+        """Class initialization."""
         self.canvas = iface.mapCanvas()
         self.plg_settings = PlgOptionsManager()
         self.qgs_dom_manager = QgsDomManager()
@@ -49,10 +51,6 @@ class LayerLoad:
         QgsMessageLog.logMessage(
             f"{indent_chars}{message}", application, notifyUser=True
         )
-
-    @staticmethod
-    def tr(message):
-        return QCoreApplication.translate("MenuFromProject", message)
 
     def addLayer(
         self,
@@ -67,8 +65,9 @@ class LayerLoad:
     ) -> Tuple[Optional[QgsMapLayer], Optional[List[Dict[str, str]]]]:
         """Add layer to current QgsProject.
 
-         Parse Qgis xml document to get layer information and add to QgsProject.
-         If layer has any relations and link layer option is enabled, a list of relation dict is defined
+        Parse Qgis xml document to get layer information and add to QgsProject. If layer
+        has any relations and link layer option is enabled, a list of relation dict is
+        defined.
 
         :param uri: path to QgsProject file. Needed for relative project path resolve
         :type uri: str
