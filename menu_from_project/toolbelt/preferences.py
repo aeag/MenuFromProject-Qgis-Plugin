@@ -15,18 +15,15 @@ from qgis.core import QgsSettings
 
 # package
 from menu_from_project.__about__ import __version__
+from menu_from_project.constants import SOURCE_MD_LAYER, SOURCE_MD_NOTE, SOURCE_MD_OGC
 from menu_from_project.datamodel.project import Project, ProjectCacheConfig
 from menu_from_project.datamodel.project_config import MenuLayerConfig
 from menu_from_project.logic.qgs_manager import QgsDomManager
 from menu_from_project.logic.tools import guess_type_from_uri
 
-# ############################################################################
+############################################################################
 # ########## Classes ###############
 # ##################################
-
-SOURCE_MD_OGC = "ogc"
-SOURCE_MD_LAYER = "layer"
-SOURCE_MD_NOTE = "note"
 
 
 @dataclass

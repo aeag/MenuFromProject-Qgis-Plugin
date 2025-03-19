@@ -25,13 +25,9 @@ from menu_from_project.__about__ import (
     __uri_homepage__,
     __version__,
 )
+from menu_from_project.constants import SOURCE_MD_LAYER, SOURCE_MD_NOTE, SOURCE_MD_OGC
 from menu_from_project.datamodel.project import Project
-from menu_from_project.toolbelt.preferences import (
-    SOURCE_MD_LAYER,
-    SOURCE_MD_NOTE,
-    SOURCE_MD_OGC,
-    PlgOptionsManager,
-)
+from menu_from_project.toolbelt import PlgOptionsManager
 from menu_from_project.ui.project_list_model import ProjectListModel
 
 # ############################################################################
