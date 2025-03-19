@@ -10,6 +10,12 @@ Unreleased
 
 -->
 
+## 2.4.1 - 2025-03-19
+
+* fix(settings): avoid check of project validity when using plugin settings by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/180>
+* Docs: update and restructure documentation to fit 2.4+ plugin versions - part 1 by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/179>
+* fix(tests): use new path to fixtures projects by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/181>
+
 ## 2.4.0 - 2025-03-17
 
 * (fix): small fixes for project configuration UI by @jmkerloch in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/163>

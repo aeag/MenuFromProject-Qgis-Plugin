@@ -8,7 +8,7 @@ If you want to use this plugin with [QGIS Deployment Toolbelt (QDT)](https://qgi
       "folder_name": "menu_from_project",
       "official_repository": true,
       "plugin_id": 43,
-      "version": "2.4.0"
+      "version": "2.4.1"
     }
 ```
 

@@ -8,7 +8,7 @@ Si vous souhaitez déployer ce plugin avec [QGIS Deployment Toolbelt (QDT)](http
       "folder_name": "menu_from_project",
       "official_repository": true,
       "plugin_id": 43,
-      "version": "2.4.0"
+      "version": "2.4.1"
     }
 ```
 
