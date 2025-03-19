@@ -1,4 +1,15 @@
-# Utiliser le plugin Layers menu from project
+# 🇫🇷 Utiliser le plugin Layers menu from project
+
+```{toctree}
+---
+maxdepth: 3
+caption: Table des matières
+---
+try_it
+with_qdt
+```
+
+----
 
 Cette extension pour QGIS permet de construire automatiquement des menus déroulants permettant d'ajouter des couches pré-stylées définies dans des projets QGIS externes "modèles" (qgs, qgz, postgres, web).
 

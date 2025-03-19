@@ -1,4 +1,15 @@
-# How to use the plugin Layers menu from project
+# 🇬🇧 How to use the plugin Layers menu from project
+
+```{toctree}
+---
+maxdepth: 3
+caption: Table of contents
+---
+try_it
+with_qdt
+```
+
+----
 
 That plugin provides a convenient way to add prestyled and preconfigured frequently used layers using dropdown menus built by simply reading existing QGIS projects (qgs, qgz, postgres, http)
 

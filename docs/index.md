@@ -20,13 +20,11 @@ Styling, actions, labeling, metadata, joined layers and relations are reused as 
 
 ```{toctree}
 ---
-maxdepth: 3
+maxdepth: 2
 caption: Usage
 ---
-usage/en/configuration
-usage/en/with_qdt
+usage/en/index
 usage/fr/index
-usage/fr/with_qdt
 usage/how_does_it_works
 ```
 
