@@ -11,11 +11,17 @@ from functools import partial
 
 from qgis.PyQt import uic
 from qgis.PyQt.QtCore import QUrl
-from qgis.PyQt.QtGui import QDesktopServices
+from qgis.PyQt.QtGui import QDesktopServices, QIcon
 from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox
 
 # project
-from menu_from_project.__about__ import DIR_PLUGIN_ROOT, __uri_homepage__
+from menu_from_project.__about__ import (
+    DIR_PLUGIN_ROOT,
+    __icon_path__,
+    __title__,
+    __uri_homepage__,
+    __version__,
+)
 
 # ############################################################################
 # ########## Globals ###############
@@ -34,6 +40,12 @@ class MenuConfDialog(QDialog, FORM_CLASS):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.setupUi(self)
+        self.setWindowTitle(
+            self.windowTitle() + " - {} v{}".format(__title__, __version__)
+        )
+        self.setWindowIcon(
+            QIcon(f"{__icon_path__.resolve()}"),
+        )
 
         self.buttonBox.button(QDialogButtonBox.StandardButton.Apply).clicked.connect(
             self.wdg_config.apply
