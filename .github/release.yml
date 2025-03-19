@@ -10,13 +10,17 @@ changelog:
     - title: Features and enhancements 🎉
       labels:
         - enhancement
+        - Qt6
         - UI
     - title: Tooling 🔧
       labels:
         - ci-cd
-    - title: Documentation 📖
+        - github_actions
+        - packaging
+        - tooling
+    - title: documentation 📖
       labels:
-        - documentation
+        - Documentation
     - title: Other Changes
       labels:
         - "*"
