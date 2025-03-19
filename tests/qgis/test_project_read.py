@@ -37,7 +37,7 @@ class TestProjectMenuConfig(unittest.TestCase):
         """Read a sample project and check returned informations"""
 
         qgs_dom_manager = QgsDomManager()
-        filename = str(Path(__file__).parent / ".." / "projets" / "aeag-tiny.qgz")
+        filename = str(Path(__file__).parent / ".." / "projects" / "aeag-tiny.qgz")
 
         project = Project(
             name="test_import",
