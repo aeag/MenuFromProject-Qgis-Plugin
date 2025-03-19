@@ -23,7 +23,6 @@ from menu_from_project.__about__ import (
     __icon_path__,
     __title__,
     __uri_homepage__,
-    __version__,
 )
 from menu_from_project.datamodel.project import Project
 from menu_from_project.toolbelt.preferences import (
@@ -66,12 +65,6 @@ class SettingsWidget(FORM_CLASS, QgsOptionsPageWidget):
         self.plg_settings = PlgOptionsManager()
 
         self.defaultcursor = self.cursor
-        self.setWindowTitle(
-            self.windowTitle() + " - {} v{}".format(__title__, __version__)
-        )
-        self.setWindowIcon(
-            QIcon(f"{__icon_path__.resolve()}"),
-        )
 
         settings = self.plg_settings.get_plg_settings()
         self.btnDelete.clicked.connect(self.onDelete)
