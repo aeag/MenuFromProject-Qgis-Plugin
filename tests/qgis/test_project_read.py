@@ -1,12 +1,12 @@
 """
-    Usage from the repo root folder:
+Usage from the repo root folder:
 
-    .. code-block:: bash
+.. code-block:: bash
 
-        # for whole tests
-        python -m unittest tests.qgis.test_project_read
-        # for specific test
-        python -m unittest tests.qgis.test_project_read.TestProjectMenuConfig.test_get_project_menu_config
+    # for whole tests
+    python -m unittest tests.qgis.test_project_read
+    # for specific test
+    python -m unittest tests.qgis.test_project_read.TestProjectMenuConfig.test_get_project_menu_config
 """
 
 # standard library
