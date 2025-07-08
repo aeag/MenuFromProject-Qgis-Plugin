@@ -63,25 +63,18 @@ class PlgSettingsStructure:
         :return: tooltip
         :rtype: str
         """
-        if self.optionSourceMD == SOURCE_MD_OGC:
-            abstract = layer_config.abstract or layer_config.metadata_abstract
-            title = layer_config.title or layer_config.metadata_title
-        else:
-            abstract = layer_config.metadata_abstract or layer_config.abstract
-            title = layer_config.metadata_title or layer_config.title
-
         abstract = ""
         title = ""
         for oSource in self.optionSourceMD:
             if oSource == SOURCE_MD_OGC:
+                abstract = layer_config.abstract if abstract == "" else abstract
+                title = title or layer_config.title
+
+            if oSource == SOURCE_MD_LAYER:
                 abstract = (
                     layer_config.metadata_abstract if abstract == "" else abstract
                 )
                 title = title or layer_config.metadata_title
-
-            if oSource == SOURCE_MD_LAYER:
-                abstract = layer_config.abstract if abstract == "" else abstract
-                title = title or layer_config.title
 
             if oSource == SOURCE_MD_NOTE:
                 abstract = layer_config.layer_notes if abstract == "" else abstract
