@@ -2,7 +2,7 @@ exclude: ".venv|tests/dev/|tests/fixtures/"
 fail_fast: false
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-added-large-files
         args:
@@ -13,30 +13,27 @@ repos:
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
-      - id: fix-encoding-pragma
-        args:
-          - --remove
       - id: trailing-whitespace
         args:
           - --markdown-linebreak-ext=md
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.12.2"
+    rev: "v0.13.3"
     hooks:
       - id: ruff
         args:
           - --fix-only
           - --target-version=py39
 
-  - repo: https://github.com/psf/black
-    rev: 25.1.0
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.9.0
     hooks:
       - id: black
         args:
           - --target-version=py39
 
   - repo: https://github.com/pycqa/isort
-    rev: 6.0.1
+    rev: 6.1.0
     hooks:
       - id: isort
         args:
