@@ -462,13 +462,12 @@ class MenuFromProject:
                 self.iface.registerOptionsWidgetFactory(self.options_factory)
                 # Add search path for plugin
                 help_search_paths = QgsSettings().value("help/helpSearchPath")
-                if (
-                    isinstance(help_search_paths, list)
-                    and __uri_homepage__ not in help_search_paths
-                ):
-                    help_search_paths.append(__uri_homepage__)
+                if isinstance(help_search_paths, list):
+                    if __uri_homepage__ not in help_search_paths:
+                        help_search_paths.append(__uri_homepage__)
                 else:
                     help_search_paths = [help_search_paths, __uri_homepage__]
+
                 QgsSettings().setValue("help/helpSearchPath", help_search_paths)
 
             # menu item - Main
