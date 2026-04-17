@@ -22,5 +22,5 @@ supportsQt6=True
 # Author contact information
 
 # versioning
-changelog=
+changelog=v2.4.4
 version=2.4.5-DEV
