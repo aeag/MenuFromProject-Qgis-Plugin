@@ -154,8 +154,13 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          fail_on_unmatched_files: true
-          generate_release_notes: true
+          fail_on_unmatched_files: true # Change to false if no files are required
+          generate_release_notes: false
+          draft: false  # Ensure it's not a draft
+          prerelease: false
+
+      - name: Wait for release to be available
+        run: sleep 5
 
       - name: Deploy plugin
         run: >-
