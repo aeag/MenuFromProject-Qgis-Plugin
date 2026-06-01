@@ -68,6 +68,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -124,6 +126,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -151,10 +155,16 @@ jobs:
           # git add full project
           git add ${{ env.PROJECT_FOLDER }}/
 
+      - name: Ensure tags present
+        run: |
+          git fetch --tags --quiet
+          git tag -l
+          sleep 5
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
-          files: ${{ github.workspace }}/menu_from_project-*.zip
+          # files: ${{ github.workspace }}/menu_from_project-*.zip
           fail_on_unmatched_files: true # Change to false if no files are required
           generate_release_notes: false
           draft: false  # Ensure it's not a draft
