@@ -101,14 +101,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          qgis-plugin-ci package ${GITHUB_REF/refs\/tags\//} \
+          qgis-plugin-ci package latest \
             --allow-uncommitted-changes \
             --plugin-repo-url $(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
 
       - name:
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ env.PROJECT_FOLDER }}-${GITHUB_REF/refs\/tags\//}
+          name: ${{ env.PROJECT_FOLDER }}-latest
           path: |
             plugins.xml
             ${{ env.PROJECT_FOLDER }}.*.zip
