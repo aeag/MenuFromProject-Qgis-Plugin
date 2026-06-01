@@ -171,7 +171,7 @@ jobs:
           prerelease: false
 
       - name: Wait for release to be available
-        run: sleep 5
+        run: sleep 15
 
       - name: Deploy plugin
         run: >-
