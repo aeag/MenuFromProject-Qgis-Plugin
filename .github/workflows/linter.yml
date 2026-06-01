@@ -2,7 +2,7 @@ name: Linter 🐍
 
 env:
   PROJECT_FOLDER: "menu_from_project"
-  PYTHON_VERSION: 3.8
+  PYTHON_VERSION: "3.10"
 
 on:
   push:

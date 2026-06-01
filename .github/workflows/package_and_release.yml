@@ -2,7 +2,7 @@ name: "📦 Packaging & 🚀 Release"
 
 env:
   PROJECT_FOLDER: "menu_from_project"
-  PYTHON_VERSION: 3.9
+  PYTHON_VERSION: "3.10"
 
 on:
   push:
