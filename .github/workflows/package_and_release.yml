@@ -177,8 +177,9 @@ jobs:
         run: >-
           qgis-plugin-ci
           release ${GITHUB_REF/refs\/tags\//}
-          --allow-uncommitted-changes
-          --create-plugin-repo
           --github-token ${{ secrets.GITHUB_TOKEN }}
           --osgeo-username ${{ secrets.OSGEO_USER }}
           --osgeo-password ${{ secrets.OSGEO_PASSWORD }}
+
+        #--allow-uncommitted-changes
+        #--create-plugin-repo
