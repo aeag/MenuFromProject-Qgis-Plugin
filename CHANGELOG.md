@@ -11,20 +11,22 @@ Unreleased
 -->
 ## 2.4.4 - 2026-04-17
 
-* fix corruption of the “helpSearchPath” variable fix #217 by @xcaeag in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/219
+* fix corruption of the "helpSearchPath" variable fix #217 by @xcaeag in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/219>
+* fix release workflow by @Guts
+* complete qgis-plugin-ci configuration by @Guts
 
 ## 2.4.3 - 2026-03-19
 
-* cache disabled by default by @xcaeag in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/218
+* cache disabled by default by @xcaeag in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/218>
 * sorted layers in browser
 
 ## 2.4.2 - 2026-03-02
 
-* fix(ui): restore window's icon and title by @Guts in https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/182
-* QGIS4 support https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/201
-* fix: The "add all" option adds layers in reverse order https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/215
-* fix(cache): Problem if the cache validation file is incorrect https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/184
-* fix(ui): Use QgsProject icon instead of blank page https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/178
+* fix(ui): restore window's icon and title by @Guts in <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/182>
+* QGIS4 support <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/201>
+* fix: The "add all" option adds layers in reverse order <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/215>
+* fix(cache): Problem if the cache validation file is incorrect <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/184>
+* fix(ui): Use QgsProject icon instead of blank page <https://github.com/aeag/MenuFromProject-Qgis-Plugin/pull/178>
 * update(docs): cache configuration
 
 ## 2.4.1 - 2025-03-19
