@@ -103,7 +103,7 @@ jobs:
         run: |
           qgis-plugin-ci package latest \
             --allow-uncommitted-changes \
-            
+
         #--plugin-repo-url $(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
 
       - name:
@@ -180,4 +180,3 @@ jobs:
           --github-token ${{ secrets.GITHUB_TOKEN }}
           --osgeo-username ${{ secrets.OSGEO_USER }}
           --osgeo-password ${{ secrets.OSGEO_PASSWORD }}
-
