@@ -28,6 +28,8 @@ jobs:
   translation:
     name: "💬 i18n compilation"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Get source code
@@ -60,6 +62,8 @@ jobs:
   packaging:
     name: "📦 Packaging plugin"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs:
       - translation
 
@@ -68,15 +72,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: "${{ env.PYTHON_VERSION }}"
           cache: "pip"
           cache-dependency-path: "requirements/packaging.txt"
+          python-version: "${{ env.PYTHON_VERSION }}"
 
       - name: Install project requirements
         run: |
@@ -102,23 +104,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           qgis-plugin-ci package latest \
-            --allow-uncommitted-changes \
-            
-        #--plugin-repo-url $(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
+            --allow-uncommitted-changes \ 
+            --plugin-repo-url $(gh api "repos/$GITHUB_REPOSITORY/pages" --jq '.html_url')
 
-      - name:
-        uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PROJECT_FOLDER }}-latest
           path: |
             plugins.xml
+            plugins.xsl
             ${{ env.PROJECT_FOLDER }}.*.zip
           if-no-files-found: error
 
-# -- ONLY TAGS ----------------------------------------------------------------------
+  # -- ONLY TAGS ----------------------------------------------------------------------
   release:
     name: "🚀 Release on tag"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs:
       - translation
 
@@ -156,20 +159,11 @@ jobs:
           # git add full project
           git add ${{ env.PROJECT_FOLDER }}/
 
-      - name: Ensure tags present
-        run: |
-          git fetch --tags --quiet
-          git tag -l
-          sleep 5
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
           fail_on_unmatched_files: true
           generate_release_notes: true
-
-      - name: Wait for release to be available
-        run: sleep 15
 
       - name: Deploy plugin
         run: >-
@@ -180,4 +174,3 @@ jobs:
           --github-token ${{ secrets.GITHUB_TOKEN }}
           --osgeo-username ${{ secrets.OSGEO_USER }}
           --osgeo-password ${{ secrets.OSGEO_PASSWORD }}
-
