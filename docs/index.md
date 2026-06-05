@@ -47,6 +47,7 @@ development/testing
 maxdepth: 1
 caption: Misc
 ---
+Custom plugin repository <https://aeag.github.io/MenuFromProject-Qgis-Plugin/plugins.xml>
 Changelog <misc/history.md>
 On QGIS Plugins repository <https://plugins.qgis.org/plugins/menu_from_project/>
 ```
