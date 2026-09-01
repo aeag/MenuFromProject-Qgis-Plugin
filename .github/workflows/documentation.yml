@@ -87,7 +87,7 @@ jobs:
 
       - name: Download artifact from build workflow
         if: ${{ env.CONDITION_IS_PUSH || env.CONDITION_IS_WORKFLOW_RUN }}
-        uses: dawidd6/action-download-artifact@v21
+        uses: dawidd6/action-download-artifact@v24
         with:
           allow_forks: false
           branch: master
