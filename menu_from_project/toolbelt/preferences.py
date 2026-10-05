@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 """
 Plugin settings.
@@ -38,7 +38,7 @@ class PlgSettingsStructure:
     version: str = __version__
 
     # Projects
-    projects: List[Project] = field(default_factory=lambda: [])
+    projects: List[Project] = field(default_factory=list)
 
     # Menu option
     optionTooltip: bool = False
@@ -80,10 +80,10 @@ class PlgSettingsStructure:
                 abstract = layer_config.layer_notes if abstract == "" else abstract
 
         if (abstract != "") and (title == ""):
-            tooltip = "<p>{}</p>".format(abstract)
+            tooltip = f"<p>{abstract}</p>"
         else:
             if abstract != "" or title != "":
-                tooltip = "<b>{}</b><br/>{}".format(title, abstract)
+                tooltip = f"<b>{title}</b><br/>{abstract}"
             else:
                 tooltip = ""
         return tooltip
@@ -121,10 +121,8 @@ class PlgOptionsManager:
                 )
                 options.optionLoadAll = s.value("optionLoadAll", False, type=bool)
                 options.optionOpenLinks = s.value("optionOpenLinks", True, type=bool)
-                defaultOptionSourceMD = "{},{},{}".format(
-                    SOURCE_MD_OGC,
-                    SOURCE_MD_LAYER,
-                    SOURCE_MD_NOTE,
+                defaultOptionSourceMD = (
+                    f"{SOURCE_MD_OGC},{SOURCE_MD_LAYER},{SOURCE_MD_NOTE}"
                 )
                 optionSourceMD = s.value(
                     "optionSourceMD",

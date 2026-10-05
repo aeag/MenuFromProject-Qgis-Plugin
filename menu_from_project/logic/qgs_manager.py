@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 """
 Functions used to manage QGIS Projects: read, extract, get properties.
@@ -124,7 +124,7 @@ def get_project_title(doc: QtXml.QDomDocument) -> str:
     return None
 
 
-@lru_cache()
+@lru_cache
 def read_from_file(uri: str) -> QtXml.QDomDocument:
     """Read a QGIS project (.qgs and .qgz) from a file path and returns d
 
@@ -191,7 +191,7 @@ def downloadError(errorMessages):
         )
 
 
-@lru_cache()
+@lru_cache
 def read_from_http(uri: str, download_folder: Path):
     """Read a QGIS project stored into on a remote web server accessible through HTTP.
 
@@ -205,9 +205,7 @@ def read_from_http(uri: str, download_folder: Path):
     parsed = urlparse(uri)
     if not parsed.path.rpartition("/")[2].endswith((".qgs", ".qgz")):
         raise ValueError(
-            "URI doesn't ends with QGIS project extension (.qgs or .qgz): {}".format(
-                uri
-            )
+            f"URI doesn't ends with QGIS project extension (.qgs or .qgz): {uri}"
         )
     cached_filepath = download_folder / parsed.path.rpartition("/")[2]
 
@@ -271,9 +269,7 @@ class QgsDomManager:
             doc, _ = self.getQgsDoc(project.file)
             valid = not doc.isNull()
         except Exception as err:
-            self.log(
-                "Error during project reading file '{}': {}".format(project.file, err)
-            )
+            self.log(f"Error during project reading file '{project.file}': {err}")
         return valid
 
     def _get_download_folder(self) -> Path:
