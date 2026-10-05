@@ -304,7 +304,7 @@ def define_provider_name_from_metadata(md: QtXml.QDomNode, provider: str) -> str
     :rtype: str
     """
     keywords = md.toElement().elementsByTagName("keywords")
-    for i in range(0, keywords.size()):
+    for i in range(keywords.size()):
         value = keywords.at(i)
         element = value.toElement()
         vocabulary = element.attribute("vocabulary")
@@ -448,7 +448,7 @@ def get_embedded_group_config(
         if node := layer_tree_roots.item(0):
             # Get all layer / group in tree
             childrens = node.childNodes()
-            for i in range(0, childrens.size()):
+            for i in range(childrens.size()):
                 child = childrens.at(i)
                 element = child.toElement()
                 name = element.attribute("name")
@@ -510,7 +510,7 @@ def get_group_menu_config(
 
     childrens = node.childNodes()
 
-    for i in range(0, childrens.size()):
+    for i in range(childrens.size()):
         child = childrens.at(i)
         if child.nodeName() == "layer-tree-group":
             childs.append(
