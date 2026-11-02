@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 """
 Dialog for setting up the plugin.
@@ -40,9 +40,7 @@ class MenuConfDialog(QDialog, FORM_CLASS):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.setupUi(self)
-        self.setWindowTitle(
-            self.windowTitle() + " - {} v{}".format(__title__, __version__)
-        )
+        self.setWindowTitle(self.windowTitle() + f" - {__title__} v{__version__}")
         self.setWindowIcon(
             QIcon(f"{__icon_path__.resolve()}"),
         )

@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 # standard
 from typing import List, Optional
@@ -51,7 +51,7 @@ class ProjectListModel(QStandardItemModel):
         :rtype: List[Project]
         """
         result = []
-        for row in range(0, self.rowCount()):
+        for row in range(self.rowCount()):
             result.append(self.get_row_project(row))
         return result
 

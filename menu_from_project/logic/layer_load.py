@@ -184,7 +184,7 @@ class LayerLoad:
 
         else:
             self.log(
-                "Layer {} not found. Can't add layer to QGIS.".format(layerId),
+                f"Layer {layerId} not found. Can't add layer to QGIS.",
                 indent=loop,
             )
 
@@ -299,7 +299,7 @@ class LayerLoad:
             doc.documentElement(), "maplayer", "id", oldLayerId
         )
         if not layerNode:
-            self.log("{} not found for form relation fix".format(oldLayerId))
+            self.log(f"{oldLayerId} not found for form relation fix")
 
         nodes = layerNode.toElement().elementsByTagName("attributeEditorForm")
         if nodes.count() == 0:
@@ -370,9 +370,7 @@ class LayerLoad:
                     )
 
             else:
-                self.log(
-                    "Invalid relation {} : {}".format(rel.id(), rel.validationError())
-                )
+                self.log(f"Invalid relation {rel.id()} : {rel.validationError()}")
         except Exception as e:
             for m in e.args:
                 self.log(m)
@@ -512,8 +510,7 @@ class LayerLoad:
                             j.setJoinLayer(joinLayer)
                             layer.addJoin(j)
                     except Exception:
-                        self.log("Joined layer {} not added.".format(j.joinLayerId()))
-                        pass
+                        self.log(f"Joined layer {j.joinLayerId()} not added.")
         except Exception as e:
             # fixme fileName is not defined
             # self.log(

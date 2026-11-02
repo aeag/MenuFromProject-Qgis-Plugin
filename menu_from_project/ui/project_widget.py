@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 # standard
 import os
@@ -330,7 +330,7 @@ class ProjectWidget(QWidget):
             QMessageBox.warning(
                 self,
                 self.tr("Explorator open error"),
-                self.tr("Can't open project cache folder: {}".format(err)),
+                self.tr(f"Can't open project cache folder: {err}"),
             )
             self.log(message=f"Error opening the cache folder: {err}")
 

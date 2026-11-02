@@ -1,4 +1,4 @@
-#! python3  # noqa: E265
+#! python3
 
 # Standard library
 from functools import lru_cache
@@ -16,7 +16,7 @@ from menu_from_project.__about__ import DIR_PLUGIN_ROOT
 # ##################################
 
 
-@lru_cache()
+@lru_cache
 def guess_type_from_uri(qgs_uri: str) -> str:
     """Return project storage type based on the QGS URI.
 
@@ -34,7 +34,7 @@ def guess_type_from_uri(qgs_uri: str) -> str:
         return "file"
 
 
-@lru_cache()
+@lru_cache
 def icon_per_storage_type(type_storage: str) -> str:
     """Returns the icon for a storage type,
 
@@ -54,7 +54,7 @@ def icon_per_storage_type(type_storage: str) -> str:
         return QgsApplication.iconPath("mIconQgsProjectFile.svg")
 
 
-@lru_cache()
+@lru_cache
 def icon_per_layer_type(
     is_spatial: bool,
     layer_type: QgsMapLayerType,
